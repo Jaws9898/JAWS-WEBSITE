@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>JAWS &mdash; Web3 Marketing</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    :root{
+      --cyan:#01FFFF;
+      --abyss:#010A0A;
+      --deep:#021212;
+      --teal:#072020;
+      --text:#8EDDDD;
+      --muted:rgba(1,255,255,0.35);
+      --border:rgba(1,255,255,0.08);
+    }
+    html{scroll-behavior:smooth;}
+    body{background:var(--abyss);color:var(--text);font-family:'JetBrains Mono',monospace;overflow-x:hidden;cursor:none;}
+    .cursor{position:fixed;width:8px;height:8px;background:var(--cyan);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:screen;transition:width .15s,height .15s;}
+    .cursor-ring{position:fixed;width:30px;height:30px;border:1px solid var(--muted);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);}
+    #causticCanvas{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.15;}
+    #bloodCanvas{position:fixed;inset:0;width:100%;height:100%;z-index:50;pointer-events:none;}
+    .wrapper{position:relative;z-index:1;}
+    nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:1.2rem 5vw;background:rgba(1,10,10,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);animation:fadeDown .8s ease both;}
+    .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.2em;color:var(--cyan);text-shadow:0 0 20px var(--cyan),0 0 40px rgba(1,255,255,.4);}
+    .nav-links{display:flex;gap:2.5rem;list-style:none;}
+    .nav-links a{text-decoration:none;color:var(--muted);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;transition:color .2s,text-shadow .2s;}
+    .nav-links a:hover{color:var(--cyan);text-shadow:0 0 12px var(--cyan);}
+    .hero{min-height:100vh;position:relative;overflow:hidden;display:flex;align-items:center;padding:0 5vw;}
+    .surface{position:absolute;top:56%;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(1,255,255,.25) 20%,rgba(1,255,255,.06) 80%,transparent);pointer-events:none;}
+    .hero-shark{position:absolute;right:-2vw;top:50%;transform:translateY(-50%);width:42vw;max-width:580px;pointer-events:none;opacity:0;animation:sharkFade 2s .5s ease forwards;}
+    @keyframes sharkFade{from{opacity:0;transform:translateY(-50%) translateX(40px);}to{opacity:1;transform:translateY(-50%) translateX(0);}}
+    @keyframes eyePulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+    .shark-eye{animation:eyePulse 2.8s ease-in-out infinite;}
+    @keyframes bubFloat{0%{transform:translateY(0);opacity:.6;}100%{transform:translateY(-60px);opacity:0;}}
+    .hero-content{position:relative;z-index:3;max-width:48vw;opacity:0;animation:fadeUp 1s .3s ease forwards;}
+    .hero-eyebrow{font-size:.65rem;letter-spacing:.25em;color:var(--cyan);opacity:.6;margin-bottom:1rem;}
+    .hero-eyebrow::before{content:'> ';}
+    .hero-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(7rem,15vw,15rem);line-height:.82;letter-spacing:.02em;color:var(--cyan);text-shadow:0 0 40px rgba(1,255,255,.5),0 0 80px rgba(1,255,255,.2);margin-bottom:1.8rem;}
+    .hero-sub{font-size:.87rem;color:var(--muted);max-width:380px;line-height:1.9;}
+    .hero-sub em{color:var(--cyan);font-style:normal;text-shadow:0 0 8px rgba(1,255,255,.3);}
+    .ticker-wrap{border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;padding:.85rem 0;background:var(--teal);position:relative;z-index:1;}
+    .ticker-track{display:flex;animation:tickerScroll 28s linear infinite;width:max-content;}
+    .ticker-item{white-space:nowrap;padding:0 2.5rem;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:2.5rem;}
+    .tdot{color:var(--cyan);font-size:.4rem;text-shadow:0 0 6px var(--cyan);}
+    @keyframes tickerScroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+    .caps-bar{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border);position:relative;z-index:1;background:var(--deep);}
+    .cap-item{padding:2.5rem 3vw;border-right:1px solid var(--border);opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease;}
+    .cap-item:last-child{border-right:none;}
+    .cap-item.visible{opacity:1;transform:none;}
+    .cap-num{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,4vw,3.8rem);color:var(--cyan);text-shadow:0 0 20px var(--cyan),0 0 40px rgba(1,255,255,.3);line-height:1;}
+    .cap-label{font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-top:.4rem;}
+    .teeth-div{position:relative;z-index:1;line-height:0;overflow:hidden;}
+    .teeth-div svg{display:block;width:100%;}
+    .section{padding:6rem 5vw;position:relative;z-index:1;border-top:1px solid var(--border);}
+    .section.teal-bg{background:var(--teal);border-top:none;}
+    .s-tag{font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--cyan);opacity:.55;margin-bottom:.6rem;}
+    .s-tag::before{content:'[ ';} .s-tag::after{content:' ]';}
+    .s-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4rem);letter-spacing:.06em;color:#fff;text-shadow:0 0 30px rgba(1,255,255,.15);margin-bottom:3.5rem;line-height:1;}
+    .about-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:6vw;align-items:start;}
+    .about-body{font-size:.9rem;line-height:2;color:var(--text);}
+    .about-body em{color:var(--cyan);font-style:normal;}
+    .about-body p+p{margin-top:1.2rem;}
+    .about-facts{border-left:1px solid var(--border);padding-left:2.5rem;}
+    .fact{padding:1rem 0;border-bottom:1px solid var(--border);}
+    .fact-l{font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:.25rem;}
+    .fact-v{font-size:.88rem;color:#fff;}
+    .scroll-fin{position:absolute;bottom:-30px;right:5vw;width:55px;pointer-events:none;animation:finBob 3s ease-in-out infinite;}
+    @keyframes finBob{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+    .work-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);}
+    .work-card{background:var(--abyss);padding:3rem;position:relative;overflow:hidden;opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease,background .25s;}
+    .work-card.visible{opacity:1;transform:none;}
+    .work-card:hover{background:#041414;}
+    .work-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);transform:scaleX(0);transform-origin:left;transition:transform .4s ease;box-shadow:0 0 12px var(--cyan);}
+    .work-card:hover::before{transform:scaleX(1);}
+    .wc-logo{width:52px;height:52px;border-radius:10px;object-fit:cover;margin-bottom:1.4rem;border:1px solid rgba(1,255,255,.15);box-shadow:0 0 16px rgba(1,255,255,.1);}
+    .wc-tag{font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan);opacity:.5;margin-bottom:.8rem;}
+    .wc-co{font-family:'Bebas Neue',sans-serif;font-size:2.4rem;letter-spacing:.07em;color:#fff;text-shadow:0 0 20px rgba(1,255,255,.2);margin-bottom:.9rem;line-height:1;}
+    .wc-desc{font-size:.85rem;line-height:1.85;color:var(--text);opacity:.85;margin-bottom:1.5rem;}
+    .wc-desc em{color:var(--cyan);font-style:normal;}
+    .wc-stat{font-size:.62rem;letter-spacing:.12em;color:var(--cyan);opacity:.5;}
+    .mouth-wrap{position:relative;z-index:1;padding:0 5vw 6rem;}
+    .mouth-header{padding:5rem 0 2rem;}
+    .mouth-svg-outer{width:100%;display:block;}
+    .mouth-inner{background:#020d0d;border-left:2px solid rgba(1,255,255,.25);border-right:2px solid rgba(1,255,255,.25);position:relative;}
+    .mouth-inner::before{content:'';position:absolute;top:0;left:0;right:0;height:8px;background:linear-gradient(to bottom,rgba(1,255,255,.06),transparent);}
+    .mouth-inner::after{content:'';position:absolute;bottom:0;left:0;right:0;height:8px;background:linear-gradient(to top,rgba(1,255,255,.06),transparent);}
+    .skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(1,255,255,.05);}
+    .skill-tile{background:#020d0d;padding:2.5rem 2rem;opacity:0;transform:translateY(8px);transition:opacity .5s ease,transform .5s ease,background .2s;}
+    .skill-tile.visible{opacity:1;transform:none;}
+    .skill-tile:hover{background:rgba(1,255,255,.04);}
+    .sk-num{font-size:.55rem;color:var(--cyan);opacity:.35;margin-bottom:.7rem;letter-spacing:.12em;}
+    .sk-name{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.07em;color:#fff;text-shadow:0 0 15px rgba(1,255,255,.2);margin-bottom:.4rem;}
+    .sk-desc{font-size:.78rem;color:var(--muted);line-height:1.65;}
+    .contact-section{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;z-index:1;overflow:hidden;background:var(--abyss);padding:5vw;text-align:center;}
+    .contact-section::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:70vw;height:70vw;background:radial-gradient(ellipse,rgba(1,255,255,.07) 0%,transparent 70%);pointer-events:none;}
+    .contact-eyebrow{font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;color:var(--cyan);opacity:.55;margin-bottom:2rem;}
+    .contact-eyebrow::before{content:'[ ';} .contact-eyebrow::after{content:' ]';}
+    .contact-hl{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,9vw,9rem);line-height:.9;letter-spacing:.04em;color:#fff;margin-bottom:1.5rem;position:relative;z-index:1;}
+    .contact-hl .hl{color:var(--cyan);text-shadow:0 0 40px var(--cyan),0 0 80px rgba(1,255,255,.3);display:block;}
+    .contact-sub{font-size:.85rem;color:var(--muted);margin-bottom:4rem;letter-spacing:.05em;position:relative;z-index:1;}
+    .contact-links{display:flex;gap:1.5rem;flex-wrap:wrap;justify-content:center;position:relative;z-index:1;}
+    .c-link{display:flex;align-items:center;gap:1rem;padding:1.2rem 2.5rem;border:1px solid rgba(1,255,255,.2);color:var(--text);text-decoration:none;font-size:.85rem;transition:border-color .2s,box-shadow .2s,color .2s,background .2s;background:rgba(1,255,255,.02);letter-spacing:.05em;}
+    .c-link:hover{border-color:var(--cyan);box-shadow:0 0 30px rgba(1,255,255,.15),inset 0 0 30px rgba(1,255,255,.04);color:var(--cyan);background:rgba(1,255,255,.04);}
+    .c-lbl{font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:.15rem;}
+    .c-icon{color:var(--cyan);opacity:.6;flex-shrink:0;}
+    .contact-watermark{position:absolute;bottom:-4rem;left:50%;transform:translateX(-50%);font-family:'Bebas Neue',sans-serif;font-size:clamp(10rem,22vw,22rem);color:rgba(1,255,255,.03);letter-spacing:.1em;pointer-events:none;user-select:none;white-space:nowrap;}
+    footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2rem 5vw;display:flex;justify-content:space-between;align-items:center;background:var(--abyss);}
+    .f-logo{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:.18em;color:var(--cyan);opacity:.4;}
+    .f-txt{font-size:.58rem;letter-spacing:.1em;color:rgba(1,255,255,.18);}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:none;}}
+    @keyframes fadeDown{from{opacity:0;transform:translateY(-18px);}to{opacity:1;transform:none;}}
+    @media(max-width:900px){
+      .hero-shark{width:70vw;opacity:.25;}
+      .hero-content{max-width:100%;}
+      .about-grid{grid-template-columns:1fr;}
+      .about-facts{border-left:none;padding-left:0;border-top:1px solid var(--border);padding-top:2rem;}
+      .work-grid{grid-template-columns:1fr;}
+      .skills-grid{grid-template-columns:1fr 1fr;}
+      .caps-bar{grid-template-columns:1fr 1fr;}
+      .nav-links{display:none;}
+      .contact-links{flex-direction:column;align-items:center;}
+    }
+  </style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<canvas id="causticCanvas"></canvas>
+<canvas id="bloodCanvas"></canvas>
+<div class="wrapper">
+<nav>
+  <div class="nav-logo">JAWS</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+<!-- HERO -->
+<section class="hero">
+  <div class="surface"></div>
+  <svg class="hero-shark" viewBox="0 0 580 380" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="bodyG" cx="45%" cy="48%" r="52%">
+        <stop offset="0%" stop-color="#0d4040"/>
+        <stop offset="100%" stop-color="#020e0e"/>
+      </radialGradient>
+      <filter id="sharkGlow">
+        <feGaussianBlur stdDeviation="4" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+    <ellipse cx="290" cy="330" rx="230" ry="14" fill="rgba(1,255,255,0.04)"/>
+    <path d="M 52 195 C 100 175 200 155 300 162 C 390 168 470 185 530 200 C 470 218 390 232 300 236 C 200 240 100 228 52 210 C 36 205 24 200 24 202 C 24 200 36 197 52 195 Z" fill="url(#bodyG)" stroke="rgba(1,255,255,0.22)" stroke-width="1.2"/>
+    <path d="M 80 218 C 180 232 300 240 420 238 C 480 236 520 228 540 220 C 500 230 420 242 300 244 C 180 244 90 232 80 218 Z" fill="rgba(1,255,255,0.04)"/>
+    <path d="M 240 162 C 248 132 258 100 264 72 C 270 48 274 28 276 10 C 284 28 290 52 296 76 C 304 104 312 136 318 162" fill="#020e0e" stroke="rgba(1,255,255,0.35)" stroke-width="1.6"/>
+    <path d="M 240 162 C 248 132 258 100 264 72 C 270 48 274 28 276 10 C 284 28 290 52 296 76 C 304 104 312 136 318 162" fill="none" stroke="rgba(1,255,255,0.12)" stroke-width="12" stroke-linecap="round"/>
+    <path d="M 390 178 C 396 160 404 146 410 136 C 416 146 416 162 418 174" fill="#020e0e" stroke="rgba(1,255,255,0.2)" stroke-width="1"/>
+    <path d="M 185 228 C 170 256 158 284 164 304 C 174 292 190 266 198 242 Z" fill="#020e0e" stroke="rgba(1,255,255,0.2)" stroke-width="1.1"/>
+    <path d="M 360 234 C 354 252 350 270 356 280 C 366 270 372 254 368 238 Z" fill="#020e0e" stroke="rgba(1,255,255,0.14)" stroke-width="1"/>
+    <path d="M 530 200 C 554 172 568 148 574 128 C 560 148 552 172 558 192 C 552 210 558 232 572 250 C 566 256 552 240 530 218 Z" fill="#020e0e" stroke="rgba(1,255,255,0.22)" stroke-width="1.4"/>
+    <path d="M 52 195 C 26 192 6 198 2 206 C 6 212 26 216 52 210 Z" fill="#020e0e" stroke="rgba(1,255,255,0.2)" stroke-width="1.1"/>
+    <path d="M 10 206 C 24 210 50 212 76 210" fill="none" stroke="rgba(1,255,255,0.4)" stroke-width="1.4"/>
+    <path d="M 20 207 L 22 212 L 24 207" fill="rgba(1,255,255,0.55)"/>
+    <path d="M 32 208 L 34 214 L 36 208" fill="rgba(1,255,255,0.5)"/>
+    <path d="M 46 209 L 48 214 L 50 209" fill="rgba(1,255,255,0.45)"/>
+    <path d="M 60 209 L 62 214 L 64 209" fill="rgba(1,255,255,0.4)"/>
+    <path d="M 118 182 C 113 195 113 212 118 226" stroke="rgba(1,255,255,0.22)" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+    <path d="M 130 179 C 125 193 125 215 130 229" stroke="rgba(1,255,255,0.17)" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+    <path d="M 142 177 C 137 192 137 217 142 231" stroke="rgba(1,255,255,0.13)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+    <path d="M 154 176 C 149 191 149 218 154 232" stroke="rgba(1,255,255,0.09)" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+    <path d="M 100 202 C 220 196 360 194 460 198 C 500 200 526 204 540 208" fill="none" stroke="rgba(1,255,255,0.09)" stroke-width="1" stroke-dasharray="5,4"/>
+    <circle cx="66" cy="200" r="8" fill="#010808" class="shark-eye"/>
+    <circle cx="66" cy="200" r="5" fill="rgba(1,255,255,0.2)" class="shark-eye"/>
+    <circle cx="66" cy="200" r="3" fill="var(--cyan)" filter="url(#sharkGlow)" class="shark-eye"/>
+    <circle cx="65" cy="199" r="1.2" fill="rgba(255,255,255,0.9)"/>
+    <circle cx="66" cy="200" r="10" fill="none" stroke="rgba(1,255,255,0.18)" stroke-width="1" class="shark-eye"/>
+    <circle cx="100" cy="188" r="3" fill="none" stroke="rgba(1,255,255,0.35)" stroke-width="1" id="b1"/>
+    <circle cx="114" cy="176" r="2" fill="none" stroke="rgba(1,255,255,0.28)" stroke-width="1" id="b2"/>
+    <circle cx="94" cy="168" r="2.5" fill="none" stroke="rgba(1,255,255,0.22)" stroke-width="1" id="b3"/>
+    <circle cx="120" cy="160" r="1.5" fill="none" stroke="rgba(1,255,255,0.18)" stroke-width="1" id="b4"/>
+    <ellipse cx="278" cy="162" rx="60" ry="6" fill="none" stroke="rgba(1,255,255,0.1)" stroke-width="1"/>
+    <ellipse cx="278" cy="162" rx="96" ry="10" fill="none" stroke="rgba(1,255,255,0.06)" stroke-width="1"/>
+  </svg>
+  <div class="hero-content">
+    <p class="hero-eyebrow">web3 marketing &middot; @JawsOnChain</p>
+    <h1 class="hero-name">JAWS</h1>
+    <p class="hero-sub">
+      <em>In the water before you knew there was a game.</em><br>
+      Anonymous. Results-driven. Always circling.
+    </p>
+  </div>
+</section>
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <div class="ticker-item">Content Strategy <span class="tdot">&#10022;</span> Community Growth <span class="tdot">&#10022;</span> X Marketing <span class="tdot">&#10022;</span> Trend Execution <span class="tdot">&#10022;</span> Visual Content <span class="tdot">&#10022;</span> X Spaces <span class="tdot">&#10022;</span> PNL Cards <span class="tdot">&#10022;</span> Viral Campaigns <span class="tdot">&#10022;</span> Web3 Native <span class="tdot">&#10022;</span> Copywriting <span class="tdot">&#10022;</span> Brand Building <span class="tdot">&#10022;</span> Growth Hacking <span class="tdot">&#10022;</span></div>
+    <div class="ticker-item">Content Strategy <span class="tdot">&#10022;</span> Community Growth <span class="tdot">&#10022;</span> X Marketing <span class="tdot">&#10022;</span> Trend Execution <span class="tdot">&#10022;</span> Visual Content <span class="tdot">&#10022;</span> X Spaces <span class="tdot">&#10022;</span> PNL Cards <span class="tdot">&#10022;</span> Viral Campaigns <span class="tdot">&#10022;</span> Web3 Native <span class="tdot">&#10022;</span> Copywriting <span class="tdot">&#10022;</span> Brand Building <span class="tdot">&#10022;</span> Growth Hacking <span class="tdot">&#10022;</span></div>
+  </div>
+</div>
+<!-- CAPS BAR -->
+<div class="caps-bar">
+  <div class="cap-item"><div class="cap-num">10M+</div><div class="cap-label">Impressions Generated</div></div>
+  <div class="cap-item"><div class="cap-num">10+</div><div class="cap-label">Campaigns Launched</div></div>
+  <div class="cap-item"><div class="cap-num">5K+</div><div class="cap-label">Community Grown</div></div>
+  <div class="cap-item"><div class="cap-num">2</div><div class="cap-label">Active Web3 Brands</div></div>
+</div>
+<!-- TEETH -->
+<div class="teeth-div" style="background:var(--deep);">
+  <svg viewBox="0 0 1440 140" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1440" height="140" fill="var(--teal)"/>
+    <path d="M0 30 C10 30 15 28 20 0 C25 28 30 30 40 30 C50 30 55 28 60 0 C65 28 70 30 80 30 C90 30 95 28 100 0 C105 28 110 30 120 30 C130 30 135 28 140 0 C145 28 150 30 160 30 C170 30 175 28 180 0 C185 28 190 30 200 30 C210 30 215 28 220 0 C225 28 230 30 240 30 C250 30 255 28 260 0 C265 28 270 30 280 30 C290 30 295 28 300 0 C305 28 310 30 320 30 C330 30 335 28 340 0 C345 28 350 30 360 30 C370 30 375 28 380 0 C385 28 390 30 400 30 C410 30 415 28 420 0 C425 28 430 30 440 30 C450 30 455 28 460 0 C465 28 470 30 480 30 C490 30 495 28 500 0 C505 28 510 30 520 30 C530 30 535 28 540 0 C545 28 550 30 560 30 C570 30 575 28 580 0 C585 28 590 30 600 30 C610 30 615 28 620 0 C625 28 630 30 640 30 C650 30 655 28 660 0 C665 28 670 30 680 30 C690 30 695 28 700 0 C705 28 710 30 720 30 C730 30 735 28 740 0 C745 28 750 30 760 30 C770 30 775 28 780 0 C785 28 790 30 800 30 C810 30 815 28 820 0 C825 28 830 30 840 30 C850 30 855 28 860 0 C865 28 870 30 880 30 C890 30 895 28 900 0 C905 28 910 30 920 30 C930 30 935 28 940 0 C945 28 950 30 960 30 C970 30 975 28 980 0 C985 28 990 30 1000 30 C1010 30 1015 28 1020 0 C1025 28 1030 30 1040 30 C1050 30 1055 28 1060 0 C1065 28 1070 30 1080 30 C1090 30 1095 28 1100 0 C1105 28 1110 30 1120 30 C1130 30 1135 28 1140 0 C1145 28 1150 30 1160 30 C1170 30 1175 28 1180 0 C1185 28 1190 30 1200 30 C1210 30 1215 28 1220 0 C1225 28 1230 30 1240 30 C1250 30 1255 28 1260 0 C1265 28 1270 30 1280 30 C1290 30 1295 28 1300 0 C1305 28 1310 30 1320 30 C1330 30 1335 28 1340 0 C1345 28 1350 30 1360 30 C1370 30 1375 28 1380 0 C1385 28 1390 30 1400 30 C1410 30 1415 28 1420 0 C1425 28 1430 30 1440 30 L1440 140 L0 140 Z" fill="var(--abyss)" stroke="none"/>
+    <path d="M0 30 C10 30 15 28 20 0 C25 28 30 30 40 30 C50 30 55 28 60 0 C65 28 70 30 80 30 C90 30 95 28 100 0 C105 28 110 30 120 30 C130 30 135 28 140 0 C145 28 150 30 160 30 C170 30 175 28 180 0 C185 28 190 30 200 30 C210 30 215 28 220 0 C225 28 230 30 240 30 C250 30 255 28 260 0 C265 28 270 30 280 30 C290 30 295 28 300 0 C305 28 310 30 320 30 C330 30 335 28 340 0 C345 28 350 30 360 30 C370 30 375 28 380 0 C385 28 390 30 400 30 C410 30 415 28 420 0 C425 28 430 30 440 30 C450 30 455 28 460 0 C465 28 470 30 480 30 C490 30 495 28 500 0 C505 28 510 30 520 30 C530 30 535 28 540 0 C545 28 550 30 560 30 C570 30 575 28 580 0 C585 28 590 30 600 30 C610 30 615 28 620 0 C625 28 630 30 640 30 C650 30 655 28 660 0 C665 28 670 30 680 30 C690 30 695 28 700 0 C705 28 710 30 720 30 C730 30 735 28 740 0 C745 28 750 30 760 30 C770 30 775 28 780 0 C785 28 790 30 800 30 C810 30 815 28 820 0 C825 28 830 30 840 30 C850 30 855 28 860 0 C865 28 870 30 880 30 C890 30 895 28 900 0 C905 28 910 30 920 30 C930 30 935 28 940 0 C945 28 950 30 960 30 C970 30 975 28 980 0 C985 28 990 30 1000 30 C1010 30 1015 28 1020 0 C1025 28 1030 30 1040 30 C1050 30 1055 28 1060 0 C1065 28 1070 30 1080 30 C1090 30 1095 28 1100 0 C1105 28 1110 30 1120 30 C1130 30 1135 28 1140 0 C1145 28 1150 30 1160 30 C1170 30 1175 28 1180 0 C1185 28 1190 30 1200 30 C1210 30 1215 28 1220 0 C1225 28 1230 30 1240 30 C1250 30 1255 28 1260 0 C1265 28 1270 30 1280 30 C1290 30 1295 28 1300 0 C1305 28 1310 30 1320 30 C1330 30 1335 28 1340 0 C1345 28 1350 30 1360 30 C1370 30 1375 28 1380 0 C1385 28 1390 30 1400 30 C1410 30 1415 28 1420 0 C1425 28 1430 30 1440 30" fill="none" stroke="rgba(1,255,255,0.45)" stroke-width="1.8"/>
+  </svg>
+</div>
+<!-- ABOUT -->
+<section class="section teal-bg" id="about">
+  <div class="scroll-fin">
+    <svg viewBox="0 0 60 80" fill="none"><path d="M30 75 C28 60,20 40,10 20 C18 35,26 50,30 60 C34 50,42 35,50 20 C40 40,32 60,30 75Z" fill="#041c1c" stroke="rgba(1,255,255,0.5)" stroke-width="1.5"/></svg>
+  </div>
+  <div class="s-tag">About</div>
+  <h2 class="s-title">Who I Am</h2>
+  <div class="about-grid">
+    <div class="about-body">
+      <p>A <em>social media strategist and marketer</em> operating anonymously in Web3. I got into this space because it moves fast, rewards creativity, and has no rulebook &mdash; which is exactly how I like it.</p>
+      <p>I build accounts from nothing, turn performance data into shareable content, and grow communities that actually care. What I care about is <em>making things that work</em> &mdash; not things that just look good on a deck.</p>
+      <p>Always in the water. Always moving.</p>
+    </div>
+    <div class="about-facts">
+      <div class="fact"><div class="fact-l">Handle</div><div class="fact-v">@JawsOnChain</div></div>
+      <div class="fact"><div class="fact-l">Niche</div><div class="fact-v">Web3 &middot; Crypto &middot; DeFi</div></div>
+      <div class="fact"><div class="fact-l">Background</div><div class="fact-v">BA Business Management &amp; Marketing</div></div>
+      <div class="fact"><div class="fact-l">Status</div><div class="fact-v">Open to new projects</div></div>
+    </div>
+  </div>
+</section>
+<!-- TEETH FLIPPED -->
+<div class="teeth-div" style="background:var(--teal);transform:scaleY(-1);">
+  <svg viewBox="0 0 1440 140" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1440" height="140" fill="var(--abyss)"/>
+    <path d="M0 30 C10 30 15 28 20 0 C25 28 30 30 40 30 C50 30 55 28 60 0 C65 28 70 30 80 30 C90 30 95 28 100 0 C105 28 110 30 120 30 C130 30 135 28 140 0 C145 28 150 30 160 30 C170 30 175 28 180 0 C185 28 190 30 200 30 C210 30 215 28 220 0 C225 28 230 30 240 30 C250 30 255 28 260 0 C265 28 270 30 280 30 C290 30 295 28 300 0 C305 28 310 30 320 30 C330 30 335 28 340 0 C345 28 350 30 360 30 C370 30 375 28 380 0 C385 28 390 30 400 30 C410 30 415 28 420 0 C425 28 430 30 440 30 C450 30 455 28 460 0 C465 28 470 30 480 30 C490 30 495 28 500 0 C505 28 510 30 520 30 C530 30 535 28 540 0 C545 28 550 30 560 30 C570 30 575 28 580 0 C585 28 590 30 600 30 C610 30 615 28 620 0 C625 28 630 30 640 30 C650 30 655 28 660 0 C665 28 670 30 680 30 C690 30 695 28 700 0 C705 28 710 30 720 30 C730 30 735 28 740 0 C745 28 750 30 760 30 C770 30 775 28 780 0 C785 28 790 30 800 30 C810 30 815 28 820 0 C825 28 830 30 840 30 C850 30 855 28 860 0 C865 28 870 30 880 30 C890 30 895 28 900 0 C905 28 910 30 920 30 C930 30 935 28 940 0 C945 28 950 30 960 30 C970 30 975 28 980 0 C985 28 990 30 1000 30 C1010 30 1015 28 1020 0 C1025 28 1030 30 1040 30 C1050 30 1055 28 1060 0 C1065 28 1070 30 1080 30 C1090 30 1095 28 1100 0 C1105 28 1110 30 1120 30 C1130 30 1135 28 1140 0 C1145 28 1150 30 1160 30 C1170 30 1175 28 1180 0 C1185 28 1190 30 1200 30 C1210 30 1215 28 1220 0 C1225 28 1230 30 1240 30 C1250 30 1255 28 1260 0 C1265 28 1270 30 1280 30 C1290 30 1295 28 1300 0 C1305 28 1310 30 1320 30 C1330 30 1335 28 1340 0 C1345 28 1350 30 1360 30 C1370 30 1375 28 1380 0 C1385 28 1390 30 1400 30 C1410 30 1415 28 1420 0 C1425 28 1430 30 1440 30 L1440 140 L0 140 Z" fill="var(--teal)" stroke="none"/>
+    <path d="M0 30 C10 30 15 28 20 0 C25 28 30 30 40 30 C50 30 55 28 60 0 C65 28 70 30 80 30 C90 30 95 28 100 0 C105 28 110 30 120 30 C130 30 135 28 140 0 C145 28 150 30 160 30 C170 30 175 28 180 0 C185 28 190 30 200 30 C210 30 215 28 220 0 C225 28 230 30 240 30 C250 30 255 28 260 0 C265 28 270 30 280 30 C290 30 295 28 300 0 C305 28 310 30 320 30 C330 30 335 28 340 0 C345 28 350 30 360 30 C370 30 375 28 380 0 C385 28 390 30 400 30 C410 30 415 28 420 0 C425 28 430 30 440 30 C450 30 455 28 460 0 C465 28 470 30 480 30 C490 30 495 28 500 0 C505 28 510 30 520 30 C530 30 535 28 540 0 C545 28 550 30 560 30 C570 30 575 28 580 0 C585 28 590 30 600 30 C610 30 615 28 620 0 C625 28 630 30 640 30 C650 30 655 28 660 0 C665 28 670 30 680 30 C690 30 695 28 700 0 C705 28 710 30 720 30 C730 30 735 28 740 0 C745 28 750 30 760 30 C770 30 775 28 780 0 C785 28 790 30 800 30 C810 30 815 28 820 0 C825 28 830 30 840 30 C850 30 855 28 860 0 C865 28 870 30 880 30 C890 30 895 28 900 0 C905 28 910 30 920 30 C930 30 935 28 940 0 C945 28 950 30 960 30 C970 30 975 28 980 0 C985 28 990 30 1000 30 C1010 30 1015 28 1020 0 C1025 28 1030 30 1040 30 C1050 30 1055 28 1060 0 C1065 28 1070 30 1080 30 C1090 30 1095 28 1100 0 C1105 28 1110 30 1120 30 C1130 30 1135 28 1140 0 C1145 28 1150 30 1160 30 C1170 30 1175 28 1180 0 C1185 28 1190 30 1200 30 C1210 30 1215 28 1220 0 C1225 28 1230 30 1240 30 C1250 30 1255 28 1260 0 C1265 28 1270 30 1280 30 C1290 30 1295 28 1300 0 C1305 28 1310 30 1320 30 C1330 30 1335 28 1340 0 C1345 28 1350 30 1360 30 C1370 30 1375 28 1380 0 C1385 28 1390 30 1400 30 C1410 30 1415 28 1420 0 C1425 28 1430 30 1440 30" fill="none" stroke="rgba(1,255,255,0.4)" stroke-width="1.8"/>
+  </svg>
+</div>
+<!-- WORK -->
+<section class="section" id="work" style="border-top:none;">
+  <div class="s-tag">Selected Work</div>
+  <h2 class="s-title">Projects</h2>
+  <div class="work-grid">
+    <div class="work-card">
+      <div class="wc-logo" id="logo-doop" style="background:#0d2b2b;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;color:var(--cyan);font-size:1.1rem;letter-spacing:.1em;">D</div>
+      <div class="wc-tag">Marketing Lead &middot; 2025 &mdash; Present</div>
+      <div class="wc-co">DoopApp</div>
+      <div class="wc-desc">Took this gut health app from zero social presence to <em>5,000 followers and 500,000 impressions in a single month</em>. Built the whole content identity from scratch &mdash; graphics, Spaces, campaigns, the lot. Went viral more than once.</div>
+      <div class="wc-stat">&#8599; 500K impressions &middot; 5K followers &middot; month 1</div>
+    </div>
+    <div class="work-card">
+      <div class="wc-logo" id="logo-lore" style="background:#0d2b2b;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;color:var(--cyan);font-size:1.1rem;letter-spacing:.1em;">L</div>
+      <div class="wc-tag">Social Media Manager &middot; 2025 &mdash; Present</div>
+      <div class="wc-co">Lore.Vision</div>
+      <div class="wc-desc">Jumped in and immediately <em>doubled engagement in 30 days</em> by staying sharp on market movements, trends and timing. Built PNL cards that turned performance into proof. Scripted livestreams, clipped highlights, wore a lot of hats.</div>
+      <div class="wc-stat">&#8599; 120% engagement increase &middot; month 1</div>
+    </div>
+  </div>
+</section>
+<!-- TEETH -->
+<div class="teeth-div" style="background:var(--abyss);">
+  <svg viewBox="0 0 1440 140" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1440" height="140" fill="var(--deep)"/>
+    <path d="M0 30 C10 30 15 28 20 0 C25 28 30 30 40 30 C50 30 55 28 60 0 C65 28 70 30 80 30 C90 30 95 28 100 0 C105 28 110 30 120 30 C130 30 135 28 140 0 C145 28 150 30 160 30 C170 30 175 28 180 0 C185 28 190 30 200 30 C210 30 215 28 220 0 C225 28 230 30 240 30 C250 30 255 28 260 0 C265 28 270 30 280 30 C290 30 295 28 300 0 C305 28 310 30 320 30 C330 30 335 28 340 0 C345 28 350 30 360 30 C370 30 375 28 380 0 C385 28 390 30 400 30 C410 30 415 28 420 0 C425 28 430 30 440 30 C450 30 455 28 460 0 C465 28 470 30 480 30 C490 30 495 28 500 0 C505 28 510 30 520 30 C530 30 535 28 540 0 C545 28 550 30 560 30 C570 30 575 28 580 0 C585 28 590 30 600 30 C610 30 615 28 620 0 C625 28 630 30 640 30 C650 30 655 28 660 0 C665 28 670 30 680 30 C690 30 695 28 700 0 C705 28 710 30 720 30 C730 30 735 28 740 0 C745 28 750 30 760 30 C770 30 775 28 780 0 C785 28 790 30 800 30 C810 30 815 28 820 0 C825 28 830 30 840 30 C850 30 855 28 860 0 C865 28 870 30 880 30 C890 30 895 28 900 0 C905 28 910 30 920 30 C930 30 935 28 940 0 C945 28 950 30 960 30 C970 30 975 28 980 0 C985 28 990 30 1000 30 C1010 30 1015 28 1020 0 C1025 28 1030 30 1040 30 C1050 30 1055 28 1060 0 C1065 28 1070 30 1080 30 C1090 30 1095 28 1100 0 C1105 28 1110 30 1120 30 C1130 30 1135 28 1140 0 C1145 28 1150 30 1160 30 C1170 30 1175 28 1180 0 C1185 28 1190 30 1200 30 C1210 30 1215 28 1220 0 C1225 28 1230 30 1240 30 C1250 30 1255 28 1260 0 C1265 28 1270 30 1280 30 C1290 30 1295 28 1300 0 C1305 28 1310 30 1320 30 C1330 30 1335 28 1340 0 C1345 28 1350 30 1360 30 C1370 30 1375 28 1380 0 C1385 28 1390 30 1400 30 C1410 30 1415 28 1420 0 C1425 28 1430 30 1440 30 L1440 140 L0 140 Z" fill="var(--abyss)" stroke="none"/>
+    <path d="M0 30 C10 30 15 28 20 0 C25 28 30 30 40 30 C50 30 55 28 60 0 C65 28 70 30 80 30 C90 30 95 28 100 0 C105 28 110 30 120 30 C130 30 135 28 140 0 C145 28 150 30 160 30 C170 30 175 28 180 0 C185 28 190 30 200 30 C210 30 215 28 220 0 C225 28 230 30 240 30 C250 30 255 28 260 0 C265 28 270 30 280 30 C290 30 295 28 300 0 C305 28 310 30 320 30 C330 30 335 28 340 0 C345 28 350 30 360 30 C370 30 375 28 380 0 C385 28 390 30 400 30 C410 30 415 28 420 0 C425 28 430 30 440 30 C450 30 455 28 460 0 C465 28 470 30 480 30 C490 30 495 28 500 0 C505 28 510 30 520 30 C530 30 535 28 540 0 C545 28 550 30 560 30 C570 30 575 28 580 0 C585 28 590 30 600 30 C610 30 615 28 620 0 C625 28 630 30 640 30 C650 30 655 28 660 0 C665 28 670 30 680 30 C690 30 695 28 700 0 C705 28 710 30 720 30 C730 30 735 28 740 0 C745 28 750 30 760 30 C770 30 775 28 780 0 C785 28 790 30 800 30 C810 30 815 28 820 0 C825 28 830 30 840 30 C850 30 855 28 860 0 C865 28 870 30 880 30 C890 30 895 28 900 0 C905 28 910 30 920 30 C930 30 935 28 940 0 C945 28 950 30 960 30 C970 30 975 28 980 0 C985 28 990 30 1000 30 C1010 30 1015 28 1020 0 C1025 28 1030 30 1040 30 C1050 30 1055 28 1060 0 C1065 28 1070 30 1080 30 C1090 30 1095 28 1100 0 C1105 28 1110 30 1120 30 C1130 30 1135 28 1140 0 C1145 28 1150 30 1160 30 C1170 30 1175 28 1180 0 C1185 28 1190 30 1200 30 C1210 30 1215 28 1220 0 C1225 28 1230 30 1240 30 C1250 30 1255 28 1260 0 C1265 28 1270 30 1280 30 C1290 30 1295 28 1300 0 C1305 28 1310 30 1320 30 C1330 30 1335 28 1340 0 C1345 28 1350 30 1360 30 C1370 30 1375 28 1380 0 C1385 28 1390 30 1400 30 C1410 30 1415 28 1420 0 C1425 28 1430 30 1440 30" fill="none" stroke="rgba(1,255,255,0.4)" stroke-width="1.8"/>
+  </svg>
+</div>
+<!-- SKILLS -->
+<div class="mouth-wrap" id="skills">
+  <div class="mouth-header">
+    <div class="s-tag">Capabilities</div>
+    <h2 class="s-title" style="margin-bottom:1.5rem;">Skills</h2>
+  </div>
+  <svg class="mouth-svg-outer" viewBox="0 0 1200 110" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="jg" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="rgba(1,255,255,0.3)"/><stop offset="50%" stop-color="rgba(1,255,255,0.9)"/><stop offset="100%" stop-color="rgba(1,255,255,0.3)"/></linearGradient></defs>
+    <path d="M 0 0 Q 600 -10 1200 0 L 1200 32 C1180 32 1168 28 1158 70 C1148 28 1136 32 1116 32 C1096 32 1084 28 1074 70 C1064 28 1052 32 1032 32 C1012 32 1000 28 990 70 C980 28 968 32 948 32 C928 32 916 28 906 70 C896 28 884 32 864 32 C844 32 832 28 822 70 C812 28 800 32 780 32 C760 32 748 28 738 70 C728 28 716 32 696 32 C676 32 664 28 654 70 C644 28 632 32 612 32 C592 32 580 28 570 70 C560 28 548 32 528 32 C508 32 496 28 486 70 C476 28 464 32 444 32 C424 32 412 28 402 70 C392 28 380 32 360 32 C340 32 328 28 318 70 C308 28 296 32 276 32 C256 32 244 28 234 70 C224 28 212 32 192 32 C172 32 160 28 150 70 C140 28 128 32 108 32 C88 32 76 28 66 70 C56 28 44 32 24 32 L 0 32 L 0 110 L 1200 110 Z" fill="#020d0d" stroke="none"/>
+    <path d="M 0 0 Q 600 -10 1200 0 L 1200 32 C1180 32 1168 28 1158 70 C1148 28 1136 32 1116 32 C1096 32 1084 28 1074 70 C1064 28 1052 32 1032 32 C1012 32 1000 28 990 70 C980 28 968 32 948 32 C928 32 916 28 906 70 C896 28 884 32 864 32 C844 32 832 28 822 70 C812 28 800 32 780 32 C760 32 748 28 738 70 C728 28 716 32 696 32 C676 32 664 28 654 70 C644 28 632 32 612 32 C592 32 580 28 570 70 C560 28 548 32 528 32 C508 32 496 28 486 70 C476 28 464 32 444 32 C424 32 412 28 402 70 C392 28 380 32 360 32 C340 32 328 28 318 70 C308 28 296 32 276 32 C256 32 244 28 234 70 C224 28 212 32 192 32 C172 32 160 28 150 70 C140 28 128 32 108 32 C88 32 76 28 66 70 C56 28 44 32 24 32 L 0 32 L 0 110 L 1200 110 Z" fill="none" stroke="url(#jg)" stroke-width="1.8"/>
+    <line x1="0" y1="0" x2="0" y2="110" stroke="rgba(1,255,255,0.45)" stroke-width="2"/>
+    <line x1="1200" y1="0" x2="1200" y2="110" stroke="rgba(1,255,255,0.45)" stroke-width="2"/>
+  </svg>
+  <div class="mouth-inner">
+    <div class="skills-grid">
+      <div class="skill-tile"><div class="sk-num">01 //</div><div class="sk-name">Content Strategy</div><div class="sk-desc">Building narratives that resonate with crypto-native audiences and actually drive engagement.</div></div>
+      <div class="skill-tile"><div class="sk-num">02 //</div><div class="sk-name">Community Growth</div><div class="sk-desc">Growing accounts from zero &mdash; followers, culture, engagement. Fast.</div></div>
+      <div class="skill-tile"><div class="sk-num">03 //</div><div class="sk-name">Trend Execution</div><div class="sk-desc">Moving on emerging narratives before everyone else. Speed is the edge.</div></div>
+      <div class="skill-tile"><div class="sk-num">04 //</div><div class="sk-name">Visual Content</div><div class="sk-desc">Graphics, PNL cards, branded assets &mdash; making numbers look shareable.</div></div>
+      <div class="skill-tile"><div class="sk-num">05 //</div><div class="sk-name">X Spaces &amp; Live</div><div class="sk-desc">Hosting sessions that deliver real value and keep communities coming back.</div></div>
+      <div class="skill-tile"><div class="sk-num">06 //</div><div class="sk-name">Adaptability</div><div class="sk-desc">Web3 moves fast. I move faster. New tools, new metas &mdash; always learning.</div></div>
+    </div>
+  </div>
+  <svg class="mouth-svg-outer" viewBox="0 0 1200 110" preserveAspectRatio="none" style="transform:scaleY(-1);" xmlns="http://www.w3.org/2000/svg">
+    <path d="M 0 0 Q 600 -10 1200 0 L 1200 32 C1180 32 1168 28 1158 70 C1148 28 1136 32 1116 32 C1096 32 1084 28 1074 70 C1064 28 1052 32 1032 32 C1012 32 1000 28 990 70 C980 28 968 32 948 32 C928 32 916 28 906 70 C896 28 884 32 864 32 C844 32 832 28 822 70 C812 28 800 32 780 32 C760 32 748 28 738 70 C728 28 716 32 696 32 C676 32 664 28 654 70 C644 28 632 32 612 32 C592 32 580 28 570 70 C560 28 548 32 528 32 C508 32 496 28 486 70 C476 28 464 32 444 32 C424 32 412 28 402 70 C392 28 380 32 360 32 C340 32 328 28 318 70 C308 28 296 32 276 32 C256 32 244 28 234 70 C224 28 212 32 192 32 C172 32 160 28 150 70 C140 28 128 32 108 32 C88 32 76 28 66 70 C56 28 44 32 24 32 L 0 32 L 0 110 L 1200 110 Z" fill="#020d0d" stroke="none"/>
+    <path d="M 0 0 Q 600 -10 1200 0 L 1200 32 C1180 32 1168 28 1158 70 C1148 28 1136 32 1116 32 C1096 32 1084 28 1074 70 C1064 28 1052 32 1032 32 C1012 32 1000 28 990 70 C980 28 968 32 948 32 C928 32 916 28 906 70 C896 28 884 32 864 32 C844 32 832 28 822 70 C812 28 800 32 780 32 C760 32 748 28 738 70 C728 28 716 32 696 32 C676 32 664 28 654 70 C644 28 632 32 612 32 C592 32 580 28 570 70 C560 28 548 32 528 32 C508 32 496 28 486 70 C476 28 464 32 444 32 C424 32 412 28 402 70 C392 28 380 32 360 32 C340 32 328 28 318 70 C308 28 296 32 276 32 C256 32 244 28 234 70 C224 28 212 32 192 32 C172 32 160 28 150 70 C140 28 128 32 108 32 C88 32 76 28 66 70 C56 28 44 32 24 32 L 0 32 L 0 110 L 1200 110 Z" fill="none" stroke="url(#jg)" stroke-width="1.8"/>
+    <line x1="0" y1="0" x2="0" y2="110" stroke="rgba(1,255,255,0.45)" stroke-width="2"/>
+    <line x1="1200" y1="0" x2="1200" y2="110" stroke="rgba(1,255,255,0.45)" stroke-width="2"/>
+  </svg>
+</div>
+<!-- TEETH before contact -->
+<div class="teeth-div" style="background:var(--deep);">
+  <svg viewBox="0 0 1440 140" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1440" height="140" fill="var(--abyss)"/>
+    <path d="M0 30 C10 30 15 28 20 0 C25 28 30 30 40 30 C50 30 55 28 60 0 C65 28 70 30 80 30 C90 30 95 28 100 0 C105 28 110 30 120 30 C130 30 135 28 140 0 C145 28 150 30 160 30 C170 30 175 28 180 0 C185 28 190 30 200 30 C210 30 215 28 220 0 C225 28 230 30 240 30 C250 30 255 28 260 0 C265 28 270 30 280 30 C290 30 295 28 300 0 C305 28 310 30 320 30 C330 30 335 28 340 0 C345 28 350 30 360 30 C370 30 375 28 380 0 C385 28 390 30 400 30 C410 30 415 28 420 0 C425 28 430 30 440 30 C450 30 455 28 460 0 C465 28 470 30 480 30 C490 30 495 28 500 0 C505 28 510 30 520 30 C530 30 535 28 540 0 C545 28 550 30 560 30 C570 30 575 28 580 0 C585 28 590 30 600 30 C610 30 615 28 620 0 C625 28 630 30 640 30 C650 30 655 28 660 0 C665 28 670 30 680 30 C690 30 695 28 700 0 C705 28 710 30 720 30 C730 30 735 28 740 0 C745 28 750 30 760 30 C770 30 775 28 780 0 C785 28 790 30 800 30 C810 30 815 28 820 0 C825 28 830 30 840 30 C850 30 855 28 860 0 C865 28 870 30 880 30 C890 30 895 28 900 0 C905 28 910 30 920 30 C930 30 935 28 940 0 C945 28 950 30 960 30 C970 30 975 28 980 0 C985 28 990 30 1000 30 C1010 30 1015 28 1020 0 C1025 28 1030 30 1040 30 C1050 30 1055 28 1060 0 C1065 28 1070 30 1080 30 C1090 30 1095 28 1100 0 C1105 28 1110 30 1120 30 C1130 30 1135 28 1140 0 C1145 28 1150 30 1160 30 C1170 30 1175 28 1180 0 C1185 28 1190 30 1200 30 C1210 30 1215 28 1220 0 C1225 28 1230 30 1240 30 C1250 30 1255 28 1260 0 C1265 28 1270 30 1280 30 C1290 30 1295 28 1300 0 C1305 28 1310 30 1320 30 C1330 30 1335 28 1340 0 C1345 28 1350 30 1360 30 C1370 30 1375 28 1380 0 C1385 28 1390 30 1400 30 C1410 30 1415 28 1420 0 C1425 28 1430 30 1440 30 L1440 140 L0 140 Z" fill="var(--deep)" stroke="none"/>
+    <path d="M0 30 C10 30 15 28 20 0 C25 28 30 30 40 30 C50 30 55 28 60 0 C65 28 70 30 80 30 C90 30 95 28 100 0 C105 28 110 30 120 30 C130 30 135 28 140 0 C145 28 150 30 160 30 C170 30 175 28 180 0 C185 28 190 30 200 30 C210 30 215 28 220 0 C225 28 230 30 240 30 C250 30 255 28 260 0 C265 28 270 30 280 30 C290 30 295 28 300 0 C305 28 310 30 320 30 C330 30 335 28 340 0 C345 28 350 30 360 30 C370 30 375 28 380 0 C385 28 390 30 400 30 C410 30 415 28 420 0 C425 28 430 30 440 30 C450 30 455 28 460 0 C465 28 470 30 480 30 C490 30 495 28 500 0 C505 28 510 30 520 30 C530 30 535 28 540 0 C545 28 550 30 560 30 C570 30 575 28 580 0 C585 28 590 30 600 30 C610 30 615 28 620 0 C625 28 630 30 640 30 C650 30 655 28 660 0 C665 28 670 30 680 30 C690 30 695 28 700 0 C705 28 710 30 720 30 C730 30 735 28 740 0 C745 28 750 30 760 30 C770 30 775 28 780 0 C785 28 790 30 800 30 C810 30 815 28 820 0 C825 28 830 30 840 30 C850 30 855 28 860 0 C865 28 870 30 880 30 C890 30 895 28 900 0 C905 28 910 30 920 30 C930 30 935 28 940 0 C945 28 950 30 960 30 C970 30 975 28 980 0 C985 28 990 30 1000 30 C1010 30 1015 28 1020 0 C1025 28 1030 30 1040 30 C1050 30 1055 28 1060 0 C1065 28 1070 30 1080 30 C1090 30 1095 28 1100 0 C1105 28 1110 30 1120 30 C1130 30 1135 28 1140 0 C1145 28 1150 30 1160 30 C1170 30 1175 28 1180 0 C1185 28 1190 30 1200 30 C1210 30 1215 28 1220 0 C1225 28 1230 30 1240 30 C1250 30 1255 28 1260 0 C1265 28 1270 30 1280 30 C1290 30 1295 28 1300 0 C1305 28 1310 30 1320 30 C1330 30 1335 28 1340 0 C1345 28 1350 30 1360 30 C1370 30 1375 28 1380 0 C1385 28 1390 30 1400 30 C1410 30 1415 28 1420 0 C1425 28 1430 30 1440 30" fill="none" stroke="rgba(1,255,255,0.4)" stroke-width="1.8"/>
+  </svg>
+</div>
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="contact-watermark">JAWS</div>
+  <div class="contact-eyebrow">Contact</div>
+  <h2 class="contact-hl">
+    LET'S BUILD<br>SOMETHING
+    <span class="hl">WORTH BIDDING.</span>
+  </h2>
+  <p class="contact-sub">Anonymous doesn't mean unreachable.</p>
+  <div class="contact-links">
+    <a href="https://x.com/JawsOnChain" target="_blank" class="c-link">
+      <svg class="c-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      <div><span class="c-lbl">Twitter / X</span>@JawsOnChain</div>
+    </a>
+    <a href="mailto:jake.armsbyward@gmail.com" class="c-link">
+      <svg class="c-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>
+      <div><span class="c-lbl">Email</span>jake.armsbyward@gmail.com</div>
+    </a>
+  </div>
+</section>
+<footer>
+  <div class="f-logo">JAWS</div>
+  <div class="f-txt">@JawsOnChain &middot; Web3 Marketing</div>
+</footer>
+</div>
+<script>
+const cur=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function ar(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(ar);})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='18px';cur.style.height='18px';ring.style.width='48px';ring.style.height='48px';});
+  el.addEventListener('mouseleave',()=>{cur.style.width='8px';cur.style.height='8px';ring.style.width='30px';ring.style.height='30px';});
+});
+// CAUSTIC
+const cc=document.getElementById('causticCanvas'),cctx=cc.getContext('2d');
+let CW,CH;
+function cR(){CW=cc.width=window.innerWidth;CH=cc.height=window.innerHeight;}
+cR();window.addEventListener('resize',cR);
+const blobs=Array.from({length:16},()=>({x:Math.random()*window.innerWidth,y:Math.random()*window.innerHeight,r:80+Math.random()*160,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.3,phase:Math.random()*Math.PI*2,speed:.0004+Math.random()*.0006}));
+let ct=0;
+(function dC(){
+  cctx.clearRect(0,0,CW,CH);
+  blobs.forEach(b=>{
+    b.x+=b.vx;b.y+=b.vy;
+    if(b.x<-b.r)b.x=CW+b.r;if(b.x>CW+b.r)b.x=-b.r;
+    if(b.y<-b.r)b.y=CH+b.r;if(b.y>CH+b.r)b.y=-b.r;
+    const p=Math.sin(ct*b.speed*1000+b.phase),r2=b.r*(.85+p*.15);
+    const g=cctx.createRadialGradient(b.x,b.y,0,b.x,b.y,r2);
+    g.addColorStop(0,`rgba(1,255,255,${.05+p*.03})`);
+    g.addColorStop(.5,`rgba(1,255,255,${.02+p*.01})`);
+    g.addColorStop(1,'rgba(1,255,255,0)');
+    cctx.beginPath();cctx.arc(b.x,b.y,r2,0,Math.PI*2);cctx.fillStyle=g;cctx.fill();
+  });
+  ct+=.016;requestAnimationFrame(dC);
+})();
+// BLOOD
+const bc=document.getElementById('bloodCanvas'),bctx=bc.getContext('2d');
+let BW,BH;
+function bR(){BW=bc.width=window.innerWidth;BH=bc.height=window.innerHeight;}
+bR();window.addEventListener('resize',bR);
+let bp=[];
+document.addEventListener('click',e=>{for(let i=0;i<22;i++){const a=Math.random()*Math.PI*2,s=1+Math.random()*5;bp.push({x:e.clientX,y:e.clientY,vx:Math.cos(a)*s,vy:Math.sin(a)*s-2,life:1,r:2+Math.random()*4});}});
+(function dB(){bctx.clearRect(0,0,BW,BH);bp.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.12;p.life-=.03;p.vx*=.96;bctx.save();bctx.globalAlpha=p.life;bctx.shadowColor='rgba(220,30,60,0.8)';bctx.shadowBlur=8;bctx.beginPath();bctx.arc(p.x,p.y,p.r,0,Math.PI*2);bctx.fillStyle='rgba(200,20,40,'+p.life+')';bctx.fill();bctx.restore();});bp=bp.filter(p=>p.life>0);requestAnimationFrame(dB);})();
+// BUBBLES
+const bubs=[document.getElementById('b1'),document.getElementById('b2'),document.getElementById('b3'),document.getElementById('b4')];
+(function animBubs(){
+  const t=Date.now()*.001;
+  bubs.forEach((b,i)=>{
+    if(b){
+      const dy=Math.sin(t*.7+i*1.3)*5;
+      const dx=Math.cos(t*.5+i*.9)*2;
+      b.setAttribute('transform',`translate(${dx},${dy})`);
+      b.setAttribute('opacity',(0.25+Math.abs(Math.sin(t+i))*.4).toString());
+    }
+  });
+  requestAnimationFrame(animBubs);
+})();
+// SCROLL REVEAL
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.08});
+document.querySelectorAll('.cap-item,.work-card,.skill-tile').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
