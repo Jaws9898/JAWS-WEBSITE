@@ -4,6 +4,16 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>JAWS &mdash; Web3 Marketing</title>
+  <meta name="description" content="JAWS — Web3 social media strategist and marketer. 10M+ impressions, community growth, content strategy. @JawsOnChain"/>
+  <meta property="og:title" content="JAWS — Web3 Marketing"/>
+  <meta property="og:description" content="In the water before you knew there was a game. Anonymous. Results-driven. Always circling."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:image" content="/og-image.png"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:site" content="@JawsOnChain"/>
+  <meta name="twitter:title" content="JAWS — Web3 Marketing"/>
+  <meta name="twitter:description" content="In the water before you knew there was a game. Anonymous. Results-driven. Always circling."/>
+  <meta name="twitter:image" content="/og-image.png"/>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet"/>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -110,6 +120,27 @@
     footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2rem 5vw;display:flex;justify-content:space-between;align-items:center;background:var(--abyss);}
     .f-logo{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:.18em;color:var(--cyan);opacity:.4;}
     .f-txt{font-size:.58rem;letter-spacing:.1em;color:rgba(1,255,255,.18);}
+
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:.4rem;z-index:300;background:none;border:none;}
+    .hamburger span{display:block;width:22px;height:1.5px;background:var(--cyan);transition:transform .3s,opacity .3s;}
+    .hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+    .hamburger.open span:nth-child(2){opacity:0;}
+    .hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+    .mobile-menu{position:fixed;inset:0;background:rgba(1,10,10,0.98);backdrop-filter:blur(20px);z-index:250;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);}
+    .mobile-menu.open{transform:translateX(0);}
+    .mobile-menu a{font-family:'Bebas Neue',sans-serif;font-size:3.5rem;letter-spacing:.12em;color:var(--muted);text-decoration:none;transition:color .2s,text-shadow .2s;}
+    .mobile-menu a:hover{color:var(--cyan);text-shadow:0 0 20px var(--cyan);}
+
+    .scroll-indicator{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;z-index:3;opacity:0;animation:fadeUp 1s 1.5s ease forwards;}
+    .scroll-indicator span{font-size:.5rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);}
+    .scroll-arrow{width:1px;height:48px;background:linear-gradient(to bottom,var(--cyan),transparent);position:relative;animation:scrollPulse 1.8s ease-in-out infinite;}
+    .scroll-arrow::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid rgba(1,255,255,.5);}
+    @keyframes scrollPulse{0%,100%{opacity:.4;transform:scaleY(1);}50%{opacity:1;transform:scaleY(1.1);}}
+    .wc-link{color:inherit;text-decoration:none;display:block;transition:color .2s,text-shadow .2s;}
+    .wc-link:hover{color:var(--cyan);text-shadow:0 0 20px rgba(1,255,255,.4);}
+    .wc-link:hover .wc-co{color:var(--cyan);}
+    .wc-link::after{content:'↗';font-size:1.2rem;margin-left:.4rem;opacity:0;transition:opacity .2s;}
+    .wc-link:hover::after{opacity:.6;}
     @keyframes fadeUp{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:none;}}
     @keyframes fadeDown{from{opacity:0;transform:translateY(-18px);}to{opacity:1;transform:none;}}
     @media(max-width:900px){
@@ -121,6 +152,7 @@
       .skills-grid{grid-template-columns:1fr 1fr;}
       .caps-bar{grid-template-columns:1fr 1fr;}
       .nav-links{display:none;}
+      .hamburger{display:flex;}
       .contact-links{flex-direction:column;align-items:center;}
     }
   </style>
@@ -139,7 +171,16 @@
     <li><a href="#skills">Skills</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" class="mob-link">About</a>
+  <a href="#work" class="mob-link">Work</a>
+  <a href="#skills" class="mob-link">Skills</a>
+  <a href="#contact" class="mob-link">Contact</a>
+</div>
 <!-- HERO -->
 <section class="hero">
   <div class="surface"></div>
@@ -193,6 +234,10 @@
       <em>In the water before you knew there was a game.</em><br>
       Anonymous. Results-driven. Always circling.
     </p>
+  </div>
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <div class="scroll-arrow"></div>
   </div>
 </section>
 <!-- TICKER -->
@@ -252,16 +297,32 @@
   <h2 class="s-title">Projects</h2>
   <div class="work-grid">
     <div class="work-card">
-      <div class="wc-logo" id="logo-doop" style="background:#0d2b2b;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;color:var(--cyan);font-size:1.1rem;letter-spacing:.1em;">D</div>
+<svg class="wc-logo" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:52px;height:52px;flex-shrink:0;">
+        <rect width="52" height="52" rx="10" fill="#0a2020" stroke="rgba(1,255,255,0.2)" stroke-width="1"/>
+        <circle cx="26" cy="26" r="12" stroke="rgba(1,255,255,0.6)" stroke-width="1.4" fill="none"/>
+        <circle cx="26" cy="26" r="6" stroke="rgba(1,255,255,0.35)" stroke-width="1" fill="none"/>
+        <circle cx="26" cy="20" r="2" fill="rgba(1,255,255,0.7)"/>
+        <circle cx="31" cy="29" r="1.5" fill="rgba(1,255,255,0.5)"/>
+        <circle cx="21" cy="30" r="1.5" fill="rgba(1,255,255,0.5)"/>
+        <circle cx="32" cy="21" r="1" fill="rgba(1,255,255,0.3)"/>
+        <circle cx="20" cy="21" r="1" fill="rgba(1,255,255,0.3)"/>
+      </svg>
       <div class="wc-tag">Marketing Lead &middot; 2025 &mdash; Present</div>
-      <div class="wc-co">DoopApp</div>
+      <a href="https://x.com/DoopApp" target="_blank" rel="noopener" class="wc-link"><div class="wc-co">DoopApp</div></a>
       <div class="wc-desc">Took this gut health app from zero social presence to <em>5,000 followers and 500,000 impressions in a single month</em>. Built the whole content identity from scratch &mdash; graphics, Spaces, campaigns, the lot. Went viral more than once.</div>
       <div class="wc-stat">&#8599; 500K impressions &middot; 5K followers &middot; month 1</div>
     </div>
     <div class="work-card">
-      <div class="wc-logo" id="logo-lore" style="background:#0d2b2b;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;color:var(--cyan);font-size:1.1rem;letter-spacing:.1em;">L</div>
+<svg class="wc-logo" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:52px;height:52px;flex-shrink:0;">
+        <rect width="52" height="52" rx="10" fill="#0a2020" stroke="rgba(1,255,255,0.2)" stroke-width="1"/>
+        <ellipse cx="26" cy="26" rx="14" ry="9" stroke="rgba(1,255,255,0.6)" stroke-width="1.4" fill="none"/>
+        <circle cx="26" cy="26" r="4" fill="rgba(1,255,255,0.15)" stroke="rgba(1,255,255,0.8)" stroke-width="1.4"/>
+        <circle cx="26" cy="26" r="1.8" fill="var(--cyan)"/>
+        <line x1="12" y1="26" x2="17" y2="26" stroke="rgba(1,255,255,0.3)" stroke-width="1"/>
+        <line x1="35" y1="26" x2="40" y2="26" stroke="rgba(1,255,255,0.3)" stroke-width="1"/>
+      </svg>
       <div class="wc-tag">Social Media Manager &middot; 2025 &mdash; Present</div>
-      <div class="wc-co">Lore.Vision</div>
+      <a href="https://x.com/LoreVision" target="_blank" rel="noopener" class="wc-link"><div class="wc-co">Lore.Vision</div></a>
       <div class="wc-desc">Jumped in and immediately <em>doubled engagement in 30 days</em> by staying sharp on market movements, trends and timing. Built PNL cards that turned performance into proof. Scripted livestreams, clipped highlights, wore a lot of hats.</div>
       <div class="wc-stat">&#8599; 120% engagement increase &middot; month 1</div>
     </div>
@@ -319,13 +380,17 @@
   <div class="contact-eyebrow">Contact</div>
   <h2 class="contact-hl">
     LET'S BUILD<br>SOMETHING
-    <span class="hl">WORTH BIDDING.</span>
+    <span class="hl">WORTH HUNTING.</span>
   </h2>
   <p class="contact-sub">Anonymous doesn't mean unreachable.</p>
   <div class="contact-links">
     <a href="https://x.com/JawsOnChain" target="_blank" class="c-link">
       <svg class="c-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
       <div><span class="c-lbl">Twitter / X</span>@JawsOnChain</div>
+    </a>
+    <a href="https://linkedin.com/in/YOUR-HANDLE" target="_blank" class="c-link">
+      <svg class="c-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+      <div><span class="c-lbl">LinkedIn</span>Jake Armsby-Ward</div>
     </a>
     <a href="mailto:jake.armsbyward@gmail.com" class="c-link">
       <svg class="c-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>
@@ -369,14 +434,14 @@ let ct=0;
   });
   ct+=.016;requestAnimationFrame(dC);
 })();
-// BLOOD
+// BUBBLES ON CLICK
 const bc=document.getElementById('bloodCanvas'),bctx=bc.getContext('2d');
 let BW,BH;
 function bR(){BW=bc.width=window.innerWidth;BH=bc.height=window.innerHeight;}
 bR();window.addEventListener('resize',bR);
 let bp=[];
-document.addEventListener('click',e=>{for(let i=0;i<22;i++){const a=Math.random()*Math.PI*2,s=1+Math.random()*5;bp.push({x:e.clientX,y:e.clientY,vx:Math.cos(a)*s,vy:Math.sin(a)*s-2,life:1,r:2+Math.random()*4});}});
-(function dB(){bctx.clearRect(0,0,BW,BH);bp.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.12;p.life-=.03;p.vx*=.96;bctx.save();bctx.globalAlpha=p.life;bctx.shadowColor='rgba(220,30,60,0.8)';bctx.shadowBlur=8;bctx.beginPath();bctx.arc(p.x,p.y,p.r,0,Math.PI*2);bctx.fillStyle='rgba(200,20,40,'+p.life+')';bctx.fill();bctx.restore();});bp=bp.filter(p=>p.life>0);requestAnimationFrame(dB);})();
+document.addEventListener('click',e=>{for(let i=0;i<18;i++){const a=Math.random()*Math.PI*2,s=.5+Math.random()*3;bp.push({x:e.clientX,y:e.clientY,vx:Math.cos(a)*s,vy:Math.sin(a)*s-(1+Math.random()*2),life:1,r:2+Math.random()*5,wobble:Math.random()*Math.PI*2});}});
+(function dB(){bctx.clearRect(0,0,BW,BH);bp.forEach(p=>{p.wobble+=.08;p.x+=p.vx+Math.sin(p.wobble)*.4;p.y+=p.vy;p.vy-=.04;p.life-=.018;p.vx*=.97;const a=p.life*0.6;bctx.save();bctx.globalAlpha=a;bctx.strokeStyle=`rgba(1,255,255,${a})`;bctx.shadowColor='rgba(1,255,255,0.6)';bctx.shadowBlur=6;bctx.lineWidth=1;bctx.beginPath();bctx.arc(p.x,p.y,p.r,0,Math.PI*2);bctx.stroke();bctx.restore();});bp=bp.filter(p=>p.life>0);requestAnimationFrame(dB);})();
 // BUBBLES
 const bubs=[document.getElementById('b1'),document.getElementById('b2'),document.getElementById('b3'),document.getElementById('b4')];
 (function animBubs(){
@@ -391,6 +456,11 @@ const bubs=[document.getElementById('b1'),document.getElementById('b2'),document
   });
   requestAnimationFrame(animBubs);
 })();
+
+// HAMBURGER
+const hbg=document.getElementById('hamburger'),mob=document.getElementById('mobileMenu');
+hbg.addEventListener('click',()=>{hbg.classList.toggle('open');mob.classList.toggle('open');document.body.style.overflow=mob.classList.contains('open')?'hidden':'';});
+document.querySelectorAll('.mob-link').forEach(a=>a.addEventListener('click',()=>{hbg.classList.remove('open');mob.classList.remove('open');document.body.style.overflow='';}));
 // SCROLL REVEAL
 const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.08});
 document.querySelectorAll('.cap-item,.work-card,.skill-tile').forEach(el=>obs.observe(el));
