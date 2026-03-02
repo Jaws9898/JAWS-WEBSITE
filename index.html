@@ -166,6 +166,10 @@
     .project-status{display:inline-flex;align-items:center;gap:.35rem;font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;border-radius:4px;padding:.18rem .5rem;margin-bottom:1rem;font-weight:700;}
     .status-rugged{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.35);color:#f87171;}
     .status-active{background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.35);color:#4ade80;}
+    .status-ended{background:rgba(148,163,184,.07);border:1px solid rgba(148,163,184,.22);color:rgba(148,163,184,.65);}
+    /* ── WORK CARD VIDEO ──────────────────────────────── */
+    .wc-video-wrap{margin:.75rem 0 1rem;border-radius:6px;overflow:hidden;border:1px solid var(--border);background:#000;}
+    .wc-video{width:100%;display:block;max-height:220px;object-fit:cover;}
     .pulse-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;flex-shrink:0;animation:pulseDot 2s ease-in-out infinite;}
     @keyframes pulseDot{0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,.5)}70%{box-shadow:0 0 0 5px rgba(74,222,128,0)}}
 
@@ -270,6 +274,19 @@
     .c-primary:hover{border-color:var(--cyan);box-shadow:0 0 20px rgba(1,255,255,.1);}
     .c-primary .c-lbl{color:var(--cyan);}
     .contact-handle{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4.5rem);color:rgba(1,255,255,.06);letter-spacing:.2em;margin-bottom:1.5rem;pointer-events:none;user-select:none;}
+
+    /* ── WORK CARD LINK ICONS ─────────────────────────── */
+    .wc-links-row{display:flex;gap:.5rem;margin:.7rem 0 .5rem;}
+    .wc-icon-link{display:inline-flex;align-items:center;gap:.35rem;font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-decoration:none;border:1px solid var(--border);border-radius:4px;padding:.25rem .55rem;transition:color .2s,border-color .2s;}
+    .wc-icon-link:hover{color:var(--cyan);border-color:var(--cyan);}
+
+    /* ── CONTRACT ADDRESS ─────────────────────────────── */
+    .wc-ca{display:flex;align-items:center;gap:.5rem;margin-top:.75rem;padding:.45rem .65rem;background:rgba(1,255,255,.03);border:1px solid var(--border);border-radius:4px;}
+    .wc-ca-label{font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan);opacity:.6;flex-shrink:0;}
+    .wc-ca-addr{font-size:.58rem;color:var(--muted);letter-spacing:.03em;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .wc-ca-copy{background:transparent;border:1px solid var(--border);border-radius:3px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:.48rem;letter-spacing:.14em;text-transform:uppercase;padding:.18rem .42rem;cursor:pointer;transition:color .2s,border-color .2s;flex-shrink:0;}
+    .wc-ca-copy:hover{color:var(--cyan);border-color:var(--cyan);}
+    .wc-ca-copy.copied{color:#4ade80;border-color:rgba(74,222,128,.4);}
 
     /* ── SMALL PHONE FIXES ────────────────────────────── */
     @media(max-width:480px){
@@ -436,19 +453,79 @@
 <a href="https://x.com/DoopApp" target="_blank" rel="noopener"><div class="wc-logo-wrap"><img class="wc-logo-img" src="https://unavatar.io/x/doopapp" alt="DoopApp" loading="lazy"></div></a>
       <div class="project-status status-rugged">&#9760; Rugged</div>
       <div class="wc-tag">Marketing Lead &middot; 2025</div>
+      <div class="wc-links-row">
+        <a href="https://x.com/DoopApp" target="_blank" rel="noopener" class="wc-icon-link"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> X</a>
+        <a href="https://doopapp.com/" target="_blank" rel="noopener" class="wc-icon-link"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Website</a>
+      </div>
       <a href="https://doopapp.com/" target="_blank" rel="noopener" class="wc-link"><div class="wc-co">DoopApp</div></a>
       <div class="wc-desc">Took this gut health app from zero social presence to <em>5,000 followers and 500,000 impressions in a single month</em>. Built the whole content identity from scratch &mdash; graphics, Spaces, campaigns, the lot. Went viral more than once.</div>
       <div class="wc-stat">&#8599; 500K impressions &middot; 5K followers &middot; month 1</div>
       <div class="wc-stat-ath"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg> ATH MC: $12.98M</div>
+      <div class="wc-ca">
+        <span class="wc-ca-label">CA</span>
+        <span class="wc-ca-addr">7uwNJaMRj9FZuubmzguU8A4cR15ykpBymhAiVJEFTjZ5</span>
+        <button class="wc-ca-copy" data-ca="7uwNJaMRj9FZuubmzguU8A4cR15ykpBymhAiVJEFTjZ5">Copy</button>
+      </div>
     </div>
     <div class="work-card">
 <a href="https://x.com/lore_vision" target="_blank" rel="noopener"><div class="wc-logo-wrap"><img class="wc-logo-img" src="https://unavatar.io/x/lore_vision" alt="Lore.Vision" loading="lazy"></div></a>
       <div class="project-status status-active"><span class="pulse-dot"></span> Active</div>
       <div class="wc-tag">Social Media Manager &middot; 2025 &mdash; Present</div>
+      <div class="wc-links-row">
+        <a href="https://x.com/lore_vision" target="_blank" rel="noopener" class="wc-icon-link"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> X</a>
+        <a href="https://lore.trade/" target="_blank" rel="noopener" class="wc-icon-link"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Website</a>
+      </div>
       <a href="https://lore.trade/" target="_blank" rel="noopener" class="wc-link"><div class="wc-co">Lore.Vision</div></a>
       <div class="wc-desc">Jumped in and immediately <em>doubled engagement in 30 days</em> by staying sharp on market movements, trends and timing. Built PNL cards that turned performance into proof. Scripted livestreams, clipped highlights, wore a lot of hats.</div>
       <div class="wc-stat">&#8599; 120% engagement increase &middot; month 1</div>
       <div class="wc-stat-ath"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg> ATH MC: $4.3M</div>
+      <div class="wc-ca">
+        <span class="wc-ca-label">CA</span>
+        <span class="wc-ca-addr">G2AbNxcyXV6QiXptMm6MuQPBDJYp9AVQHTdWAV1Wpump</span>
+        <button class="wc-ca-copy" data-ca="G2AbNxcyXV6QiXptMm6MuQPBDJYp9AVQHTdWAV1Wpump">Copy</button>
+      </div>
+    </div>
+
+    <!-- PTSD -->
+    <div class="work-card">
+      <div class="project-status status-ended">&#9632; Ended</div>
+      <div class="wc-tag">Community Lead &amp; Host &middot; 2024</div>
+      <div class="wc-co">PTSD</div>
+      <div class="wc-desc">Got involved at launch for this <em>animated Web3 series</em> &mdash; hosted X Spaces to build early hype, built and moderated the Discord community from the ground up, and helped open doors with potential investors and partners.</div>
+      <div class="wc-stat">&#9670; Community · Spaces · Investor Outreach</div>
+    </div>
+
+    <!-- TAMPON TIM -->
+    <div class="work-card">
+      <div class="project-status status-rugged">&#9760; Rugged</div>
+      <div class="wc-tag">Social Campaign Lead &middot; 2024</div>
+      <div class="wc-co">Tampon Tim</div>
+      <div class="wc-desc">Built and ran the Telegram and hit the ground running on X with fast-paced, politically-charged campaigns. Leaned hard into <em>rage-bait positioning</em> to drive replies and quote tweets &mdash; and pulled <em>100,000 impressions in week one</em>.</div>
+      <div class="wc-stat">&#8599; 100K impressions &middot; week 1</div>
+    </div>
+
+    <!-- GENTLY USED BLUNT -->
+    <div class="work-card">
+      <div class="project-status status-ended">&#9632; Ended</div>
+      <div class="wc-tag">Social &amp; Content &middot; 2024</div>
+      <div class="wc-co">Gently Used Blunt</div>
+      <div class="wc-desc">Handled day-to-day socials and <em>meme production</em> to keep the project culturally relevant and in the feed. Shot a promotional video on-location at a real weed shop &mdash; turned a grassroots vibe into a proper marketing asset.</div>
+      <div class="wc-video-wrap">
+        <video controls preload="metadata" class="wc-video" src="gently-used-blunt.mp4">Your browser does not support video playback.</video>
+      </div>
+      <div class="wc-stat">&#9670; Socials · Memes · Promo Video</div>
+    </div>
+
+    <!-- BONGO -->
+    <div class="work-card">
+      <div class="project-status status-ended">&#9632; Ended</div>
+      <div class="wc-tag">Event Marketing &amp; Content &middot; 2024</div>
+      <div class="wc-co">Bongo</div>
+      <div class="wc-desc">Helped breathe new life into an established meme IP through event-driven marketing and content. <em>Flew out to NFC Lisbon</em> with a teammate &mdash; captured on-the-ground footage, marketed the project live, and reignited community momentum.</div>
+      <div class="wc-video-wrap">
+        <video controls preload="metadata" class="wc-video" src="bongo.mp4">Your browser does not support video playback.</video>
+      </div>
+      <div class="wc-stat">&#9670; NFC Lisbon · Event Content · Community Revival</div>
     </div>
 
     <div class="work-card wc-anon">
@@ -726,6 +803,16 @@ document.querySelectorAll('.mob-link').forEach(a=>a.addEventListener('click',()=
 // SCROLL REVEAL
 const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.08});
 document.querySelectorAll('.cap-item,.work-card,.skill-tile').forEach(el=>obs.observe(el));
+
+// CA COPY
+document.querySelectorAll('.wc-ca-copy').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    navigator.clipboard.writeText(btn.dataset.ca).then(()=>{
+      btn.textContent='Copied!';btn.classList.add('copied');
+      setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},2000);
+    });
+  });
+});
 
 // BACK TO TOP
 const bt=document.getElementById('backTop');
