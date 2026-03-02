@@ -170,6 +170,8 @@
     /* ── WORK CARD VIDEO ──────────────────────────────── */
     .wc-video-wrap{margin:.75rem 0 1rem;border-radius:6px;overflow:hidden;border:1px solid var(--border);background:#000;}
     .wc-video{width:100%;display:block;max-height:220px;object-fit:cover;}
+    .wc-tweet-wrap{margin:.75rem 0 1rem;border-radius:6px;overflow:hidden;}
+    .wc-tweet-wrap .twitter-tweet{margin:0 !important;}
     .pulse-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;flex-shrink:0;animation:pulseDot 2s ease-in-out infinite;}
     @keyframes pulseDot{0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,.5)}70%{box-shadow:0 0 0 5px rgba(74,222,128,0)}}
 
@@ -522,8 +524,8 @@
       <div class="wc-tag">Event Marketing &amp; Content &middot; 2024</div>
       <div class="wc-co">Bongo</div>
       <div class="wc-desc">Helped breathe new life into an established meme IP through event-driven marketing and content. <em>Flew out to NFC Lisbon</em> with a teammate &mdash; captured on-the-ground footage, marketed the project live, and reignited community momentum.</div>
-      <div class="wc-video-wrap">
-        <video controls preload="metadata" class="wc-video" src="bongo.mp4">Your browser does not support video playback.</video>
+      <div class="wc-tweet-wrap">
+        <blockquote class="twitter-tweet" data-theme="dark" data-dnt="true" data-media-max-width="480"><a href="https://x.com/AskBongoCoin/status/1932397941282541790"></a></blockquote>
       </div>
       <div class="wc-stat">&#9670; NFC Lisbon · Event Content · Community Revival</div>
     </div>
@@ -819,5 +821,6 @@ const bt=document.getElementById('backTop');
 window.addEventListener('scroll',()=>bt.classList.toggle('visible',window.scrollY>500),{passive:true});
 bt.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 </script>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </body>
 </html>
