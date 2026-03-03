@@ -14,6 +14,7 @@
   <meta name="twitter:title" content="JAWS — Web3 Marketing"/>
   <meta name="twitter:description" content="In the water before you knew there was a game. Anonymous. Results-driven. Always circling."/>
   <meta name="twitter:image" content="/og-image.png"/>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23010A0A'/%3E%3Cpath d='M8 25 C9 21 12 13 16 7 C18 13 17 19 16 21 C20 18 24 17 27 20 L27 25 Z' fill='%2301FFFF'/%3E%3Crect x='4' y='25' width='24' height='1.5' fill='%2301FFFF' opacity='0.3'/%3E%3C/svg%3E"/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet"/>
@@ -270,6 +271,9 @@
     /* ── FLEX CARDS: bottom stats always pinned ───────── */
     .work-card{display:flex;flex-direction:column;}
     .wc-desc{flex-grow:1;}
+    /* prevent inline/logo elements from stretching full-width in flex column */
+    .project-status{align-self:flex-start;}
+    .work-card > a:not(.wc-link){align-self:flex-start;}
 
     /* ── EASTER EGG CHEST ────────────────────────────── */
     #seedChest{position:fixed;bottom:5.5rem;left:1.8rem;z-index:3;cursor:pointer;opacity:0.055;transition:opacity .5s,transform .3s;user-select:none;pointer-events:all;}
@@ -439,17 +443,17 @@
   <h2 class="s-title" data-i18n="work_title">Projects</h2>
   <div class="work-grid">
     <!-- DOOP APP — $12.98M -->
-    <div class="work-card wc-card-bg-logo">
+    <div class="work-card">
 <a href="https://x.com/DoopApp" target="_blank" rel="noopener"><div class="wc-logo-wrap"><img class="wc-logo-img" src="https://unavatar.io/x/doopapp" alt="DoopApp" loading="lazy"></div></a>
       <div class="project-status status-rugged">&#9760; Rugged</div>
-      <div class="wc-tag">Marketing Lead</div>
+      <div class="wc-tag">Marketing &amp; Community Lead</div>
       <div class="wc-links-row">
         <a href="https://x.com/DoopApp" target="_blank" rel="noopener" class="wc-icon-link"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> X</a>
         <a href="https://doopapp.com/" target="_blank" rel="noopener" class="wc-icon-link"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Website</a>
       </div>
       <a href="https://doopapp.com/" target="_blank" rel="noopener" class="wc-link"><div class="wc-co">DoopApp</div></a>
-      <div class="wc-desc">Took this gut health app from zero social presence to <em>5,000 followers and 500,000 impressions in a single month</em>. Built the whole content identity from scratch &mdash; graphics, Spaces, campaigns, the lot. Went viral more than once.</div>
-      <div class="wc-stat">&#8599; 500K impressions &middot; 5K followers &middot; month 1</div>
+      <div class="wc-desc">Took this gut health app from zero social presence to <em>5,000 followers and 500,000 impressions in a single month</em>. Built the whole content identity from scratch &mdash; graphics, Spaces, campaigns &mdash; and managed the community day-to-day. Went viral more than once.</div>
+      <div class="wc-stat">&#8599; 500K impressions &middot; 5K followers &middot; Community &middot; month 1</div>
       <div class="wc-stat-ath"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg> ATH MC: $12.98M</div>
       <div class="wc-ca">
         <span class="wc-ca-label">CA</span>
