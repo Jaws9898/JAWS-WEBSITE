@@ -31,8 +31,8 @@
     }
     html{scroll-behavior:smooth;}
     body{background:var(--abyss);color:var(--text);font-family:'JetBrains Mono',monospace;overflow-x:hidden;cursor:none;}
-    #sharkFin{position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-100%);filter:drop-shadow(0 0 5px rgba(1,255,255,0.5));opacity:.82;transition:filter .2s,opacity .2s;}
-    #sharkFin.hovered{filter:drop-shadow(0 0 12px rgba(1,255,255,0.95));opacity:1;}
+    .cursor{position:fixed;width:8px;height:8px;background:var(--cyan);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:screen;transition:width .15s,height .15s;}
+    .cursor-ring{position:fixed;width:30px;height:30px;border:1px solid var(--muted);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);}
     #causticCanvas{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.15;}
     #bloodCanvas{position:fixed;inset:0;width:100%;height:100%;z-index:50;pointer-events:none;}
     .wrapper{position:relative;z-index:1;}
@@ -303,7 +303,7 @@
     /* ── TOUCH DEVICES: restore cursor, hide fin ─────── */
     @media(hover:none){
       body{cursor:auto;}
-      #sharkFin{display:none;}
+      .cursor,.cursor-ring{display:none;}
       #termWidget{display:none;}
     }
 
@@ -343,20 +343,12 @@
     #termWidget .tw-flicker{animation:twFlicker 8s infinite;}
     @keyframes twFlicker{0%,89%,91%,93%,100%{opacity:1}90%{opacity:.15}92%{opacity:.7}}
     html[data-degen="on"] #termWidget{color:rgba(1,255,255,0.45);}
-    html[data-degen="on"] #sharkFin{filter:drop-shadow(0 0 14px var(--cyan));}
+    html[data-degen="on"] .cursor{box-shadow:0 0 14px var(--cyan);}
   </style>
 </head>
 <body>
-<div id="sharkFin">
-  <svg width="28" height="38" viewBox="0 0 28 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <!-- dorsal fin body -->
-    <path d="M 3 36 C 2 26 5 14 10 5 C 12 0 14 -1 15 2 C 17 8 20 18 22 27 C 23 31 24 34 24 36 Z" fill="rgba(1,255,255,0.88)" stroke="rgba(1,255,255,0.25)" stroke-width="0.8"/>
-    <!-- leading edge highlight -->
-    <path d="M 4 34 C 3 24 6 12 11 4 C 13 0.5 14.5 0 15 2" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="0.9" stroke-linecap="round"/>
-    <!-- base waterline ripple -->
-    <path d="M 1 36 Q 13 33 25 36" fill="none" stroke="rgba(1,255,255,0.3)" stroke-width="0.8"/>
-  </svg>
-</div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
 <div id="termWidget" aria-hidden="true">
   <div class="tw-line tw-flicker" id="tw-date"></div>
   <div class="tw-line" id="tw-browser"></div>
@@ -773,26 +765,14 @@
 </div>
 <button id="backTop" class="back-top" aria-label="Back to top">↑</button>
 <script>
-// SHARK FIN CURSOR
-const fin=document.getElementById('sharkFin');
+const cur=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
 if(window.matchMedia('(hover:hover)').matches){
-  let mx=0,my=0,fx=0,fy=0,prevFx=0,tilt=0;
-  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
-  (function animFin(){
-    const vx=fx-prevFx;
-    prevFx=fx;
-    tilt+=(vx*3-tilt)*.12;
-    tilt=Math.max(-22,Math.min(22,tilt));
-    fx+=(mx-fx)*.12;
-    fy+=(my-fy)*.12;
-    fin.style.left=fx+'px';
-    fin.style.top=fy+'px';
-    fin.style.transform=`translate(-50%,-100%) rotate(${tilt}deg)`;
-    requestAnimationFrame(animFin);
-  })();
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+  (function ar(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(ar);})();
   document.querySelectorAll('a,button').forEach(el=>{
-    el.addEventListener('mouseenter',()=>fin.classList.add('hovered'));
-    el.addEventListener('mouseleave',()=>fin.classList.remove('hovered'));
+    el.addEventListener('mouseenter',()=>{cur.style.width='18px';cur.style.height='18px';ring.style.width='48px';ring.style.height='48px';});
+    el.addEventListener('mouseleave',()=>{cur.style.width='8px';cur.style.height='8px';ring.style.width='30px';ring.style.height='30px';});
   });
 }
 // CAUSTIC
