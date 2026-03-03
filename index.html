@@ -275,6 +275,13 @@
     .project-status{align-self:flex-start;}
     .work-card > a:not(.wc-link){align-self:flex-start;}
 
+    /* ── MEDIA SECTION ───────────────────────────────── */
+    .media-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start;}
+    .media-item-title{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.07em;color:#fff;line-height:1;margin-bottom:.2rem;}
+    .media-item-sub{font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan);opacity:.5;margin-bottom:1rem;}
+    .media-item .twitter-tweet{margin:0 !important;}
+    @media(max-width:900px){.media-grid{grid-template-columns:1fr;}}
+
     /* ── EASTER EGG CHEST ────────────────────────────── */
     #seedChest{position:fixed;bottom:5.5rem;left:1.8rem;z-index:3;cursor:pointer;opacity:0.055;transition:opacity .5s,transform .3s;user-select:none;pointer-events:all;}
     #seedChest:hover{opacity:0.6;transform:scale(1.08);}
@@ -302,6 +309,7 @@
   <ul class="nav-links">
     <li><a href="#about" data-i18n="nav_about">About</a></li>
     <li><a href="#work" data-i18n="nav_work">Work</a></li>
+    <li><a href="#media">Media</a></li>
     <li><a href="#skills" data-i18n="nav_skills">Skills</a></li>
     <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
   </ul>
@@ -323,6 +331,7 @@
 <div class="mobile-menu" id="mobileMenu">
   <a href="#about" class="mob-link" data-i18n="nav_about">About</a>
   <a href="#work" class="mob-link" data-i18n="nav_work">Work</a>
+  <a href="#media" class="mob-link">Media</a>
   <a href="#skills" class="mob-link" data-i18n="nav_skills">Skills</a>
   <a href="#contact" class="mob-link" data-i18n="nav_contact">Contact</a>
 </div>
@@ -599,6 +608,27 @@
     <path d="M0 30 C10 30 15 28 20 0 C25 28 30 30 40 30 C50 30 55 28 60 0 C65 28 70 30 80 30 C90 30 95 28 100 0 C105 28 110 30 120 30 C130 30 135 28 140 0 C145 28 150 30 160 30 C170 30 175 28 180 0 C185 28 190 30 200 30 C210 30 215 28 220 0 C225 28 230 30 240 30 C250 30 255 28 260 0 C265 28 270 30 280 30 C290 30 295 28 300 0 C305 28 310 30 320 30 C330 30 335 28 340 0 C345 28 350 30 360 30 C370 30 375 28 380 0 C385 28 390 30 400 30 C410 30 415 28 420 0 C425 28 430 30 440 30 C450 30 455 28 460 0 C465 28 470 30 480 30 C490 30 495 28 500 0 C505 28 510 30 520 30 C530 30 535 28 540 0 C545 28 550 30 560 30 C570 30 575 28 580 0 C585 28 590 30 600 30 C610 30 615 28 620 0 C625 28 630 30 640 30 C650 30 655 28 660 0 C665 28 670 30 680 30 C690 30 695 28 700 0 C705 28 710 30 720 30 C730 30 735 28 740 0 C745 28 750 30 760 30 C770 30 775 28 780 0 C785 28 790 30 800 30 C810 30 815 28 820 0 C825 28 830 30 840 30 C850 30 855 28 860 0 C865 28 870 30 880 30 C890 30 895 28 900 0 C905 28 910 30 920 30 C930 30 935 28 940 0 C945 28 950 30 960 30 C970 30 975 28 980 0 C985 28 990 30 1000 30 C1010 30 1015 28 1020 0 C1025 28 1030 30 1040 30 C1050 30 1055 28 1060 0 C1065 28 1070 30 1080 30 C1090 30 1095 28 1100 0 C1105 28 1110 30 1120 30 C1130 30 1135 28 1140 0 C1145 28 1150 30 1160 30 C1170 30 1175 28 1180 0 C1185 28 1190 30 1200 30 C1210 30 1215 28 1220 0 C1225 28 1230 30 1240 30 C1250 30 1255 28 1260 0 C1265 28 1270 30 1280 30 C1290 30 1295 28 1300 0 C1305 28 1310 30 1320 30 C1330 30 1335 28 1340 0 C1345 28 1350 30 1360 30 C1370 30 1375 28 1380 0 C1385 28 1390 30 1400 30 C1410 30 1415 28 1420 0 C1425 28 1430 30 1440 30" fill="none" stroke="rgba(1,255,255,0.4)" stroke-width="1.8"/>
   </svg>
 </div>
+<!-- MEDIA -->
+<section class="section" id="media" style="background:var(--deep);border-top:1px solid var(--border);">
+  <div class="s-tag">Clips &amp; Content</div>
+  <h2 class="s-title">Media</h2>
+  <div class="media-grid">
+    <div class="media-item">
+      <div class="media-item-title">Gently Used Blunt</div>
+      <div class="media-item-sub">On-location weed shop shoot</div>
+      <blockquote class="twitter-tweet" data-theme="dark" data-dnt="true">
+        <a href="https://x.com/JawsOnChain/status/2028516773364908096"></a>
+      </blockquote>
+    </div>
+    <div class="media-item">
+      <div class="media-item-title">Bongo — NFC Lisbon</div>
+      <div class="media-item-sub">IRL event coverage</div>
+      <blockquote class="twitter-tweet" data-theme="dark" data-dnt="true">
+        <a href="https://x.com/AskBongoCoin/status/1932397941282541790"></a>
+      </blockquote>
+    </div>
+  </div>
+</section>
 <!-- SKILLS -->
 <div class="mouth-wrap" id="skills">
   <div class="mouth-header">
