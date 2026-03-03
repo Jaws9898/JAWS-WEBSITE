@@ -31,8 +31,8 @@
     }
     html{scroll-behavior:smooth;}
     body{background:var(--abyss);color:var(--text);font-family:'JetBrains Mono',monospace;overflow-x:hidden;cursor:none;}
-    .cursor{position:fixed;width:8px;height:8px;background:var(--cyan);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:screen;transition:width .15s,height .15s;}
-    .cursor-ring{position:fixed;width:30px;height:30px;border:1px solid var(--muted);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);}
+    #sharkFin{position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-100%);filter:drop-shadow(0 0 5px rgba(1,255,255,0.5));opacity:.82;transition:filter .2s,opacity .2s;}
+    #sharkFin.hovered{filter:drop-shadow(0 0 12px rgba(1,255,255,0.95));opacity:1;}
     #causticCanvas{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.15;}
     #bloodCanvas{position:fixed;inset:0;width:100%;height:100%;z-index:50;pointer-events:none;}
     .wrapper{position:relative;z-index:1;}
@@ -294,13 +294,77 @@
       .cap-num{font-size:clamp(1.5rem,6vw,2.2rem);}
       .caps-bar{grid-template-columns:1fr 1fr;}
       .contact-hl{font-size:clamp(1.8rem,10vw,2.5rem);}
-      .section{padding:5rem 5vw;}
+      .section{padding:4rem 5vw;}
+      .hero-shark{display:none;}
+      .theme-btn{display:none;}
+      #termWidget{display:none;}
     }
+
+    /* ── TOUCH DEVICES: restore cursor, hide fin ─────── */
+    @media(hover:none){
+      body{cursor:auto;}
+      #sharkFin{display:none;}
+      #termWidget{display:none;}
+    }
+
+    /* ── MOBILE NAV TWEAKS ───────────────────────────── */
+    @media(max-width:900px){
+      .sol-ticker{display:none;}
+      .cap-item:nth-child(2n){border-right:none;}
+      .contact-section{min-height:auto;padding:6rem 5vw;}
+    }
+
+    /* ── MOBILE WORK CARD PADDING ────────────────────── */
+    @media(max-width:600px){
+      .work-card{padding:1.75rem 1.25rem;}
+    }
+
+    /* ── MOBILE FOOTER STACK ─────────────────────────── */
+    @media(max-width:640px){
+      footer{flex-direction:column;gap:.8rem;text-align:center;}
+      .f-nav{justify-content:center;flex-wrap:wrap;gap:1.5rem;margin:.4rem 0;}
+    }
+
+    /* ── TOUCH FEEDBACK ──────────────────────────────── */
+    a,button,select{-webkit-tap-highlight-color:transparent;}
+    a,button{touch-action:manipulation;}
+
+    /* ── MEDIA PREVIEW CARD ──────────────────────────── */
+    .media-preview-link{display:flex;align-items:center;gap:1.2rem;padding:1.4rem 1.6rem;background:rgba(1,255,255,.03);border:1px solid var(--border);border-radius:6px;text-decoration:none;transition:border-color .25s,box-shadow .25s;color:var(--text);}
+    .media-preview-link:hover{border-color:rgba(1,255,255,.35);box-shadow:0 0 24px rgba(1,255,255,.08);}
+    .media-preview-icon{width:42px;height:42px;flex-shrink:0;border-radius:50%;background:rgba(1,255,255,.06);border:1px solid rgba(1,255,255,.15);display:flex;align-items:center;justify-content:center;color:var(--cyan);}
+    .media-preview-info{display:flex;flex-direction:column;gap:.35rem;min-width:0;}
+    .media-preview-src{font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);}
+    .media-preview-cta{font-size:.82rem;color:var(--cyan);letter-spacing:.04em;}
+
+    /* ── TERMINAL SESSION WIDGET ─────────────────────── */
+    #termWidget{position:fixed;top:5rem;right:1.4rem;z-index:100;font-family:'JetBrains Mono',monospace;font-size:.46rem;letter-spacing:.1em;line-height:1.85;color:rgba(1,255,255,0.22);pointer-events:none;user-select:none;text-align:right;}
+    #termWidget .tw-line{white-space:nowrap;}
+    #termWidget .tw-flicker{animation:twFlicker 8s infinite;}
+    @keyframes twFlicker{0%,89%,91%,93%,100%{opacity:1}90%{opacity:.15}92%{opacity:.7}}
+    html[data-degen="on"] #termWidget{color:rgba(1,255,255,0.45);}
+    html[data-degen="on"] #sharkFin{filter:drop-shadow(0 0 14px var(--cyan));}
   </style>
 </head>
 <body>
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
+<div id="sharkFin">
+  <svg width="28" height="38" viewBox="0 0 28 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- dorsal fin body -->
+    <path d="M 3 36 C 2 26 5 14 10 5 C 12 0 14 -1 15 2 C 17 8 20 18 22 27 C 23 31 24 34 24 36 Z" fill="rgba(1,255,255,0.88)" stroke="rgba(1,255,255,0.25)" stroke-width="0.8"/>
+    <!-- leading edge highlight -->
+    <path d="M 4 34 C 3 24 6 12 11 4 C 13 0.5 14.5 0 15 2" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="0.9" stroke-linecap="round"/>
+    <!-- base waterline ripple -->
+    <path d="M 1 36 Q 13 33 25 36" fill="none" stroke="rgba(1,255,255,0.3)" stroke-width="0.8"/>
+  </svg>
+</div>
+<div id="termWidget" aria-hidden="true">
+  <div class="tw-line tw-flicker" id="tw-date"></div>
+  <div class="tw-line" id="tw-browser"></div>
+  <div class="tw-line" id="tw-res"></div>
+  <div class="tw-line">&nbsp;</div>
+  <div class="tw-line" id="tw-clicks">[CLICKS: 0]</div>
+  <div class="tw-line" id="tw-scroll">[DEPTH: 0%]</div>
+</div>
 <canvas id="causticCanvas"></canvas>
 <canvas id="bloodCanvas"></canvas>
 <div class="wrapper">
@@ -538,9 +602,7 @@
       <div class="wc-tag">Social &amp; Content</div>
       <div class="wc-co">Gently Used Blunt</div>
       <div class="wc-desc">Handled day-to-day socials and <em>meme production</em> to keep the project culturally relevant and in the feed. Shot a promotional video on-location at a real weed shop &mdash; turned a grassroots vibe into a proper marketing asset.</div>
-      <div class="wc-tweet-wrap">
-        <blockquote class="twitter-tweet" data-theme="dark" data-dnt="true" data-media-max-width="480"><a href="https://x.com/JawsOnChain/status/2028516773364908096"></a></blockquote>
-      </div>
+      <a href="https://x.com/JawsOnChain/status/2028516773364908096" target="_blank" rel="noopener" class="wc-icon-link" style="align-self:flex-start;margin:.25rem 0 .75rem;"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg> Watch video</a>
       <div class="wc-stat">&#9670; Socials · Memes · Promo Video</div>
       <div class="wc-stat-ath"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg> ATH MC: $652K</div>
       <div class="wc-ca">
@@ -561,9 +623,7 @@
       </div>
       <div class="wc-co">Bongo</div>
       <div class="wc-desc">Helped breathe new life into an established meme IP through event-driven marketing and content. <em>Flew out to NFC Lisbon</em> with a teammate &mdash; captured on-the-ground footage, marketed the project live, and reignited community momentum.</div>
-      <div class="wc-tweet-wrap">
-        <blockquote class="twitter-tweet" data-theme="dark" data-dnt="true" data-media-max-width="480"><a href="https://x.com/AskBongoCoin/status/1932397941282541790"></a></blockquote>
-      </div>
+      <a href="https://x.com/AskBongoCoin/status/1932397941282541790" target="_blank" rel="noopener" class="wc-icon-link" style="align-self:flex-start;margin:.25rem 0 .75rem;"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg> Watch video</a>
       <div class="wc-stat">&#9670; NFC Lisbon · Event Content · Community Revival</div>
       <div class="wc-stat-ath"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg> ATH MC: $1.217M</div>
       <div class="wc-ca">
@@ -616,16 +676,24 @@
     <div class="media-item">
       <div class="media-item-title">Gently Used Blunt</div>
       <div class="media-item-sub">On-location weed shop shoot</div>
-      <blockquote class="twitter-tweet" data-theme="dark" data-dnt="true">
-        <a href="https://x.com/JawsOnChain/status/2028516773364908096"></a>
-      </blockquote>
+      <a class="media-preview-link" href="https://x.com/JawsOnChain/status/2028516773364908096" target="_blank" rel="noopener">
+        <div class="media-preview-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        <div class="media-preview-info">
+          <span class="media-preview-src">@JawsOnChain on X</span>
+          <span class="media-preview-cta">Watch the video →</span>
+        </div>
+      </a>
     </div>
     <div class="media-item">
       <div class="media-item-title">Bongo — NFC Lisbon</div>
       <div class="media-item-sub">IRL event coverage</div>
-      <blockquote class="twitter-tweet" data-theme="dark" data-dnt="true">
-        <a href="https://x.com/AskBongoCoin/status/1932397941282541790"></a>
-      </blockquote>
+      <a class="media-preview-link" href="https://x.com/AskBongoCoin/status/1932397941282541790" target="_blank" rel="noopener">
+        <div class="media-preview-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        <div class="media-preview-info">
+          <span class="media-preview-src">@AskBongoCoin on X</span>
+          <span class="media-preview-cta">Watch the video →</span>
+        </div>
+      </a>
     </div>
   </div>
 </section>
@@ -705,14 +773,28 @@
 </div>
 <button id="backTop" class="back-top" aria-label="Back to top">↑</button>
 <script>
-const cur=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
-(function ar(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(ar);})();
-document.querySelectorAll('a,button').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{cur.style.width='18px';cur.style.height='18px';ring.style.width='48px';ring.style.height='48px';});
-  el.addEventListener('mouseleave',()=>{cur.style.width='8px';cur.style.height='8px';ring.style.width='30px';ring.style.height='30px';});
-});
+// SHARK FIN CURSOR
+const fin=document.getElementById('sharkFin');
+if(window.matchMedia('(hover:hover)').matches){
+  let mx=0,my=0,fx=0,fy=0,prevFx=0,tilt=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+  (function animFin(){
+    const vx=fx-prevFx;
+    prevFx=fx;
+    tilt+=(vx*3-tilt)*.12;
+    tilt=Math.max(-22,Math.min(22,tilt));
+    fx+=(mx-fx)*.12;
+    fy+=(my-fy)*.12;
+    fin.style.left=fx+'px';
+    fin.style.top=fy+'px';
+    fin.style.transform=`translate(-50%,-100%) rotate(${tilt}deg)`;
+    requestAnimationFrame(animFin);
+  })();
+  document.querySelectorAll('a,button').forEach(el=>{
+    el.addEventListener('mouseenter',()=>fin.classList.add('hovered'));
+    el.addEventListener('mouseleave',()=>fin.classList.remove('hovered'));
+  });
+}
 // CAUSTIC
 const cc=document.getElementById('causticCanvas'),cctx=cc.getContext('2d');
 let CW,CH;
@@ -902,8 +984,40 @@ document.querySelectorAll('.wc-ca-copy').forEach(btn=>{
 const bt=document.getElementById('backTop');
 window.addEventListener('scroll',()=>bt.classList.toggle('visible',window.scrollY>500),{passive:true});
 bt.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+
+// TERMINAL WIDGET
+(function(){
+  const twDate=document.getElementById('tw-date');
+  const twBrowser=document.getElementById('tw-browser');
+  const twRes=document.getElementById('tw-res');
+  const twClicks=document.getElementById('tw-clicks');
+  const twScroll=document.getElementById('tw-scroll');
+  let clicks=0;
+  function pad(n){return String(n).padStart(2,'0');}
+  function updateDate(){
+    const d=new Date();
+    twDate.textContent=`${d.getFullYear()}.${pad(d.getMonth()+1)}.${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+  }
+  function getBrowser(){
+    const ua=navigator.userAgent;
+    if(ua.includes('Firefox'))return 'FIREFOX';
+    if(ua.includes('Edg'))return 'EDGE';
+    if(ua.includes('OPR')||ua.includes('Opera'))return 'OPERA';
+    if(ua.includes('Chrome'))return 'CHROME';
+    if(ua.includes('Safari'))return 'SAFARI';
+    return 'BROWSER';
+  }
+  twBrowser.textContent=`[${getBrowser()} / ${navigator.platform||'WEB'}]`;
+  twRes.textContent=`[${window.screen.width}x${window.screen.height}]`;
+  setInterval(updateDate,1000);
+  updateDate();
+  document.addEventListener('click',()=>{clicks++;twClicks.textContent=`[CLICKS: ${clicks}]`;});
+  window.addEventListener('scroll',()=>{
+    const pct=Math.round((window.scrollY/(document.body.scrollHeight-window.innerHeight))*100)||0;
+    twScroll.textContent=`[DEPTH: ${pct}%]`;
+  },{passive:true});
+})();
 </script>
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <!-- EASTER EGG: good luck finding this -->
 <div id="seedChest" onclick="window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1','_blank')" title="something valuable...">
   <svg width="38" height="30" viewBox="0 0 38 30" fill="none" xmlns="http://www.w3.org/2000/svg">
