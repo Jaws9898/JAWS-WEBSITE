@@ -86,7 +86,6 @@
     .work-card:hover{background:#041414;}
     .work-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);transform:scaleX(0);transform-origin:left;transition:transform .4s ease;box-shadow:0 0 12px var(--cyan);}
     .work-card:hover::before{transform:scaleX(1);}
-    .wc-logo{width:52px;height:52px;border-radius:10px;object-fit:cover;margin-bottom:1.4rem;border:1px solid rgba(1,255,255,.15);box-shadow:0 0 16px rgba(1,255,255,.1);}
     .wc-tag{font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan);opacity:.5;margin-bottom:.8rem;}
     .wc-co{font-family:'Bebas Neue',sans-serif;font-size:2.4rem;letter-spacing:.07em;color:#fff;text-shadow:0 0 20px rgba(1,255,255,.2);margin-bottom:.9rem;line-height:1;}
     .wc-desc{font-size:.85rem;line-height:1.85;color:var(--text);opacity:.85;margin-bottom:1.5rem;}
@@ -209,33 +208,6 @@
     .theme-btn{background:transparent;border:1px solid var(--border);border-radius:4px;padding:.28rem .5rem;cursor:pointer;color:var(--muted);font-size:.85rem;line-height:1;transition:border-color .2s,color .2s;display:flex;align-items:center;}
     .theme-btn:hover{border-color:var(--cyan);color:var(--cyan);}
 
-    /* ── MEME SECTION ─────────────────────────────────── */
-    .meme-section{background:var(--deep);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
-    .meme-ticker-wrap{overflow:hidden;margin:2rem -5vw;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:.7rem 0;background:rgba(1,255,255,0.03);}
-    .meme-ticker-track{display:flex;width:max-content;animation:tickerScroll 20s linear infinite;}
-    .meme-ticker-item{white-space:nowrap;padding:0 1.5rem;font-size:.7rem;letter-spacing:.15em;color:var(--cyan);text-shadow:0 0 8px rgba(1,255,255,0.4);display:flex;align-items:center;gap:1.5rem;}
-    .meme-bull{color:#4ade80;font-size:.5rem;}
-    .meme-bear{color:#f87171;font-size:.5rem;}
-    .meme-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;border:1px solid var(--border);margin:2.5rem 0;border-radius:8px;overflow:hidden;}
-    .meme-stat{padding:2rem 1.5rem;background:rgba(1,255,255,0.03);text-align:center;border-right:1px solid var(--border);}
-    .meme-stat:last-child{border-right:none;}
-    .meme-num{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,5vw,3.5rem);color:var(--cyan);text-shadow:0 0 20px var(--cyan),0 0 40px rgba(1,255,255,.3);line-height:1;margin-bottom:.4rem;}
-    .meme-lbl{font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);}
-    .meme-terminal{border:1px solid var(--border);border-radius:8px;overflow:hidden;max-width:640px;margin:0 auto;}
-    .meme-terminal-bar{background:var(--teal);padding:.6rem 1rem;display:flex;align-items:center;gap:.5rem;}
-    .t-dot{width:11px;height:11px;border-radius:50%;display:inline-block;}
-    .t-title{margin-left:.5rem;font-size:.6rem;letter-spacing:.12em;color:var(--muted);}
-    .meme-terminal-body{padding:1.4rem 1.6rem;font-size:.72rem;line-height:2;background:rgba(1,10,10,0.6);}
-    .t-line{display:flex;gap:.7rem;}
-    .t-prompt{color:var(--cyan);text-shadow:0 0 8px var(--cyan);}
-    .t-cmd{color:var(--text);}
-    .t-green{color:#4ade80;}
-    .t-cursor{display:inline-block;width:8px;height:1em;background:var(--cyan);animation:blink .9s step-end infinite;vertical-align:text-bottom;}
-    @keyframes blink{50%{opacity:0;}}
-    .meme-disclaimer{padding:.6rem 1.6rem .8rem;font-size:.55rem;letter-spacing:.1em;color:var(--muted);border-top:1px solid var(--border);font-style:italic;}
-
-    /* ── MOBILE RESPONSIVE meme ───────────────────────── */
-    @media(max-width:600px){.meme-stats{grid-template-columns:1fr 1fr;}.meme-stat:nth-child(3){grid-column:1/-1;border-right:none;border-top:1px solid var(--border);}}
     @keyframes fadeUp{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:none;}}
     @keyframes fadeDown{from{opacity:0;transform:translateY(-18px);}to{opacity:1;transform:none;}}
     @media(max-width:900px){
@@ -244,7 +216,7 @@
       .about-grid{grid-template-columns:1fr;}
       .about-facts{border-left:none;padding-left:0;border-top:1px solid var(--border);padding-top:2rem;}
       .work-grid{grid-template-columns:1fr;}
-      .skills-grid{grid-template-columns:1fr 1fr;}
+      .skills-grid{grid-template-columns:repeat(2,1fr);}
       .caps-bar{grid-template-columns:1fr 1fr;}
       .nav-links{display:none;}
       .hamburger{display:flex;}
@@ -262,7 +234,7 @@
     /* ── WORK GRID 3-COLUMN ───────────────────────────── */
     .work-grid{grid-template-columns:repeat(3,1fr);}
     @media(max-width:1100px){.work-grid{grid-template-columns:1fr 1fr;}}
-    @media(max-width:600px){.work-grid{grid-template-columns:1fr;}}
+    @media(max-width:600px){.work-grid{grid-template-columns:1fr;}.skills-grid{grid-template-columns:1fr;}}
 
     /* ── STATUS PULSE IN FACTS ────────────────────────── */
     .fact-status-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#4ade80;margin-right:6px;vertical-align:middle;flex-shrink:0;animation:pulseDot 2s ease-in-out infinite;}
@@ -291,6 +263,19 @@
     .wc-ca-copy{background:transparent;border:1px solid var(--border);border-radius:3px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:.48rem;letter-spacing:.14em;text-transform:uppercase;padding:.18rem .42rem;cursor:pointer;transition:color .2s,border-color .2s;flex-shrink:0;}
     .wc-ca-copy:hover{color:var(--cyan);border-color:var(--cyan);}
     .wc-ca-copy.copied{color:#4ade80;border-color:rgba(74,222,128,.4);}
+
+    /* ── BIG BACKGROUND LOGO (TRIAL) ─────────────────── */
+    .wc-card-bg-logo .wc-logo-wrap{position:absolute;right:-1rem;top:50%;transform:translateY(-50%);width:200px;height:200px;max-width:none;border-radius:24px;opacity:0.07;filter:grayscale(0.5) saturate(0.5);pointer-events:none;margin:0;border:none;box-shadow:none;overflow:hidden;z-index:0;}
+
+    /* ── FLEX CARDS: bottom stats always pinned ───────── */
+    .work-card{display:flex;flex-direction:column;}
+    .wc-desc{flex-grow:1;}
+
+    /* ── EASTER EGG CHEST ────────────────────────────── */
+    #seedChest{position:fixed;bottom:5.5rem;left:1.8rem;z-index:3;cursor:pointer;opacity:0.055;transition:opacity .5s,transform .3s;user-select:none;pointer-events:all;}
+    #seedChest:hover{opacity:0.6;transform:scale(1.08);}
+    #seedChest svg{display:block;}
+    #seedChest .chest-label{font-family:'JetBrains Mono',monospace;font-size:.36rem;text-align:center;color:var(--cyan);letter-spacing:.13em;text-transform:uppercase;margin-top:3px;text-shadow:0 0 6px var(--cyan);}
 
     /* ── SMALL PHONE FIXES ────────────────────────────── */
     @media(max-width:480px){
@@ -400,15 +385,15 @@
 <!-- TICKER -->
 <div class="ticker-wrap">
   <div class="ticker-track">
-    <div class="ticker-item">Meme Coin Marketing <span class="tdot">&#10022;</span> Community Growth <span class="tdot">&#10022;</span> Token Launch Strategy <span class="tdot">&#10022;</span> X Marketing <span class="tdot">&#10022;</span> PNL Cards <span class="tdot">&#10022;</span> Trend Execution <span class="tdot">&#10022;</span> KOL Outreach <span class="tdot">&#10022;</span> Brand Narratives <span class="tdot">&#10022;</span> Viral Campaigns <span class="tdot">&#10022;</span> X Spaces <span class="tdot">&#10022;</span> Social Proof <span class="tdot">&#10022;</span> Web3 Native <span class="tdot">&#10022;</span></div>
-    <div class="ticker-item">Meme Coin Marketing <span class="tdot">&#10022;</span> Community Growth <span class="tdot">&#10022;</span> Token Launch Strategy <span class="tdot">&#10022;</span> X Marketing <span class="tdot">&#10022;</span> PNL Cards <span class="tdot">&#10022;</span> Trend Execution <span class="tdot">&#10022;</span> KOL Outreach <span class="tdot">&#10022;</span> Brand Narratives <span class="tdot">&#10022;</span> Viral Campaigns <span class="tdot">&#10022;</span> X Spaces <span class="tdot">&#10022;</span> Social Proof <span class="tdot">&#10022;</span> Web3 Native <span class="tdot">&#10022;</span></div>
+    <div class="ticker-item">Meme Coin Marketing <span class="tdot">&#10022;</span> Community Growth <span class="tdot">&#10022;</span> Token Launch Strategy <span class="tdot">&#10022;</span> X Marketing <span class="tdot">&#10022;</span> PNL Cards <span class="tdot">&#10022;</span> Trend Execution <span class="tdot">&#10022;</span> KOL Outreach <span class="tdot">&#10022;</span> Brand Narratives <span class="tdot">&#10022;</span> Viral Campaigns <span class="tdot">&#10022;</span> X Spaces <span class="tdot">&#10022;</span> Creator Capital Markets <span class="tdot">&#10022;</span> Clipper Economy <span class="tdot">&#10022;</span> Discord Community <span class="tdot">&#10022;</span> Investor Outreach <span class="tdot">&#10022;</span> Video Production <span class="tdot">&#10022;</span> IRL Event Coverage <span class="tdot">&#10022;</span> Political Meme Strategy <span class="tdot">&#10022;</span> DeFi Platform Marketing <span class="tdot">&#10022;</span> Platform Co-Founder <span class="tdot">&#10022;</span> Payout Processing <span class="tdot">&#10022;</span> Social Proof <span class="tdot">&#10022;</span> Web3 Native <span class="tdot">&#10022;</span></div>
+    <div class="ticker-item">Meme Coin Marketing <span class="tdot">&#10022;</span> Community Growth <span class="tdot">&#10022;</span> Token Launch Strategy <span class="tdot">&#10022;</span> X Marketing <span class="tdot">&#10022;</span> PNL Cards <span class="tdot">&#10022;</span> Trend Execution <span class="tdot">&#10022;</span> KOL Outreach <span class="tdot">&#10022;</span> Brand Narratives <span class="tdot">&#10022;</span> Viral Campaigns <span class="tdot">&#10022;</span> X Spaces <span class="tdot">&#10022;</span> Creator Capital Markets <span class="tdot">&#10022;</span> Clipper Economy <span class="tdot">&#10022;</span> Discord Community <span class="tdot">&#10022;</span> Investor Outreach <span class="tdot">&#10022;</span> Video Production <span class="tdot">&#10022;</span> IRL Event Coverage <span class="tdot">&#10022;</span> Political Meme Strategy <span class="tdot">&#10022;</span> DeFi Platform Marketing <span class="tdot">&#10022;</span> Platform Co-Founder <span class="tdot">&#10022;</span> Payout Processing <span class="tdot">&#10022;</span> Social Proof <span class="tdot">&#10022;</span> Web3 Native <span class="tdot">&#10022;</span></div>
   </div>
 </div>
 <!-- CAPS BAR -->
 <div class="caps-bar">
   <div class="cap-item"><div class="cap-num">10M+</div><div class="cap-label">Impressions Generated</div></div>
-  <div class="cap-item"><div class="cap-num">10+</div><div class="cap-label">Campaigns Launched</div></div>
-  <div class="cap-item"><div class="cap-num">5K+</div><div class="cap-label">Community Grown</div></div>
+  <div class="cap-item"><div class="cap-num">8+</div><div class="cap-label">Projects Shipped</div></div>
+  <div class="cap-item"><div class="cap-num">$10K+</div><div class="cap-label">Clipper Payouts Managed</div></div>
   <div class="cap-item"><div class="cap-num">3+</div><div class="cap-label">Active Brands</div></div>
 </div>
 <!-- TEETH -->
@@ -454,7 +439,7 @@
   <h2 class="s-title" data-i18n="work_title">Projects</h2>
   <div class="work-grid">
     <!-- DOOP APP — $12.98M -->
-    <div class="work-card">
+    <div class="work-card wc-card-bg-logo">
 <a href="https://x.com/DoopApp" target="_blank" rel="noopener"><div class="wc-logo-wrap"><img class="wc-logo-img" src="https://unavatar.io/x/doopapp" alt="DoopApp" loading="lazy"></div></a>
       <div class="project-status status-rugged">&#9760; Rugged</div>
       <div class="wc-tag">Marketing Lead</div>
@@ -625,12 +610,15 @@
   </svg>
   <div class="mouth-inner">
     <div class="skills-grid">
-      <div class="skill-tile"><div class="sk-num">01 //</div><div class="sk-name">Content Strategy</div><div class="sk-desc">Building narratives that resonate with crypto-native audiences and actually drive engagement.</div></div>
-      <div class="skill-tile"><div class="sk-num">02 //</div><div class="sk-name">Community Growth</div><div class="sk-desc">Growing accounts from zero &mdash; followers, culture, engagement. Fast.</div></div>
-      <div class="skill-tile"><div class="sk-num">03 //</div><div class="sk-name">Trend Execution</div><div class="sk-desc">Moving on emerging narratives before everyone else. Speed is the edge.</div></div>
-      <div class="skill-tile"><div class="sk-num">04 //</div><div class="sk-name">Visual Content</div><div class="sk-desc">Graphics, PNL cards, branded assets &mdash; making numbers look shareable.</div></div>
-      <div class="skill-tile"><div class="sk-num">05 //</div><div class="sk-name">X Spaces &amp; Live</div><div class="sk-desc">Hosting sessions that deliver real value and keep communities coming back.</div></div>
-      <div class="skill-tile"><div class="sk-num">06 //</div><div class="sk-name">Adaptability</div><div class="sk-desc">Web3 moves fast. I move faster. New tools, new metas &mdash; always learning.</div></div>
+      <div class="skill-tile"><div class="sk-num">01 //</div><div class="sk-name">Content Strategy</div><div class="sk-desc">Building narratives that resonate with crypto-native audiences. From DoopApp to LORE &mdash; 500K impressions in a single month, 120% engagement lifts.</div></div>
+      <div class="skill-tile"><div class="sk-num">02 //</div><div class="sk-name">Community Growth</div><div class="sk-desc">Built and moderated Discord communities from scratch, ran Telegram groups, and grew social accounts from zero. Discord, Telegram, X &mdash; all channels.</div></div>
+      <div class="skill-tile"><div class="sk-num">03 //</div><div class="sk-name">Trend Execution</div><div class="sk-desc">Moving on emerging narratives before everyone else. Rage-bait, political memes, DeFi meta &mdash; in position before the crowd arrives.</div></div>
+      <div class="skill-tile"><div class="sk-num">04 //</div><div class="sk-name">Visual Content</div><div class="sk-desc">PNL cards, branded graphics, meme production, scripted livestreams &mdash; turning performance and culture into shareable assets.</div></div>
+      <div class="skill-tile"><div class="sk-num">05 //</div><div class="sk-name">X Spaces &amp; Live</div><div class="sk-desc">Hosted early-stage Spaces to build launch hype, drove investor discovery, and kept communities engaged through live sessions.</div></div>
+      <div class="skill-tile"><div class="sk-num">06 //</div><div class="sk-name">Event Marketing</div><div class="sk-desc">Flew to NFC Lisbon to capture on-the-ground footage and market live. Turning IRL moments into online momentum.</div></div>
+      <div class="skill-tile"><div class="sk-num">07 //</div><div class="sk-name">Video Production</div><div class="sk-desc">Shot on-location promo content at a real weed shop for GUB. Turning grassroots ideas into polished marketing assets.</div></div>
+      <div class="skill-tile"><div class="sk-num">08 //</div><div class="sk-name">Economy Management</div><div class="sk-desc">Tracked and processed $10K+ in payouts to clippers for Clipped.fun &mdash; managing a live creator economy end-to-end.</div></div>
+      <div class="skill-tile"><div class="sk-num">09 //</div><div class="sk-name">Co-Founding</div><div class="sk-desc">Co-founded Clipped.fun, a Web3 Creator Capital Markets platform. Ran socials, bug-tested the app, and built the clipper ecosystem from zero.</div></div>
     </div>
   </div>
   <svg class="mouth-svg-outer" viewBox="0 0 1200 110" preserveAspectRatio="none" style="transform:scaleY(-1);" xmlns="http://www.w3.org/2000/svg">
@@ -882,5 +870,29 @@ window.addEventListener('scroll',()=>bt.classList.toggle('visible',window.scroll
 bt.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 </script>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<!-- EASTER EGG: good luck finding this -->
+<div id="seedChest" onclick="window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1','_blank')" title="something valuable...">
+  <svg width="38" height="30" viewBox="0 0 38 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- lid -->
+    <rect x="1" y="1" width="36" height="11" rx="2.5" fill="rgba(1,255,255,0.55)" stroke="rgba(1,255,255,0.7)" stroke-width="0.8"/>
+    <path d="M1 8 Q19 2 37 8" fill="none" stroke="rgba(1,255,255,0.5)" stroke-width="1"/>
+    <!-- hinge -->
+    <rect x="16" y="10" width="6" height="3" rx="1" fill="rgba(2,14,14,0.9)" stroke="rgba(1,255,255,0.3)" stroke-width="0.5"/>
+    <!-- body -->
+    <rect x="1" y="12" width="36" height="17" rx="2.5" fill="rgba(1,255,255,0.45)" stroke="rgba(1,255,255,0.7)" stroke-width="0.8"/>
+    <!-- bands -->
+    <rect x="1" y="16" width="36" height="2.5" fill="rgba(2,14,14,0.4)"/>
+    <!-- lock body -->
+    <rect x="14" y="20" width="10" height="6" rx="1.5" fill="rgba(2,14,14,0.85)" stroke="rgba(1,255,255,0.4)" stroke-width="0.6"/>
+    <!-- lock shackle -->
+    <path d="M16.5 20 Q16.5 16.5 19 16.5 Q21.5 16.5 21.5 20" fill="none" stroke="rgba(1,255,255,0.5)" stroke-width="1.2" stroke-linecap="round"/>
+    <!-- keyhole -->
+    <circle cx="19" cy="23" r="1.2" fill="rgba(1,255,255,0.25)"/>
+    <!-- glints -->
+    <line x1="4" y1="4" x2="7" y2="5.5" stroke="rgba(1,255,255,0.9)" stroke-width="1" stroke-linecap="round"/>
+    <line x1="30" y1="5" x2="33" y2="3.5" stroke="rgba(1,255,255,0.6)" stroke-width="0.8" stroke-linecap="round"/>
+  </svg>
+  <div class="chest-label">Seed Phrases</div>
+</div>
 </body>
 </html>
