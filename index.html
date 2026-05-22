@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>JAWS &mdash; Web3 Marketing</title>
+  <title>JAWS</title>
   <meta name="description" content="JAWS — Web3 social media strategist and marketer. 10M+ impressions, community growth, content strategy. @JawsOnChain"/>
   <meta property="og:title" content="JAWS — Web3 Marketing"/>
   <meta property="og:description" content="In the water before you knew there was a game. Anonymous. Results-driven. Always circling."/>
@@ -14,7 +14,8 @@
   <meta name="twitter:title" content="JAWS — Web3 Marketing"/>
   <meta name="twitter:description" content="In the water before you knew there was a game. Anonymous. Results-driven. Always circling."/>
   <meta name="twitter:image" content="/og-image.png"/>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23010A0A'/%3E%3Cpath d='M8 25 C9 21 12 13 16 7 C18 13 17 19 16 21 C20 18 24 17 27 20 L27 25 Z' fill='%2301FFFF'/%3E%3Crect x='4' y='25' width='24' height='1.5' fill='%2301FFFF' opacity='0.3'/%3E%3C/svg%3E"/>
+  <link rel="icon" href="https://unavatar.io/x/jawsonchain">
+  <link rel="preload" href="GUB.jpg" as="image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet"/>
@@ -38,10 +39,13 @@
     #bloodCanvas{position:fixed;inset:0;width:100%;height:100%;z-index:50;pointer-events:none;}
     .wrapper{position:relative;z-index:1;}
     nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:1.2rem 5vw;background:rgba(1,10,10,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);animation:fadeDown .8s ease both;}
-    .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.2em;color:var(--cyan);text-shadow:0 0 20px var(--cyan),0 0 40px rgba(1,255,255,.4);}
+    .nav-logo{display:flex;align-items:center;text-decoration:none;}
+    .nav-logo-img{width:36px;height:36px;border-radius:50%;border:1.5px solid rgba(1,255,255,.6);box-shadow:0 0 14px rgba(1,255,255,.3),0 0 28px rgba(1,255,255,.1);object-fit:cover;display:block;}
     .nav-links{display:flex;gap:2.5rem;list-style:none;}
     .nav-links a{text-decoration:none;color:var(--muted);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;transition:color .2s,text-shadow .2s;}
     .nav-links a:hover{color:var(--cyan);text-shadow:0 0 12px var(--cyan);}
+    .nav-cta{display:inline-flex;align-items:center;padding:.38rem 1rem;border:1px solid rgba(1,255,255,.35);color:var(--cyan);text-decoration:none;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;transition:border-color .2s,box-shadow .2s,background .2s;background:rgba(1,255,255,.04);border-radius:2px;}
+    .nav-cta:hover{border-color:var(--cyan);box-shadow:0 0 16px rgba(1,255,255,.15);background:rgba(1,255,255,.08);}
     .hero{min-height:100vh;position:relative;overflow:hidden;display:flex;align-items:center;padding:0 5vw;}
     .surface{position:absolute;top:56%;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(1,255,255,.25) 20%,rgba(1,255,255,.06) 80%,transparent);pointer-events:none;}
     /* ── SPLINE 3D SCENE ──────────────────────────── */
@@ -76,6 +80,7 @@
     .s-tag{font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--cyan);opacity:.55;margin-bottom:.6rem;}
     .s-tag::before{content:'[ ';} .s-tag::after{content:' ]';}
     .s-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4rem);letter-spacing:.06em;color:#fff;text-shadow:0 0 30px rgba(1,255,255,.15);margin-bottom:3.5rem;line-height:1;}
+    .work-sub{font-size:.78rem;line-height:1.9;color:var(--muted);margin-top:-2rem;margin-bottom:3rem;max-width:52ch;}
     .about-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:6vw;align-items:start;}
     .about-body{font-size:.9rem;line-height:2;color:var(--text);}
     .about-body em{color:var(--cyan);font-style:normal;}
@@ -108,9 +113,10 @@
     .skill-tile{background:#020d0d;padding:2.5rem 2rem;opacity:0;transform:translateY(8px);transition:opacity .5s ease,transform .5s ease,background .2s;}
     .skill-tile.visible{opacity:1;transform:none;}
     .skill-tile:hover{background:rgba(1,255,255,.04);}
-    .sk-num{font-size:.55rem;color:var(--cyan);opacity:.35;margin-bottom:.7rem;letter-spacing:.12em;}
     .sk-name{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.07em;color:#fff;text-shadow:0 0 15px rgba(1,255,255,.2);margin-bottom:.4rem;}
     .sk-desc{font-size:.78rem;color:var(--muted);line-height:1.65;}
+    .hero-cta{display:inline-flex;align-items:center;margin-top:2rem;padding:1rem 2rem;border:1px solid rgba(1,255,255,.35);color:var(--cyan);text-decoration:none;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;transition:border-color .2s,box-shadow .2s,background .2s;background:rgba(1,255,255,.03);}
+    .hero-cta:hover{border-color:var(--cyan);box-shadow:0 0 24px rgba(1,255,255,.15),inset 0 0 24px rgba(1,255,255,.04);background:rgba(1,255,255,.06);}
     .contact-section{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;z-index:1;overflow:hidden;background:var(--abyss);padding:5vw;text-align:center;}
     .contact-section::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:70vw;height:70vw;background:radial-gradient(ellipse,rgba(1,255,255,.07) 0%,transparent 70%);pointer-events:none;}
     .contact-eyebrow{font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;color:var(--cyan);opacity:.55;margin-bottom:2rem;}
@@ -123,7 +129,6 @@
     .c-link:hover{border-color:var(--cyan);box-shadow:0 0 30px rgba(1,255,255,.15),inset 0 0 30px rgba(1,255,255,.04);color:var(--cyan);background:rgba(1,255,255,.04);}
     .c-lbl{font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:.15rem;}
     .c-icon{color:var(--cyan);opacity:.6;flex-shrink:0;}
-    .contact-watermark{position:absolute;bottom:-4rem;left:50%;transform:translateX(-50%);font-family:'Bebas Neue',sans-serif;font-size:clamp(10rem,22vw,22rem);color:rgba(1,255,255,.03);letter-spacing:.1em;pointer-events:none;user-select:none;white-space:nowrap;}
     footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2rem 5vw;display:flex;justify-content:space-between;align-items:center;background:var(--abyss);}
     .f-logo{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:.18em;color:var(--cyan);opacity:.4;}
     .f-txt{font-size:.58rem;letter-spacing:.1em;color:rgba(1,255,255,.18);}
@@ -152,20 +157,8 @@
 
 
 
-    /* ── DEGEN MODE ───────────────────────────────────── */
-    .degen-on{color:var(--cyan)!important;border-color:var(--cyan)!important;text-shadow:0 0 8px var(--cyan);box-shadow:0 0 10px rgba(1,255,255,.15);}
-    html[data-degen="on"] #causticCanvas{opacity:0.32;}
-    html[data-degen="on"] .nav-logo{animation:neonFlicker 5s infinite;}
-    html[data-degen="on"] .hero-tag-accent{animation:degenFlicker 3s ease-in-out infinite;}
-    html[data-degen="on"] .cap-num{animation:degenGlow 2s ease-in-out infinite;}
-    html[data-degen="on"] .work-card{box-shadow:0 0 30px rgba(1,255,255,.07),inset 0 0 30px rgba(1,255,255,.02);}
-    html[data-degen="on"] .skill-tile{border-color:rgba(1,255,255,.18);}
-    html[data-degen="on"] .cursor-ring{border-color:rgba(1,255,255,.5);}
-    html[data-degen="on"] .tdot{animation:tdotPulse 1.2s ease-in-out infinite;}
-    @keyframes degenGlow{0%,100%{text-shadow:0 0 20px var(--cyan),0 0 40px rgba(1,255,255,.3)}50%{text-shadow:0 0 50px var(--cyan),0 0 100px rgba(1,255,255,.6)}}
-    @keyframes neonFlicker{0%,94%,100%{opacity:1}95%{opacity:.4}97%{opacity:.9}99%{opacity:.6}}
-    @keyframes degenFlicker{0%,88%,100%{text-shadow:0 0 40px rgba(1,255,255,.5),0 0 80px rgba(1,255,255,.2)}89%{text-shadow:0 0 80px var(--cyan),0 0 140px rgba(1,255,255,.9)}92%{text-shadow:0 0 40px rgba(1,255,255,.5)}}
-    @keyframes tdotPulse{0%,100%{opacity:.6}50%{opacity:1;text-shadow:0 0 6px var(--cyan)}}
+    /* ── MEDIA VIDEO ──────────────────────────────────── */
+    .media-video{width:100%;border-radius:6px;border:1px solid var(--border);background:#000;display:block;}
 
     /* ── PROJECT STATUS BADGES ────────────────────────── */
     .project-status{display:inline-flex;align-items:center;gap:.35rem;font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;border-radius:4px;padding:.18rem .5rem;margin-bottom:1rem;font-weight:700;}
@@ -174,11 +167,6 @@
     .status-ended{background:rgba(148,163,184,.07);border:1px solid rgba(148,163,184,.22);color:rgba(148,163,184,.65);}
     .status-ice{background:rgba(147,197,253,.08);border:1px solid rgba(147,197,253,.3);color:#93c5fd;}
     .status-token-soon{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.25);color:#fbbf24;}
-    /* ── WORK CARD VIDEO ──────────────────────────────── */
-    .wc-video-wrap{margin:.75rem 0 1rem;border-radius:6px;overflow:hidden;border:1px solid var(--border);background:#000;}
-    .wc-video{width:100%;display:block;max-height:220px;object-fit:cover;}
-    .wc-tweet-wrap{margin:.75rem 0 1rem;border-radius:6px;overflow:hidden;}
-    .wc-tweet-wrap .twitter-tweet{margin:0 !important;}
     .pulse-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;flex-shrink:0;animation:pulseDot 2s ease-in-out infinite;}
     @keyframes pulseDot{0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,.5)}70%{box-shadow:0 0 0 5px rgba(74,222,128,0)}}
 
@@ -211,9 +199,6 @@
     .lang-select{background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.12em;padding:.3rem .5rem;cursor:pointer;outline:none;transition:border-color .2s,color .2s;-webkit-appearance:none;appearance:none;text-align:center;}
     .lang-select:hover,.lang-select:focus{border-color:var(--cyan);color:var(--cyan);}
     .lang-select option{background:#010a0a;color:#01ffff;}
-    .theme-btn{background:transparent;border:1px solid var(--border);border-radius:4px;padding:.28rem .5rem;cursor:pointer;color:var(--muted);font-size:.85rem;line-height:1;transition:border-color .2s,color .2s;display:flex;align-items:center;}
-    .theme-btn:hover{border-color:var(--cyan);color:var(--cyan);}
-
     @keyframes fadeUp{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:none;}}
     @keyframes fadeDown{from{opacity:0;transform:translateY(-18px);}to{opacity:1;transform:none;}}
     @media(max-width:900px){
@@ -225,6 +210,7 @@
       .skills-grid{grid-template-columns:repeat(2,1fr);}
       .caps-bar{grid-template-columns:1fr 1fr;}
       .nav-links{display:none;}
+      .nav-cta{display:none;}
       .hamburger{display:flex;}
       .contact-links{flex-direction:column;align-items:center;}
     }
@@ -255,8 +241,6 @@
     .c-primary{border-color:rgba(1,255,255,.2);padding:1.6rem 2rem;transition:border-color .2s,box-shadow .2s;}
     .c-primary:hover{border-color:var(--cyan);box-shadow:0 0 20px rgba(1,255,255,.1);}
     .c-primary .c-lbl{color:var(--cyan);}
-    .contact-handle{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4.5rem);color:rgba(1,255,255,.06);letter-spacing:.2em;margin-bottom:1.5rem;pointer-events:none;user-select:none;}
-
     /* ── WORK CARD LINK ICONS ─────────────────────────── */
     .wc-links-row{display:flex;gap:.5rem;margin:.7rem 0 .5rem;}
     .wc-icon-link{display:inline-flex;align-items:center;gap:.35rem;font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-decoration:none;border:1px solid var(--border);border-radius:4px;padding:.25rem .55rem;transition:color .2s,border-color .2s;}
@@ -269,9 +253,6 @@
     .wc-ca-copy{background:transparent;border:1px solid var(--border);border-radius:3px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:.48rem;letter-spacing:.14em;text-transform:uppercase;padding:.18rem .42rem;cursor:pointer;transition:color .2s,border-color .2s;flex-shrink:0;}
     .wc-ca-copy:hover{color:var(--cyan);border-color:var(--cyan);}
     .wc-ca-copy.copied{color:#4ade80;border-color:rgba(74,222,128,.4);}
-
-    /* ── BIG BACKGROUND LOGO (TRIAL) ─────────────────── */
-    .wc-card-bg-logo .wc-logo-wrap{position:absolute;right:-1rem;top:50%;transform:translateY(-50%);width:200px;height:200px;max-width:none;border-radius:24px;opacity:0.07;filter:grayscale(0.5) saturate(0.5);pointer-events:none;margin:0;border:none;box-shadow:none;overflow:hidden;z-index:0;}
 
     /* ── FLEX CARDS: bottom stats always pinned ───────── */
     .work-card{display:flex;flex-direction:column;}
@@ -301,11 +282,10 @@
       .contact-hl{font-size:clamp(1.8rem,10vw,2.5rem);}
       .section{padding:4rem 5vw;}
       .hero-3d{display:none;}
-      .theme-btn{display:none;}
       #termWidget{display:none;}
     }
 
-    /* ── TOUCH DEVICES: restore cursor, hide fin ─────── */
+    /* ── TOUCH DEVICES: restore cursor, hide sonar ───── */
     @media(hover:none){
       body{cursor:auto;}
       .cursor,.cursor-ring{display:none;}
@@ -334,21 +314,11 @@
     a,button,select{-webkit-tap-highlight-color:transparent;}
     a,button{touch-action:manipulation;}
 
-    /* ── MEDIA PREVIEW CARD ──────────────────────────── */
-    .media-preview-link{display:flex;align-items:center;gap:1.2rem;padding:1.4rem 1.6rem;background:rgba(1,255,255,.03);border:1px solid var(--border);border-radius:6px;text-decoration:none;transition:border-color .25s,box-shadow .25s;color:var(--text);}
-    .media-preview-link:hover{border-color:rgba(1,255,255,.35);box-shadow:0 0 24px rgba(1,255,255,.08);}
-    .media-preview-icon{width:42px;height:42px;flex-shrink:0;border-radius:50%;background:rgba(1,255,255,.06);border:1px solid rgba(1,255,255,.15);display:flex;align-items:center;justify-content:center;color:var(--cyan);}
-    .media-preview-info{display:flex;flex-direction:column;gap:.35rem;min-width:0;}
-    .media-preview-src{font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);}
-    .media-preview-cta{font-size:.82rem;color:var(--cyan);letter-spacing:.04em;}
-
     /* ── TERMINAL SESSION WIDGET ─────────────────────── */
     #termWidget{position:fixed;top:5rem;right:1.4rem;z-index:100;font-family:'JetBrains Mono',monospace;font-size:.46rem;letter-spacing:.1em;line-height:1.85;color:rgba(1,255,255,0.22);pointer-events:none;user-select:none;text-align:right;}
     #termWidget .tw-line{white-space:nowrap;}
     #termWidget .tw-flicker{animation:twFlicker 8s infinite;}
     @keyframes twFlicker{0%,89%,91%,93%,100%{opacity:1}90%{opacity:.15}92%{opacity:.7}}
-    html[data-degen="on"] #termWidget{color:rgba(1,255,255,0.45);}
-    html[data-degen="on"] .cursor{box-shadow:0 0 14px var(--cyan);}
   </style>
 </head>
 <body>
@@ -366,7 +336,7 @@
 <canvas id="bloodCanvas"></canvas>
 <div class="wrapper">
 <nav>
-  <div class="nav-logo">JAWS</div>
+  <a href="#" class="nav-logo"><img src="https://unavatar.io/x/jawsonchain" alt="JAWS" class="nav-logo-img" loading="lazy"></a>
   <ul class="nav-links">
     <li><a href="#about" data-i18n="nav_about">About</a></li>
     <li><a href="#work" data-i18n="nav_work">Work</a></li>
@@ -374,6 +344,7 @@
     <li><a href="#skills" data-i18n="nav_skills">Skills</a></li>
     <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
   </ul>
+  <a href="#contact" class="nav-cta">Let's Talk →</a>
   <div class="nav-controls">
     <select id="langSelect" class="lang-select" aria-label="Language">
       <option value="en">EN</option>
@@ -383,7 +354,6 @@
       <option value="fr">FR</option>
     </select>
     <a id="solPrice" class="sol-ticker" href="https://www.binance.com/en/trade/SOL_USDT" target="_blank" rel="noopener">SOL —</a>
-    <button id="degenToggle" class="theme-btn" aria-label="Toggle degen mode">DEGEN</button>
   </div>
   <button class="hamburger" id="hamburger" aria-label="Menu">
     <span></span><span></span><span></span>
@@ -417,13 +387,14 @@
     <spline-viewer url="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode" loading="lazy"></spline-viewer>
   </div>
   <div class="hero-content">
-    <p class="hero-eyebrow" data-i18n="hero_eyebrow">@JawsOnChain &middot; Web3 Marketing</p>
+    <p class="hero-eyebrow" data-i18n="hero_eyebrow">@JawsOnChain &middot; Chronically online. Terminally effective.</p>
     <div class="hero-tagline">
       <span class="hero-tag-line" data-i18n="hero_h1">WEB3 MARKETING</span>
       <span class="hero-tag-line" data-i18n="hero_h2">THAT MOVES</span>
       <span class="hero-tag-accent" data-i18n="hero_h3">MARKETS.</span>
     </div>
-    <p class="hero-sub" data-i18n="hero_sub">Not a developer. More than a reply guy. The strategy layer every project is missing.</p>
+    <p class="hero-sub" data-i18n="hero_sub">I don't have a job title. I have results.</p>
+    <a href="#work" class="hero-cta" data-i18n="hero_cta">View My Work ↓</a>
   </div>
   <div class="scroll-indicator">
     <span>Scroll</span>
@@ -440,9 +411,9 @@
 <!-- CAPS BAR -->
 <div class="caps-bar">
   <div class="cap-item"><div class="cap-num">10M+</div><div class="cap-label">Impressions Generated</div></div>
-  <div class="cap-item"><div class="cap-num">8+</div><div class="cap-label">Projects Shipped</div></div>
-  <div class="cap-item"><div class="cap-num">$10K+</div><div class="cap-label">Clipper Payouts Managed</div></div>
-  <div class="cap-item"><div class="cap-num">3+</div><div class="cap-label">Active Brands</div></div>
+  <div class="cap-item"><div class="cap-num">7</div><div class="cap-label">Projects Shipped</div></div>
+  <div class="cap-item"><div class="cap-num">$10K+</div><div class="cap-label">Creator Payouts Processed</div></div>
+  <div class="cap-item"><div class="cap-num">5+</div><div class="cap-label">Communities Built</div></div>
 </div>
 <!-- TEETH -->
 <div class="teeth-div" style="background:var(--deep);">
@@ -461,7 +432,7 @@
   <h2 class="s-title" data-i18n="about_title">Who I Am</h2>
   <div class="about-grid">
     <div class="about-body">
-      <p data-i18n="about_p1">A social media strategist and marketer operating anonymously in Web3. I got into this space because it moves fast, rewards creativity, and has no rulebook &mdash; which is exactly how I like it.</p>
+      <p data-i18n="about_p1">A social media strategist and marketer who's been operating anonymously in Web3 since 2024. I got into this space because it moves fast, rewards creativity, and has no rulebook &mdash; which is exactly how I like it.</p>
       <p data-i18n="about_p2">I build accounts from nothing, turn performance data into shareable content, and grow communities that actually care. What I care about is making things that work &mdash; not things that just look good on a deck.</p>
       <p data-i18n="about_p3">Always in the water. Always moving.</p>
     </div>
@@ -485,6 +456,7 @@
 <section class="section" id="work" style="border-top:none;">
   <div class="s-tag" data-i18n="work_tag">Selected Work</div>
   <h2 class="s-title" data-i18n="work_title">Projects</h2>
+  <p class="work-sub">Meme coins move fast. Most don't make it. Here's what I built while they lasted &mdash; and what's still running.</p>
   <div class="work-grid">
     <!-- DOOP APP — $12.98M -->
     <div class="work-card">
@@ -535,7 +507,7 @@
         <a href="https://x.com/TamponTimMeme" target="_blank" rel="noopener" class="wc-icon-link"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> X</a>
         <a href="https://tampontimmeme.com/" target="_blank" rel="noopener" class="wc-icon-link"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Website</a>
       </div>
-      <div class="wc-co">Tampon Tim</div>
+      <a href="https://tampontimmeme.com/" target="_blank" rel="noopener" class="wc-link"><div class="wc-co">Tampon Tim</div></a>
       <div class="wc-desc">Built and ran the Telegram and hit the ground running on X with fast-paced, politically-charged campaigns. Leaned hard into <em>rage-bait positioning</em> to drive replies and quote tweets &mdash; and pulled <em>100,000 impressions in week one</em>.</div>
       <div class="wc-stat">&#8599; 100K impressions &middot; week 1</div>
       <div class="wc-stat-ath"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg> ATH MC: $2M</div>
@@ -607,7 +579,7 @@
     <!-- PTSD -->
     <div class="work-card">
 <a href="https://x.com/PTSDshow" target="_blank" rel="noopener"><div class="wc-logo-wrap"><img class="wc-logo-img" src="https://unavatar.io/x/PTSDshow" alt="PTSD" loading="lazy"></div></a>
-      <div class="project-status status-ended">&#9632; Ended</div>
+      <div class="project-status status-active"><span class="pulse-dot"></span> Active</div>
       <div class="wc-tag">Community Lead &amp; Host</div>
       <div class="wc-links-row">
         <a href="https://x.com/PTSDshow" target="_blank" rel="noopener" class="wc-icon-link"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> X</a>
@@ -617,6 +589,21 @@
       <div class="wc-desc">Got involved at launch for this <em>animated Web3 series</em> &mdash; hosted X Spaces to build early hype, built and moderated the Discord community from the ground up, and helped open doors with potential investors and partners.</div>
       <div class="wc-stat">&#9670; Community · Spaces · Investor Outreach</div>
       <div class="wc-stat" style="color:#fbbf24;opacity:.85;">&#9711; Token: Coming Soon</div>
+    </div>
+
+    <!-- QUAIFLIP -->
+    <div class="work-card">
+<a href="https://x.com/QuaiFlip" target="_blank" rel="noopener"><div class="wc-logo-wrap"><img class="wc-logo-img" src="https://unavatar.io/x/QuaiFlip" alt="QuaiFlip" loading="lazy"></div></a>
+      <div class="project-status status-active"><span class="pulse-dot"></span> Active</div>
+      <div class="wc-tag">Co-Founder &amp; Growth Lead</div>
+      <div class="wc-links-row">
+        <a href="https://x.com/QuaiFlip" target="_blank" rel="noopener" class="wc-icon-link"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> X</a>
+        <a href="https://quaiflip.com/" target="_blank" rel="noopener" class="wc-icon-link"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Website</a>
+      </div>
+      <a href="https://quaiflip.com/" target="_blank" rel="noopener" class="wc-link"><div class="wc-co">QuaiFlip</div></a>
+      <div class="wc-desc">Co-founded the <em>first provably fair on-chain coin flip game on Quai Network</em> from scratch alongside lead dev Ludz. Built the full brand identity &mdash; logo, colour system, typography, tagline. Grew the X account from zero, architected the Discord community end-to-end, wrote and submitted a <em>$40,000 grant proposal</em> to the Quai Builders Program, and repped the project across multiple Quai Network X Spaces. Launched on mainnet.</div>
+      <div class="wc-stat">&#8599; $40K grant proposal · Discord · Spaces · Brand</div>
+      <div class="wc-stat-ath"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg> Live on Quai Mainnet</div>
     </div>
 
     <div class="work-card wc-anon">
@@ -647,24 +634,12 @@
     <div class="media-item">
       <div class="media-item-title">Gently Used Blunt</div>
       <div class="media-item-sub">On-location weed shop shoot</div>
-      <a class="media-preview-link" href="https://x.com/JawsOnChain/status/2028516773364908096" target="_blank" rel="noopener">
-        <div class="media-preview-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
-        <div class="media-preview-info">
-          <span class="media-preview-src">@JawsOnChain on X</span>
-          <span class="media-preview-cta">Watch the video →</span>
-        </div>
-      </a>
+      <video class="media-video" src="GUB%20promo.mp4" controls playsinline preload="metadata" poster="gub-poster.jpg"></video>
     </div>
     <div class="media-item">
       <div class="media-item-title">Bongo — NFC Lisbon</div>
       <div class="media-item-sub">IRL event coverage</div>
-      <a class="media-preview-link" href="https://x.com/AskBongoCoin/status/1932397941282541790" target="_blank" rel="noopener">
-        <div class="media-preview-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
-        <div class="media-preview-info">
-          <span class="media-preview-src">@AskBongoCoin on X</span>
-          <span class="media-preview-cta">Watch the video →</span>
-        </div>
-      </a>
+      <video class="media-video" src="Bongo%20Promo.mp4" controls playsinline preload="metadata" poster="bongo-poster.jpg"></video>
     </div>
   </div>
 </section>
@@ -683,15 +658,15 @@
   </svg>
   <div class="mouth-inner">
     <div class="skills-grid">
-      <div class="skill-tile"><div class="sk-num">01 //</div><div class="sk-name">Content Strategy</div><div class="sk-desc">Building narratives that resonate with crypto-native audiences. From DoopApp to LORE &mdash; 500K impressions in a single month, 120% engagement lifts.</div></div>
-      <div class="skill-tile"><div class="sk-num">02 //</div><div class="sk-name">Community Growth</div><div class="sk-desc">Built and moderated Discord communities from scratch, ran Telegram groups, and grew social accounts from zero. Discord, Telegram, X &mdash; all channels.</div></div>
-      <div class="skill-tile"><div class="sk-num">03 //</div><div class="sk-name">Trend Execution</div><div class="sk-desc">Moving on emerging narratives before everyone else. Rage-bait, political memes, DeFi meta &mdash; in position before the crowd arrives.</div></div>
-      <div class="skill-tile"><div class="sk-num">04 //</div><div class="sk-name">Visual Content</div><div class="sk-desc">PNL cards, branded graphics, meme production, scripted livestreams &mdash; turning performance and culture into shareable assets.</div></div>
-      <div class="skill-tile"><div class="sk-num">05 //</div><div class="sk-name">X Spaces &amp; Live</div><div class="sk-desc">Hosted early-stage Spaces to build launch hype, drove investor discovery, and kept communities engaged through live sessions.</div></div>
-      <div class="skill-tile"><div class="sk-num">06 //</div><div class="sk-name">Event Marketing</div><div class="sk-desc">Flew to NFC Lisbon to capture on-the-ground footage and market live. Turning IRL moments into online momentum.</div></div>
-      <div class="skill-tile"><div class="sk-num">07 //</div><div class="sk-name">Video Production</div><div class="sk-desc">Shot on-location promo content at a real weed shop for GUB. Turning grassroots ideas into polished marketing assets.</div></div>
-      <div class="skill-tile"><div class="sk-num">08 //</div><div class="sk-name">Economy Management</div><div class="sk-desc">Tracked and processed $10K+ in payouts to clippers for Clipped.fun &mdash; managing a live creator economy end-to-end.</div></div>
-      <div class="skill-tile"><div class="sk-num">09 //</div><div class="sk-name">Co-Founding</div><div class="sk-desc">Co-founded Clipped.fun, a Web3 Creator Capital Markets platform. Ran socials, bug-tested the app, and built the clipper ecosystem from zero.</div></div>
+      <div class="skill-tile"><div class="sk-name" data-i18n="sk1_name">Content Strategy</div><div class="sk-desc" data-i18n="sk1_desc">Building narratives that resonate with crypto-native audiences. From DoopApp to LORE &mdash; 500K impressions in a single month, 120% engagement lifts.</div></div>
+      <div class="skill-tile"><div class="sk-name" data-i18n="sk2_name">Community Growth</div><div class="sk-desc" data-i18n="sk2_desc">Built and moderated Discord communities from scratch, ran Telegram groups, and grew social accounts from zero. Discord, Telegram, X &mdash; all channels.</div></div>
+      <div class="skill-tile"><div class="sk-name" data-i18n="sk3_name">Trend Execution</div><div class="sk-desc" data-i18n="sk3_desc">Moving on emerging narratives before everyone else. Rage-bait, political memes, DeFi meta &mdash; in position before the crowd arrives.</div></div>
+      <div class="skill-tile"><div class="sk-name" data-i18n="sk4_name">Visual Content</div><div class="sk-desc" data-i18n="sk4_desc">PNL cards, branded graphics, meme production, scripted livestreams &mdash; turning performance and culture into shareable assets.</div></div>
+      <div class="skill-tile"><div class="sk-name" data-i18n="sk5_name">X Spaces &amp; Live</div><div class="sk-desc" data-i18n="sk5_desc">Hosted early-stage Spaces to build launch hype, drove investor discovery, and kept communities engaged through live sessions.</div></div>
+      <div class="skill-tile"><div class="sk-name" data-i18n="sk6_name">Event Marketing</div><div class="sk-desc" data-i18n="sk6_desc">Flew to NFC Lisbon to capture on-the-ground footage and market live. Turning IRL moments into online momentum.</div></div>
+      <div class="skill-tile"><div class="sk-name" data-i18n="sk7_name">Video Production</div><div class="sk-desc" data-i18n="sk7_desc">Shot on-location promo content at a real weed shop for GUB. Turning grassroots ideas into polished marketing assets.</div></div>
+      <div class="skill-tile"><div class="sk-name" data-i18n="sk8_name">Economy Management</div><div class="sk-desc" data-i18n="sk8_desc">Tracked and processed $10K+ in payouts to clippers for Clipped.fun &mdash; managing a live creator economy end-to-end.</div></div>
+      <div class="skill-tile"><div class="sk-name" data-i18n="sk9_name">Co-Founding</div><div class="sk-desc" data-i18n="sk9_desc">Co-founded Clipped.fun, a Web3 Creator Capital Markets platform. Ran socials, bug-tested the app, and built the clipper ecosystem from zero.</div></div>
     </div>
   </div>
   <svg class="mouth-svg-outer" viewBox="0 0 1200 110" preserveAspectRatio="none" style="transform:scaleY(-1);" xmlns="http://www.w3.org/2000/svg">
@@ -711,23 +686,26 @@
 </div>
 <!-- CONTACT -->
 <section class="contact-section" id="contact">
-  <div class="contact-watermark">JAWS</div>
   <div class="contact-eyebrow" data-i18n="contact_eyebrow">Contact</div>
   <h2 class="contact-hl">
     LET'S BUILD<br>SOMETHING
-    <span class="hl">WORTH HUNTING.</span>
+    <span class="hl">WORTH BIDDING.</span>
   </h2>
-  <p class="contact-sub" data-i18n="contact_sub">Anonymous doesn't mean unreachable.</p>
-  <div class="contact-handle">@JawsOnChain</div>
+  <p class="contact-sub" style="margin-bottom:.6rem;" data-i18n="contact_sub">Anonymous doesn't mean unreachable.</p>
+  <p class="contact-sub" style="opacity:.45;">Eyes get you buys.</p>
   <div class="contact-links">
     <a href="https://x.com/JawsOnChain" target="_blank" class="c-link c-primary">
       <svg class="c-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
       <div><span class="c-lbl">Twitter / X</span>@JawsOnChain</div>
     </a>
-    <div class="c-link c-soon">
+    <a href="https://t.me/jaws98" target="_blank" rel="noopener" class="c-link">
+      <svg class="c-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.281c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.94z"/></svg>
+      <div><span class="c-lbl">Telegram</span>@jaws98</div>
+    </a>
+    <a href="mailto:JawsOnChain@proton.me" class="c-link">
       <svg class="c-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>
-      <div><span class="c-lbl">Web3 Contact</span>Coming soon &mdash; DMs open @JawsOnChain</div>
-    </div>
+      <div><span class="c-lbl">Email</span>JawsOnChain@proton.me</div>
+    </a>
   </div>
 </section>
 <footer>
@@ -735,15 +713,17 @@
   <nav class="f-nav">
     <a href="#about">About</a>
     <a href="#work">Work</a>
+    <a href="#media">Media</a>
     <a href="#skills">Skills</a>
     <a href="#contact">Contact</a>
   </nav>
   <div class="f-txt">@JawsOnChain &middot; Web3 Marketing</div>
-  <div class="f-copy">&copy; 2025 &middot; Always in the water.</div>
+  <div class="f-copy">&copy; 2026 &middot; Always in the water.</div>
 </footer>
 </div>
 <button id="backTop" class="back-top" aria-label="Back to top">↑</button>
 <script>
+// CURSOR
 const cur=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
 if(window.matchMedia('(hover:hover)').matches){
   let mx=0,my=0,rx=0,ry=0;
@@ -784,32 +764,22 @@ bR();window.addEventListener('resize',bR);
 let bp=[];
 document.addEventListener('click',e=>{for(let i=0;i<18;i++){const a=Math.random()*Math.PI*2,s=.5+Math.random()*3;bp.push({x:e.clientX,y:e.clientY,vx:Math.cos(a)*s,vy:Math.sin(a)*s-(1+Math.random()*2),life:1,r:2+Math.random()*5,wobble:Math.random()*Math.PI*2});}});
 (function dB(){bctx.clearRect(0,0,BW,BH);bp.forEach(p=>{p.wobble+=.08;p.x+=p.vx+Math.sin(p.wobble)*.4;p.y+=p.vy;p.vy-=.04;p.life-=.018;p.vx*=.97;const a=p.life*0.6;bctx.save();bctx.globalAlpha=a;bctx.strokeStyle=`rgba(1,255,255,${a})`;bctx.shadowColor='rgba(1,255,255,0.6)';bctx.shadowBlur=6;bctx.lineWidth=1;bctx.beginPath();bctx.arc(p.x,p.y,p.r,0,Math.PI*2);bctx.stroke();bctx.restore();});bp=bp.filter(p=>p.life>0);requestAnimationFrame(dB);})();
-// BUBBLES
-const bubs=[document.getElementById('b1'),document.getElementById('b2'),document.getElementById('b3'),document.getElementById('b4')];
-(function animBubs(){
-  const t=Date.now()*.001;
-  bubs.forEach((b,i)=>{
-    if(b){
-      const dy=Math.sin(t*.7+i*1.3)*5;
-      const dx=Math.cos(t*.5+i*.9)*2;
-      b.setAttribute('transform',`translate(${dx},${dy})`);
-      b.setAttribute('opacity',(0.25+Math.abs(Math.sin(t+i))*.4).toString());
+
+// SPLINE WATERMARK
+(function hideSplineWatermark(){
+  const iv=setInterval(()=>{
+    const v=document.querySelector('spline-viewer');
+    if(v&&v.shadowRoot){
+      const sr=v.shadowRoot;
+      sr.querySelectorAll('a,#logo,[class*="watermark"],[class*="logo"],[class*="built"]').forEach(el=>el.style.display='none');
+      const style=sr.querySelector('#jaws-hide')||document.createElement('style');
+      style.id='jaws-hide';
+      style.textContent='a,#logo,[class*="watermark"],[class*="logo"],[class*="built"]{display:none!important;}';
+      sr.appendChild(style);
     }
-  });
-  requestAnimationFrame(animBubs);
+  },500);
+  setTimeout(()=>clearInterval(iv),15000);
 })();
-
-
-// DEGEN MODE
-const degenBtn=document.getElementById('degenToggle');
-const degenOn=localStorage.getItem('degen')==='on';
-if(degenOn){document.documentElement.setAttribute('data-degen','on');degenBtn.classList.add('degen-on');}
-degenBtn.addEventListener('click',()=>{
-  const on=document.documentElement.getAttribute('data-degen')==='on';
-  document.documentElement.setAttribute('data-degen',on?'off':'on');
-  degenBtn.classList.toggle('degen-on',!on);
-  localStorage.setItem('degen',on?'off':'on');
-});
 
 // SOL PRICE
 const solEl=document.getElementById('solPrice');
@@ -834,24 +804,35 @@ setInterval(fetchSOL,30000);
 const LANGS={
   en:{
     nav_about:'About',nav_work:'Work',nav_skills:'Skills',nav_contact:'Contact',
-    hero_eyebrow:'@JawsOnChain · Web3 Marketing',
+    hero_eyebrow:'@JawsOnChain · Chronically online. Terminally effective.',
     hero_h1:'WEB3 MARKETING',hero_h2:'THAT MOVES',hero_h3:'MARKETS.',
-    hero_sub:'Not a developer. More than a reply guy. The strategy layer every project is missing.',
+    hero_sub:"I don't have a job title. I have results.",
     about_tag:'About',about_title:'Who I Am',
-    about_p1:'A social media strategist and marketer operating anonymously in Web3. I got into this space because it moves fast, rewards creativity, and has no rulebook — which is exactly how I like it.',
+    about_p1:"A social media strategist and marketer who's been operating anonymously in Web3 since 2024. I got into this space because it moves fast, rewards creativity, and has no rulebook — which is exactly how I like it.",
     about_p2:'I build accounts from nothing, turn performance data into shareable content, and grow communities that actually care. What I care about is making things that work — not things that just look good on a deck.',
     about_p3:'Always in the water. Always moving.',
     fact_status:'Open to new projects',
     work_tag:'Selected Work',work_title:'Projects',
     skills_tag:'Capabilities',skills_title:'Skills',
+    hero_cta:'View My Work ↓',
     contact_eyebrow:'Contact',
     contact_sub:"Anonymous doesn't mean unreachable.",
+    sk1_name:'Content Strategy',sk1_desc:'Building narratives that resonate with crypto-native audiences. From DoopApp to LORE — 500K impressions in a single month, 120% engagement lifts.',
+    sk2_name:'Community Growth',sk2_desc:'Built and moderated Discord communities from scratch, ran Telegram groups, and grew social accounts from zero. Discord, Telegram, X — all channels.',
+    sk3_name:'Trend Execution',sk3_desc:'Moving on emerging narratives before everyone else. Rage-bait, political memes, DeFi meta — in position before the crowd arrives.',
+    sk4_name:'Visual Content',sk4_desc:'PNL cards, branded graphics, meme production, scripted livestreams — turning performance and culture into shareable assets.',
+    sk5_name:'X Spaces & Live',sk5_desc:'Hosted early-stage Spaces to build launch hype, drove investor discovery, and kept communities engaged through live sessions.',
+    sk6_name:'Event Marketing',sk6_desc:'Flew to NFC Lisbon to capture on-the-ground footage and market live. Turning IRL moments into online momentum.',
+    sk7_name:'Video Production',sk7_desc:'Shot on-location promo content at a real weed shop for GUB. Turning grassroots ideas into polished marketing assets.',
+    sk8_name:'Economy Management',sk8_desc:'Tracked and processed $10K+ in payouts to clippers for Clipped.fun — managing a live creator economy end-to-end.',
+    sk9_name:'Co-Founding',sk9_desc:'Co-founded Clipped.fun, a Web3 Creator Capital Markets platform. Ran socials, bug-tested the app, and built the clipper ecosystem from zero.',
   },
   es:{
     nav_about:'Acerca',nav_work:'Trabajo',nav_skills:'Habilidades',nav_contact:'Contacto',
-    hero_eyebrow:'@JawsOnChain · Marketing Web3',
+    hero_eyebrow:'@JawsOnChain · Chronically online. Terminally effective.',
     hero_h1:'MARKETING WEB3',hero_h2:'QUE MUEVE',hero_h3:'MERCADOS.',
-    hero_sub:'No desarrollador. Más que un reply guy. La capa de estrategia que le falta a cada proyecto.',
+    hero_sub:'No tengo título de trabajo. Tengo resultados.',
+    hero_cta:'Ver Mi Trabajo ↓',
     about_tag:'Acerca',about_title:'Quién Soy',
     about_p1:'Estratega y marketer de redes sociales que opera de forma anónima en Web3. Entré en este espacio porque es rápido, premia la creatividad y no tiene reglas — exactamente como me gusta.',
     about_p2:'Construyo cuentas desde cero, convierto datos en contenido viral y hago crecer comunidades que realmente importan. Lo que me importa es hacer cosas que funcionen — no que solo queden bien en un deck.',
@@ -861,12 +842,22 @@ const LANGS={
     skills_tag:'Capacidades',skills_title:'Habilidades',
     contact_eyebrow:'Contacto',
     contact_sub:'Anónimo no significa inalcanzable.',
+    sk1_name:'Estrategia de Contenido',sk1_desc:'Construyendo narrativas que resuenan con audiencias nativas de cripto. De DoopApp a LORE — 500K impresiones en un mes, 120% de aumento en engagement.',
+    sk2_name:'Crecimiento de Comunidad',sk2_desc:'Construí y moderé comunidades de Discord desde cero, dirigí grupos de Telegram y crecí cuentas sociales de nada. Discord, Telegram, X — todos los canales.',
+    sk3_name:'Ejecución de Tendencias',sk3_desc:'Moviéndose en narrativas emergentes antes que todos. Rage-bait, memes políticos, meta DeFi — en posición antes de que llegue la multitud.',
+    sk4_name:'Contenido Visual',sk4_desc:'Tarjetas PNL, gráficos con marca, producción de memes, livestreams guionizados — convirtiendo rendimiento y cultura en activos compartibles.',
+    sk5_name:'X Spaces y Live',sk5_desc:'Organicé Spaces en etapas tempranas para generar hype de lanzamiento, impulsé el descubrimiento de inversores y mantuve las comunidades comprometidas.',
+    sk6_name:'Marketing de Eventos',sk6_desc:'Viajé a NFC Lisboa para capturar material en terreno y hacer marketing en vivo. Convirtiendo momentos IRL en impulso online.',
+    sk7_name:'Producción de Video',sk7_desc:'Grabé contenido promocional en una tienda real para GUB. Convirtiendo ideas grassroots en activos de marketing pulidos.',
+    sk8_name:'Gestión de Economía',sk8_desc:'Rastreé y procesé más de $10K en pagos a clippers para Clipped.fun — gestionando una economía de creadores en vivo de principio a fin.',
+    sk9_name:'Co-Fundador',sk9_desc:'Co-fundé Clipped.fun, una plataforma de Mercados de Capital para Creadores Web3. Manejé redes sociales, probé la app y construí el ecosistema de clippers desde cero.',
   },
   zh:{
     nav_about:'关于',nav_work:'作品',nav_skills:'技能',nav_contact:'联系',
-    hero_eyebrow:'@JawsOnChain · Web3 营销',
+    hero_eyebrow:'@JawsOnChain · Chronically online. Terminally effective.',
     hero_h1:'WEB3 营销',hero_h2:'推动',hero_h3:'市场。',
-    hero_sub:'不是开发者。不只是回复者。每个项目都缺少的那层策略。',
+    hero_sub:'我没有职位头衔。我有结果。',
+    hero_cta:'查看我的作品 ↓',
     about_tag:'关于',about_title:'我是谁',
     about_p1:'在Web3领域匿名运营的社交媒体策略师与营销专家。我进入这个空间，因为它发展迅速，奖励创意，没有规则——这正是我喜欢的方式。',
     about_p2:'我从零开始建立账号，将数据转化为可分享的内容，培育真正有价值的社区。我关心的是让事情真正奏效——而不只是在PPT上好看。',
@@ -876,12 +867,22 @@ const LANGS={
     skills_tag:'能力',skills_title:'技能',
     contact_eyebrow:'联系',
     contact_sub:'匿名不代表无法联系。',
+    sk1_name:'内容策略',sk1_desc:'为加密原生受众打造共鸣叙事。从DoopApp到LORE — 单月50万印象，参与度提升120%。',
+    sk2_name:'社区增长',sk2_desc:'从零构建并管理Discord社区，运营Telegram群组，从零增长社交账号。Discord、Telegram、X — 全渠道覆盖。',
+    sk3_name:'趋势执行',sk3_desc:'在所有人之前捕捉新兴叙事。愤怒诱饵、政治梗图、DeFi元叙事 — 在大众涌入之前就已就位。',
+    sk4_name:'视觉内容',sk4_desc:'盈亏卡片、品牌图形、梗图制作、脚本直播 — 将表现和文化转化为可分享资产。',
+    sk5_name:'X Spaces与直播',sk5_desc:'主持早期Spaces积累发布热度，推动投资者发现，通过直播保持社区活跃。',
+    sk6_name:'活动营销',sk6_desc:'飞赴里斯本NFC现场拍摄素材并实时营销。将线下时刻转化为线上动能。',
+    sk7_name:'视频制作',sk7_desc:'在真实大麻店实地拍摄GUB推广内容。将草根创意转化为精良营销资产。',
+    sk8_name:'经济管理',sk8_desc:'追踪并处理Clipped.fun超过1万美元的剪辑者报酬 — 端到端管理真实创作者经济。',
+    sk9_name:'联合创始人',sk9_desc:'联合创立Clipped.fun，一个Web3创作者资本市场平台。负责社交媒体、应用测试，并从零搭建剪辑者生态。',
   },
   ru:{
     nav_about:'Обо мне',nav_work:'Работа',nav_skills:'Навыки',nav_contact:'Контакт',
-    hero_eyebrow:'@JawsOnChain · Маркетинг Web3',
+    hero_eyebrow:'@JawsOnChain · Chronically online. Terminally effective.',
     hero_h1:'МАРКЕТИНГ WEB3',hero_h2:'КОТОРЫЙ ДВИГАЕТ',hero_h3:'РЫНКИ.',
-    hero_sub:'Не разработчик. Больше, чем reply guy. Стратегический слой, которого не хватает каждому проекту.',
+    hero_sub:'У меня нет должности. У меня есть результаты.',
+    hero_cta:'Посмотреть Работы ↓',
     about_tag:'Обо мне',about_title:'Кто Я',
     about_p1:'Анонимный стратег социальных сетей и маркетолог в Web3. Я вошёл в эту сферу, потому что она быстра, вознаграждает творчество и не имеет правил — именно так, как мне нравится.',
     about_p2:'Я строю аккаунты с нуля, превращаю данные в вирусный контент и создаю сообщества, которым не всё равно. Меня интересует то, что работает — а не то, что выглядит красиво в презентации.',
@@ -891,12 +892,22 @@ const LANGS={
     skills_tag:'Возможности',skills_title:'Навыки',
     contact_eyebrow:'Контакт',
     contact_sub:'Анонимность — не значит недосягаемость.',
+    sk1_name:'Контент-стратегия',sk1_desc:'Создаю нарративы, которые резонируют с крипто-аудиторией. От DoopApp до LORE — 500K показов за месяц, рост вовлечённости на 120%.',
+    sk2_name:'Рост сообщества',sk2_desc:'Строил и модерировал Discord-сообщества с нуля, вёл Telegram-группы, развивал соцсети с нуля. Discord, Telegram, X — все каналы.',
+    sk3_name:'Работа с трендами',sk3_desc:'Занимаю позицию в нарративах до того, как они становятся мейнстримом. Rage-bait, политические мемы, DeFi-мета — всегда первым.',
+    sk4_name:'Визуальный контент',sk4_desc:'PNL-карточки, брендированная графика, производство мемов, стриминги по сценарию — превращаю перформанс в вирусные активы.',
+    sk5_name:'X Spaces и Live',sk5_desc:'Проводил ранние Spaces для создания хайпа, помогал инвесторам обнаруживать проекты, удерживал аудиторию в прямом эфире.',
+    sk6_name:'Ивент-маркетинг',sk6_desc:'Летел на NFC Лиссабон, снимал материал на месте и маркетинговал в реальном времени. IRL-моменты — в онлайн-импульс.',
+    sk7_name:'Видеопроизводство',sk7_desc:'Снял промо-контент в настоящем магазине для GUB. Превращаю grassroots-идеи в полированные маркетинговые активы.',
+    sk8_name:'Управление экономикой',sk8_desc:'Отслеживал и обрабатывал выплаты клипперам Clipped.fun на сумму $10K+ — управление живой экономикой создателей от начала до конца.',
+    sk9_name:'Со-основатель',sk9_desc:'Со-основал Clipped.fun — платформу рынков капитала для создателей в Web3. Вёл соцсети, тестировал приложение, выстроил экосистему клипперов с нуля.',
   },
   fr:{
     nav_about:'À propos',nav_work:'Travail',nav_skills:'Compétences',nav_contact:'Contact',
-    hero_eyebrow:'@JawsOnChain · Marketing Web3',
+    hero_eyebrow:'@JawsOnChain · Chronically online. Terminally effective.',
     hero_h1:'MARKETING WEB3',hero_h2:'QUI BOUGE',hero_h3:'LES MARCHÉS.',
-    hero_sub:"Pas développeur. Plus qu'un reply guy. La couche stratégique qui manque à chaque projet.",
+    hero_sub:"Je n'ai pas de titre. J'ai des résultats.",
+    hero_cta:'Voir Mon Travail ↓',
     about_tag:'À propos',about_title:'Qui Je Suis',
     about_p1:"Stratège et marketeur en réseaux sociaux opérant anonymement dans le Web3. J'ai rejoint cet espace parce qu'il évolue vite, récompense la créativité et n'a pas de règles — exactement comme je l'aime.",
     about_p2:"Je construis des comptes de zéro, transforme des données en contenu viral et développe des communautés engagées. Ce qui m'importe, c'est créer des choses qui fonctionnent — pas des choses qui semblent bonnes dans un deck.",
@@ -906,6 +917,15 @@ const LANGS={
     skills_tag:'Capacités',skills_title:'Compétences',
     contact_eyebrow:'Contact',
     contact_sub:'Anonyme ne signifie pas inaccessible.',
+    sk1_name:'Stratégie de Contenu',sk1_desc:'Construire des récits qui résonnent avec les audiences crypto-natives. De DoopApp à LORE — 500K impressions en un mois, +120% d\'engagement.',
+    sk2_name:'Croissance de Communauté',sk2_desc:'Construit et modéré des communautés Discord de zéro, géré des groupes Telegram, développé des comptes sociaux de rien. Discord, Telegram, X — tous les canaux.',
+    sk3_name:'Exécution de Tendances',sk3_desc:'Positionné sur les narratifs émergents avant tout le monde. Rage-bait, mèmes politiques, méta DeFi — en position avant que la foule arrive.',
+    sk4_name:'Contenu Visuel',sk4_desc:'Cartes PNL, graphiques brandés, production de mèmes, livestreams scénarisés — transformer performance et culture en actifs partageables.',
+    sk5_name:'X Spaces & Live',sk5_desc:'Animé des Spaces en phase précoce pour créer du hype, facilité la découverte par les investisseurs, maintenu les communautés engagées en direct.',
+    sk6_name:'Marketing Événementiel',sk6_desc:'Volé à NFC Lisbonne pour capturer du contenu sur le terrain et marketer en direct. Transformer les moments IRL en élan online.',
+    sk7_name:'Production Vidéo',sk7_desc:'Tourné du contenu promotionnel dans une vraie boutique pour GUB. Transformer des idées grassroots en actifs marketing soignés.',
+    sk8_name:'Gestion d\'Économie',sk8_desc:'Suivi et traité plus de 10K$ de paiements aux clippers de Clipped.fun — gérer une économie de créateurs en direct de bout en bout.',
+    sk9_name:'Co-Fondateur',sk9_desc:'Co-fondé Clipped.fun, une plateforme de marchés de capitaux pour créateurs Web3. Géré les réseaux sociaux, testé l\'app, construit l\'écosystème de clippers de zéro.',
   },
 };
 function applyLang(code){
