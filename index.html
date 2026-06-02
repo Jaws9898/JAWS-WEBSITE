@@ -1,1025 +1,1176 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>JAWS</title>
-  <meta name="description" content="JAWS — Web3 social media strategist and marketer. 10M+ impressions, community growth, content strategy. @JawsOnChain"/>
-  <meta property="og:title" content="JAWS — Web3 Marketing"/>
-  <meta property="og:description" content="In the water before you knew there was a game. Anonymous. Results-driven. Always circling."/>
-  <meta property="og:type" content="website"/>
-  <meta property="og:image" content="/og-image.png"/>
-  <meta name="twitter:card" content="summary_large_image"/>
-  <meta name="twitter:site" content="@JawsOnChain"/>
-  <meta name="twitter:title" content="JAWS — Web3 Marketing"/>
-  <meta name="twitter:description" content="In the water before you knew there was a game. Anonymous. Results-driven. Always circling."/>
-  <meta name="twitter:image" content="/og-image.png"/>
-  <link rel="icon" href="https://unavatar.io/x/jawsonchain">
-  <link rel="preload" href="GUB.jpg" as="image">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JAWSFLIX</title>
+  <link rel="icon" href="Jawsflix Flav.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet"/>
-  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <script defer src="/_vercel/insights/script.js"></script>
   <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-    :root{
-      --cyan:#01FFFF;
-      --abyss:#010A0A;
-      --deep:#021212;
-      --teal:#072020;
-      --text:#8EDDDD;
-      --muted:rgba(1,255,255,0.35);
-      --border:rgba(1,255,255,0.08);
-    }
-    html{scroll-behavior:smooth;}
-    body{background:var(--abyss);color:var(--text);font-family:'JetBrains Mono',monospace;overflow-x:hidden;cursor:none;}
-    .cursor{position:fixed;width:8px;height:8px;background:var(--cyan);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:screen;transition:width .15s,height .15s;}
-    .cursor-ring{position:fixed;width:30px;height:30px;border:1px solid var(--muted);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);}
-    #causticCanvas{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.15;}
-    #bloodCanvas{position:fixed;inset:0;width:100%;height:100%;z-index:50;pointer-events:none;}
-    .wrapper{position:relative;z-index:1;}
-    nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:1.2rem 5vw;background:rgba(1,10,10,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);animation:fadeDown .8s ease both;}
-    .nav-logo{display:flex;align-items:center;text-decoration:none;}
-    .nav-logo-img{width:36px;height:36px;border-radius:50%;border:1.5px solid rgba(1,255,255,.6);box-shadow:0 0 14px rgba(1,255,255,.3),0 0 28px rgba(1,255,255,.1);object-fit:cover;display:block;}
-    .nav-links{display:flex;gap:2.5rem;list-style:none;}
-    .nav-links a{text-decoration:none;color:var(--muted);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;transition:color .2s,text-shadow .2s;}
-    .nav-links a:hover{color:var(--cyan);text-shadow:0 0 12px var(--cyan);}
-    .nav-cta{display:inline-flex;align-items:center;padding:.38rem 1rem;border:1px solid rgba(1,255,255,.35);color:var(--cyan);text-decoration:none;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;transition:border-color .2s,box-shadow .2s,background .2s;background:rgba(1,255,255,.04);border-radius:2px;}
-    .nav-cta:hover{border-color:var(--cyan);box-shadow:0 0 16px rgba(1,255,255,.15);background:rgba(1,255,255,.08);}
-    .hero{min-height:100vh;position:relative;overflow:hidden;display:flex;align-items:center;padding:0 5vw;}
-    .surface{position:absolute;top:56%;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(1,255,255,.25) 20%,rgba(1,255,255,.06) 80%,transparent);pointer-events:none;}
-    /* ── SPLINE 3D SCENE ──────────────────────────── */
-    .hero-3d{position:absolute;right:0;top:0;width:55%;height:100%;z-index:1;}
-    .hero-3d spline-viewer{width:100%;height:100%;display:block;}
-    /* ── SPOTLIGHT BEAM ───────────────────────────── */
-    .hero-spotlight{position:absolute;pointer-events:none;z-index:2;height:169%;width:138%;top:-40%;left:-30%;opacity:0;animation:spotlightIn 2.5s ease 1s 1 forwards;}
-    @keyframes spotlightIn{from{opacity:0;transform:skewX(30deg) scaleX(0.85);}to{opacity:1;transform:skewX(20deg) scaleX(1);}}
-    @keyframes eyePulse{0%,100%{opacity:1;}50%{opacity:.3;}}
-    .shark-eye{animation:eyePulse 2.8s ease-in-out infinite;}
-    @keyframes bubFloat{0%{transform:translateY(0);opacity:.6;}100%{transform:translateY(-60px);opacity:0;}}
-    .hero-content{position:relative;z-index:3;max-width:48vw;opacity:0;animation:fadeUp 1s .3s ease forwards;}
-    .hero-eyebrow{font-size:.65rem;letter-spacing:.25em;color:var(--cyan);opacity:.6;margin-bottom:1rem;}
-    .hero-eyebrow::before{content:'> ';}
-    .hero-sub{font-size:.87rem;color:var(--muted);max-width:380px;line-height:1.9;}
-    .hero-sub em{color:var(--cyan);font-style:normal;text-shadow:0 0 8px rgba(1,255,255,.3);}
-    .ticker-wrap{border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;padding:.85rem 0;background:var(--teal);position:relative;z-index:1;}
-    .ticker-track{display:flex;animation:tickerScroll 28s linear infinite;width:max-content;}
-    .ticker-item{white-space:nowrap;padding:0 2.5rem;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:2.5rem;}
-    .tdot{color:var(--cyan);font-size:.4rem;text-shadow:0 0 6px var(--cyan);}
-    @keyframes tickerScroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
-    .caps-bar{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border);position:relative;z-index:1;background:var(--deep);}
-    .cap-item{padding:2.5rem 3vw;border-right:1px solid var(--border);opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease;}
-    .cap-item:last-child{border-right:none;}
-    .cap-item.visible{opacity:1;transform:none;}
-    .cap-num{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.6rem,4vw,3.8rem);color:var(--cyan);text-shadow:0 0 20px var(--cyan),0 0 40px rgba(1,255,255,.3);line-height:1;}
-    .cap-label{font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-top:.4rem;}
-    .teeth-div{position:relative;z-index:1;line-height:0;overflow:hidden;}
-    .teeth-div svg{display:block;width:100%;}
-    .section{padding:6rem 5vw;position:relative;z-index:1;border-top:1px solid var(--border);}
-    .section.teal-bg{background:var(--teal);border-top:none;}
-    .s-tag{font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--cyan);opacity:.55;margin-bottom:.6rem;}
-    .s-tag::before{content:'[ ';} .s-tag::after{content:' ]';}
-    .s-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4rem);letter-spacing:.06em;color:#fff;text-shadow:0 0 30px rgba(1,255,255,.15);margin-bottom:3.5rem;line-height:1;}
-    .work-sub{font-size:.78rem;line-height:1.9;color:var(--muted);margin-top:-2rem;margin-bottom:3rem;max-width:52ch;}
-    .about-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:6vw;align-items:start;}
-    .about-body{font-size:.9rem;line-height:2;color:var(--text);}
-    .about-body em{color:var(--cyan);font-style:normal;}
-    .about-body p+p{margin-top:1.2rem;}
-    .about-facts{border-left:1px solid var(--border);padding-left:2.5rem;}
-    .fact{padding:1rem 0;border-bottom:1px solid var(--border);}
-    .fact-l{font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:.25rem;}
-    .fact-v{font-size:.88rem;color:#fff;}
-    .scroll-fin{position:absolute;bottom:-30px;right:5vw;width:55px;pointer-events:none;animation:finBob 3s ease-in-out infinite;}
-    @keyframes finBob{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
-    .work-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);}
-    .work-card{background:var(--abyss);padding:3rem;position:relative;overflow:hidden;opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease,background .25s;}
-    .work-card.visible{opacity:1;transform:none;}
-    .work-card:hover{background:#041414;}
-    .work-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);transform:scaleX(0);transform-origin:left;transition:transform .4s ease;box-shadow:0 0 12px var(--cyan);}
-    .work-card:hover::before{transform:scaleX(1);}
-    .wc-tag{font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan);opacity:.5;margin-bottom:.8rem;}
-    .wc-co{font-family:'Bebas Neue',sans-serif;font-size:2.4rem;letter-spacing:.07em;color:#fff;text-shadow:0 0 20px rgba(1,255,255,.2);margin-bottom:.9rem;line-height:1;}
-    .wc-desc{font-size:.85rem;line-height:1.85;color:var(--text);opacity:.85;margin-bottom:1.5rem;}
-    .wc-desc em{color:var(--cyan);font-style:normal;}
-    .wc-stat{font-size:.62rem;letter-spacing:.12em;color:var(--cyan);opacity:.5;}
-    .wc-stat-ath{display:flex;align-items:center;gap:.4rem;font-size:.92rem;font-weight:700;letter-spacing:.06em;color:var(--cyan);text-shadow:0 0 12px rgba(1,255,255,.5),0 0 24px rgba(1,255,255,.25);margin-top:.4rem;}
-    .mouth-wrap{position:relative;z-index:1;padding:0 5vw 6rem;}
-    .mouth-header{padding:5rem 0 2rem;}
-    .mouth-svg-outer{width:100%;display:block;}
-    .mouth-inner{background:#020d0d;border-left:2px solid rgba(1,255,255,.25);border-right:2px solid rgba(1,255,255,.25);position:relative;}
-    .mouth-inner::before{content:'';position:absolute;top:0;left:0;right:0;height:8px;background:linear-gradient(to bottom,rgba(1,255,255,.06),transparent);}
-    .mouth-inner::after{content:'';position:absolute;bottom:0;left:0;right:0;height:8px;background:linear-gradient(to top,rgba(1,255,255,.06),transparent);}
-    .skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(1,255,255,.05);}
-    .skill-tile{background:#020d0d;padding:2.5rem 2rem;opacity:0;transform:translateY(8px);transition:opacity .5s ease,transform .5s ease,background .2s;}
-    .skill-tile.visible{opacity:1;transform:none;}
-    .skill-tile:hover{background:rgba(1,255,255,.04);}
-    .sk-name{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.07em;color:#fff;text-shadow:0 0 15px rgba(1,255,255,.2);margin-bottom:.4rem;}
-    .sk-desc{font-size:.78rem;color:var(--muted);line-height:1.65;}
-    .hero-cta{display:inline-flex;align-items:center;margin-top:2rem;padding:1rem 2rem;border:1px solid rgba(1,255,255,.35);color:var(--cyan);text-decoration:none;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;transition:border-color .2s,box-shadow .2s,background .2s;background:rgba(1,255,255,.03);}
-    .hero-cta:hover{border-color:var(--cyan);box-shadow:0 0 24px rgba(1,255,255,.15),inset 0 0 24px rgba(1,255,255,.04);background:rgba(1,255,255,.06);}
-    .contact-section{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;z-index:1;overflow:hidden;background:var(--abyss);padding:5vw;text-align:center;}
-    .contact-section::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:70vw;height:70vw;background:radial-gradient(ellipse,rgba(1,255,255,.07) 0%,transparent 70%);pointer-events:none;}
-    .contact-eyebrow{font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;color:var(--cyan);opacity:.55;margin-bottom:2rem;}
-    .contact-eyebrow::before{content:'[ ';} .contact-eyebrow::after{content:' ]';}
-    .contact-hl{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,9vw,9rem);line-height:.9;letter-spacing:.04em;color:#fff;margin-bottom:1.5rem;position:relative;z-index:1;}
-    .contact-hl .hl{color:var(--cyan);text-shadow:0 0 40px var(--cyan),0 0 80px rgba(1,255,255,.3);display:block;}
-    .contact-sub{font-size:.85rem;color:var(--muted);margin-bottom:4rem;letter-spacing:.05em;position:relative;z-index:1;}
-    .contact-links{display:flex;gap:1.5rem;flex-wrap:wrap;justify-content:center;position:relative;z-index:1;}
-    .c-link{display:flex;align-items:center;gap:1rem;padding:1.2rem 2.5rem;border:1px solid rgba(1,255,255,.2);color:var(--text);text-decoration:none;font-size:.85rem;transition:border-color .2s,box-shadow .2s,color .2s,background .2s;background:rgba(1,255,255,.02);letter-spacing:.05em;}
-    .c-link:hover{border-color:var(--cyan);box-shadow:0 0 30px rgba(1,255,255,.15),inset 0 0 30px rgba(1,255,255,.04);color:var(--cyan);background:rgba(1,255,255,.04);}
-    .c-lbl{font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:.15rem;}
-    .c-icon{color:var(--cyan);opacity:.6;flex-shrink:0;}
-    footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2rem 5vw;display:flex;justify-content:space-between;align-items:center;background:var(--abyss);}
-    .f-logo{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:.18em;color:var(--cyan);opacity:.4;}
-    .f-txt{font-size:.58rem;letter-spacing:.1em;color:rgba(1,255,255,.18);}
+    :root{--red:#E50914;--dark:#141414;--black:#000;--text:#fff;--muted:#b3b3b3;--nav-h:80px;}
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{background:var(--dark);color:var(--text);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;overflow-x:hidden;}
 
-    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:.4rem;z-index:300;background:none;border:none;}
-    .hamburger span{display:block;width:22px;height:1.5px;background:var(--cyan);transition:transform .3s,opacity .3s;}
-    .hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+    /* JAWSFLIX LOGO */
+    .jf-logo-img{display:block;user-select:none;}
+    .jf-logo-img.sm{height:105px;}
+    .jf-logo-img.md{height:60px;}
+    .jf-logo-img.lg{height:240px;}
+
+    /* PROFILE SELECT */
+    #profile-screen{position:fixed;inset:0;background:var(--black);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;padding:1rem;overflow:hidden;}
+    #shader-bg{position:absolute;inset:0;width:100%;height:100%;z-index:0;display:block;}
+    .ps-content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;}
+    .ps-logo{margin-bottom:1.5rem;}
+    .ps-title{font-size:2rem;font-weight:400;margin-bottom:2.5rem;color:var(--text);}
+    .ps-grid{display:flex;gap:2rem;flex-wrap:wrap;justify-content:center;}
+    .ps-item{display:flex;flex-direction:column;align-items:center;gap:.75rem;cursor:pointer;}
+    .ps-avatar{width:130px;height:130px;border-radius:4px;overflow:hidden;border:3px solid transparent;transition:border-color .2s,transform .2s;}
+    .ps-item:hover .ps-avatar{border-color:var(--text);transform:scale(1.05);}
+    .ps-avatar img{width:100%;height:100%;object-fit:cover;display:block;}
+    .ps-avatar .av-fb{width:100%;height:100%;display:none;align-items:center;justify-content:center;font-size:3.5rem;}
+    .ps-name{font-size:.95rem;color:var(--muted);transition:color .2s;}
+    .ps-item:hover .ps-name{color:var(--text);}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);display:flex;align-items:center;padding:0 4%;z-index:500;background:linear-gradient(to bottom,rgba(0,0,0,.95) 0%,transparent 100%);transition:background .3s;}
+    nav.scrolled{background:var(--black);}
+    .nav-logo{font-size:2.1rem;margin-right:2.5rem;cursor:pointer;}
+    .nav-links{display:flex;gap:2.25rem;list-style:none;}
+    .nav-links a{color:var(--muted);text-decoration:none;font-size:1rem;transition:color .2s;cursor:pointer;font-weight:500;white-space:nowrap;}
+    .nav-links a:hover,.nav-links a.active{color:var(--text);}
+    .nav-right{margin-left:auto;display:flex;align-items:center;gap:1rem;}
+    .price-pills{display:flex;gap:.5rem;}
+    .price-pill{font-size:.72rem;font-family:'JetBrains Mono',monospace;background:rgba(255,255,255,.07);padding:.2rem .55rem;border-radius:3px;border:1px solid rgba(255,255,255,.12);white-space:nowrap;}
+    .price-pill.sol{color:#4ade80;background:rgba(74,222,128,.1);border-color:rgba(74,222,128,.2);}
+    .price-pill.quai{color:#a78bfa;background:rgba(167,139,250,.1);border-color:rgba(167,139,250,.2);}
+    .nav-pfp{width:32px;height:32px;border-radius:4px;overflow:hidden;cursor:pointer;background:#333;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none;}
+    .hamburger span{display:block;width:24px;height:2px;background:var(--text);border-radius:2px;transition:transform .3s,opacity .3s;}
+    .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
     .hamburger.open span:nth-child(2){opacity:0;}
-    .hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
-    .mobile-menu{position:fixed;inset:0;background:rgba(1,10,10,0.98);backdrop-filter:blur(20px);z-index:250;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);}
-    .mobile-menu.open{transform:translateX(0);}
-    .mobile-menu a{font-family:'Bebas Neue',sans-serif;font-size:3.5rem;letter-spacing:.12em;color:var(--muted);text-decoration:none;transition:color .2s,text-shadow .2s;}
-    .mobile-menu a:hover{color:var(--cyan);text-shadow:0 0 20px var(--cyan);}
+    .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
 
-    .scroll-indicator{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;z-index:3;opacity:0;animation:fadeUp 1s 1.5s ease forwards;}
-    .scroll-indicator span{font-size:.5rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);}
-    .scroll-arrow{width:1px;height:48px;background:linear-gradient(to bottom,var(--cyan),transparent);position:relative;animation:scrollPulse 1.8s ease-in-out infinite;}
-    .scroll-arrow::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid rgba(1,255,255,.5);}
-    @keyframes scrollPulse{0%,100%{opacity:.4;transform:scaleY(1);}50%{opacity:1;transform:scaleY(1.1);}}
-    .wc-link{color:inherit;text-decoration:none;display:block;transition:color .2s,text-shadow .2s;}
-    .wc-link:hover{color:var(--cyan);text-shadow:0 0 20px rgba(1,255,255,.4);}
-    .wc-link:hover .wc-co{color:var(--cyan);}
-    .wc-link::after{content:'↗';font-size:1.2rem;margin-left:.4rem;opacity:0;transition:opacity .2s;}
-    .wc-link:hover::after{opacity:.6;}
+    /* MOBILE MENU */
+    #mobile-menu{position:fixed;top:var(--nav-h);left:0;right:0;background:rgba(0,0,0,.97);backdrop-filter:blur(12px);z-index:490;padding:1.5rem 4% 2rem;display:none;flex-direction:column;border-bottom:1px solid rgba(255,255,255,.1);}
+    #mobile-menu.open{display:flex;}
+    .mm-link{color:var(--muted);font-size:1.2rem;font-weight:600;padding:.9rem 0;border-bottom:1px solid rgba(255,255,255,.06);cursor:pointer;transition:color .2s;}
+    .mm-link:last-child{border-bottom:none;}
+    .mm-link:hover,.mm-link.active{color:var(--text);}
 
+    /* VIEWS */
+    .view{display:none;}
+    .view.active{display:block;}
 
+    /* HERO */
+    .hero{position:relative;height:90vh;min-height:580px;overflow:hidden;}
+    .hero-slide{position:absolute;inset:0;opacity:0;transition:opacity 1s ease;pointer-events:none;display:flex;align-items:flex-end;padding:0 4% 12%;}
+    .hero-slide.active{opacity:1;pointer-events:auto;}
+    .hero-bg{position:absolute;inset:0;overflow:hidden;}
+    .hero-bg img{position:absolute;right:0;top:var(--nav-h);height:calc(100% - var(--nav-h));width:42%;object-fit:cover;object-position:center top;z-index:1;}
+    .hero-bg::after{content:'';position:absolute;inset:0;z-index:2;background:linear-gradient(to bottom,var(--black) 0%,rgba(0,0,0,.0) 15%),linear-gradient(to right,#000 30%,rgba(0,0,0,.7) 55%,rgba(0,0,0,.2) 100%),linear-gradient(to top,var(--dark) 0%,rgba(20,20,20,.5) 25%,transparent 100%);}
+    .hero-content{position:relative;z-index:3;max-width:580px;}
+    .hero-badge{display:inline-flex;align-items:center;gap:.4rem;font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:.5rem;}
+    .hero-eyebrow{font-size:.8rem;color:var(--muted);letter-spacing:1px;margin-bottom:.35rem;}
+    .hero-title{font-size:4.8rem;font-weight:800;line-height:1;margin-bottom:.75rem;letter-spacing:-1px;}
+    .hero-meta{display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem;flex-wrap:wrap;}
+    .hero-match{color:#46d369;font-size:.875rem;font-weight:700;}
+    .hero-year,.hero-ath{color:var(--muted);font-size:.8rem;border:1px solid rgba(255,255,255,.3);padding:.1rem .4rem;border-radius:2px;}
+    .hero-desc{font-size:.975rem;color:#e5e5e5;line-height:1.65;margin-bottom:1.5rem;max-width:460px;}
+    .hero-btns{display:flex;gap:.75rem;}
+    .btn-white{display:inline-flex;align-items:center;gap:.55rem;background:var(--text);color:var(--black);border:none;padding:.7rem 2rem;font-size:1rem;font-weight:700;border-radius:4px;cursor:pointer;transition:background .2s;white-space:nowrap;}
+    .btn-white:hover{background:rgba(255,255,255,.8);}
+    .btn-grey{display:inline-flex;align-items:center;gap:.55rem;background:rgba(109,109,110,.7);color:var(--text);border:none;padding:.7rem 2rem;font-size:1rem;font-weight:700;border-radius:4px;cursor:pointer;transition:background .2s;white-space:nowrap;}
+    .btn-grey:hover{background:rgba(109,109,110,.5);}
+    .hero-dots{position:absolute;bottom:4rem;right:4%;display:flex;gap:.4rem;z-index:10;}
+    .hero-dot{width:8px;height:4px;border-radius:2px;background:rgba(255,255,255,.3);cursor:pointer;transition:background .3s,width .3s;}
+    .hero-dot.active{background:var(--red);width:20px;}
 
+    /* ROWS */
+    .rows{padding:2.5rem 4% 0;margin-top:0;position:relative;z-index:10;}
+    .row{margin-bottom:3.5vw;}
+    .row-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.85rem;}
+    .row-label{font-size:1.2rem;font-weight:700;color:#e5e5e5;margin-bottom:.85rem;}
+    .row-arrows{display:flex;gap:.4rem;}
+    .row-arr{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:var(--text);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1.4rem;line-height:1;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+    .row-arr:hover{background:rgba(255,255,255,.25);}
+    .row-track{display:flex;gap:.5rem;overflow-x:auto;scrollbar-width:none;padding-bottom:.5rem;padding-left:2px;}
+    .row-track::-webkit-scrollbar{display:none;}
 
-    /* ── MEDIA VIDEO ──────────────────────────────────── */
-    .media-video{width:100%;border-radius:6px;border:1px solid var(--border);background:#000;display:block;}
+    /* PROJECT CARD */
+    .pc{flex:0 0 240px;height:136px;border-radius:4px;position:relative;cursor:pointer;flex-shrink:0;overflow:hidden;transition:transform .25s,filter .25s;}
+    .pc:hover{transform:scale(1.05);filter:brightness(1.15);}
+    .pc img{width:100%;height:100%;object-fit:cover;object-position:center center;display:block;}
+    .pc img.logo-contain{object-fit:contain;padding:10px;background:#111;}
+    .pc-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.9) 0%,transparent 55%);}
+    .pc-name{position:absolute;bottom:.55rem;left:.65rem;font-size:.8rem;font-weight:700;}
+    .pc-progress{position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(255,255,255,.15);}
+    .pc-bar{height:100%;background:var(--red);}
 
-    /* ── PROJECT STATUS BADGES ────────────────────────── */
-    .project-status{display:inline-flex;align-items:center;gap:.35rem;font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;border-radius:4px;padding:.18rem .5rem;margin-bottom:1rem;font-weight:700;}
-    .status-rugged{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.35);color:#f87171;}
-    .status-active{background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.35);color:#4ade80;}
-    .status-ended{background:rgba(148,163,184,.07);border:1px solid rgba(148,163,184,.22);color:rgba(148,163,184,.65);}
-    .status-ice{background:rgba(147,197,253,.08);border:1px solid rgba(147,197,253,.3);color:#93c5fd;}
-    .status-token-soon{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.25);color:#fbbf24;}
-    .pulse-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;flex-shrink:0;animation:pulseDot 2s ease-in-out infinite;}
-    @keyframes pulseDot{0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,.5)}70%{box-shadow:0 0 0 5px rgba(74,222,128,0)}}
+    /* MODAL */
+    #modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:800;display:none;align-items:center;justify-content:center;padding:2rem;backdrop-filter:blur(4px);}
+    #modal-overlay.open{display:flex;}
+    #modal{background:#181818;border-radius:8px;width:100%;max-width:860px;max-height:90vh;overflow-y:auto;position:relative;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.2) transparent;animation:mIn .25s ease;}
+    @keyframes mIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+    .modal-hero{position:relative;height:320px;overflow:hidden;border-radius:8px 8px 0 0;display:flex;align-items:flex-end;}
+    .modal-hero-img{position:absolute;top:0;right:0;width:50%;height:100%;object-fit:cover;object-position:center top;z-index:1;}
+    .modal-hero::after{content:'';position:absolute;inset:0;z-index:2;background:linear-gradient(to right,#181818 30%,rgba(24,24,24,.6) 60%,rgba(24,24,24,.2) 100%),linear-gradient(to top,#181818 0%,rgba(24,24,24,.4) 40%,transparent 100%);}
+    .modal-hero-content{position:relative;z-index:3;padding:1.5rem 2rem;width:100%;}
+    .modal-title{font-size:2.4rem;font-weight:800;line-height:1;margin-bottom:.75rem;letter-spacing:-.5px;}
+    .modal-hero-btns{display:flex;gap:.6rem;align-items:center;}
+    .modal-close{position:absolute;top:1rem;right:1rem;z-index:10;width:36px;height:36px;border-radius:50%;border:none;background:rgba(50,50,50,.95);color:var(--text);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+    .modal-close:hover{background:#444;}
+    .modal-x-btn{background:rgba(109,109,110,.7);color:var(--text);border:none;width:36px;height:36px;border-radius:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;flex-shrink:0;}
+    .modal-x-btn:hover{background:rgba(109,109,110,.5);}
+    .modal-body{padding:1.5rem 2rem 2rem;}
+    .modal-cols{display:grid;grid-template-columns:1fr 240px;gap:2rem;}
+    .modal-what{font-size:.72rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:.4rem;}
+    .modal-project-desc{font-size:1rem;line-height:1.65;color:#e5e5e5;margin-bottom:1.25rem;font-weight:500;}
+    .modal-desc{font-size:.9rem;line-height:1.7;color:#ccc;margin-bottom:1.25rem;}
+    .modal-ach h4{font-size:.72rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:.5rem;}
+    .modal-ach ul{padding-left:1.1rem;}
+    .modal-ach li{font-size:.875rem;line-height:1.6;color:#e5e5e5;margin-bottom:.2rem;}
+    .modal-meta{font-size:.85rem;margin-bottom:.4rem;}
+    .modal-meta span:first-child{color:var(--muted);}
+    .modal-ath{font-size:1.1rem;font-weight:700;color:var(--red);}
+    .modal-tags{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.75rem;}
+    .modal-ca{display:flex;align-items:center;gap:.5rem;margin-top:.85rem;background:#111;border-radius:4px;padding:.5rem .7rem;border:1px solid #2a2a2a;}
+    .modal-ca-label{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;flex-shrink:0;}
+    .modal-ca-addr{font-size:.68rem;font-family:'JetBrains Mono',monospace;color:#ccc;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .modal-ca-copy{background:var(--red);color:var(--text);border:none;border-radius:3px;padding:.2rem .5rem;font-size:.65rem;font-weight:700;cursor:pointer;flex-shrink:0;transition:opacity .2s;}
+    .modal-ca-copy:hover{opacity:.85;}
+    .tag{font-size:.63rem;padding:.15rem .4rem;border-radius:2px;background:rgba(255,255,255,.1);color:var(--muted);}
+    .tag-active{background:rgba(70,211,105,.15);color:#46d369;}
+    .tag-rugged{background:rgba(229,9,20,.15);color:var(--red);}
 
-    /* ── AVATAR IMAGE LOGO ────────────────────────────── */
-    .wc-logo-wrap{width:56px;height:56px;border-radius:12px;overflow:hidden;margin-bottom:1.2rem;border:1px solid rgba(1,255,255,.15);box-shadow:0 0 16px rgba(1,255,255,.1);flex-shrink:0;background:#0a2020;}
-    .wc-logo-img{width:100%;height:100%;object-fit:cover;display:block;}
+    /* SKILL CARDS (home row) — same style as project cards */
+    .pc-emoji-bg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:5.5rem;background:#1a1a1a;line-height:1;}
 
-    /* ── CONFIDENTIAL CARD ────────────────────────────── */
-    .wc-anon{border-style:dashed;border-color:rgba(1,255,255,.12);opacity:.7;transition:opacity .3s;}
-    .wc-anon:hover{opacity:1;}
-    .wc-anon-lock{width:44px;height:44px;border:1px solid rgba(1,255,255,.2);border-radius:10px;background:#0a2020;display:flex;align-items:center;justify-content:center;margin-bottom:1.2rem;color:var(--muted);}
+    /* MODAL NAV ARROWS */
+    .modal-nav-btn{position:fixed;top:50%;transform:translateY(-50%);background:rgba(30,30,30,.9);border:1px solid rgba(255,255,255,.15);color:var(--text);width:48px;height:48px;border-radius:50%;cursor:pointer;font-size:1.6rem;display:flex;align-items:center;justify-content:center;transition:background .2s,opacity .2s;z-index:810;}
+    .modal-nav-btn:hover{background:rgba(60,60,60,.95);}
+    .modal-nav-btn:disabled{opacity:.25;cursor:default;}
+    #modal-prev{left:calc(50% - 490px);}
+    #modal-next{right:calc(50% - 490px);}
+    @media(max-width:1060px){#modal-prev{left:4px;}#modal-next{right:4px;}}
 
-    /* ── SOL TICKER ───────────────────────────────────── */
-    .sol-ticker{font-size:.58rem;letter-spacing:.1em;color:var(--muted);border:1px solid var(--border);border-radius:4px;padding:.28rem .55rem;text-decoration:none;transition:color .3s,border-color .3s;white-space:nowrap;font-family:'JetBrains Mono',monospace;}
-    .sol-ticker:hover{color:var(--cyan);border-color:var(--cyan);}
-    .sol-up{color:#4ade80!important;border-color:rgba(74,222,128,.4)!important;}
-    .sol-down{color:#f87171!important;border-color:rgba(248,113,113,.4)!important;}
+    /* SKILL MODAL */
+    #skill-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:820;display:none;align-items:center;justify-content:center;padding:2rem;backdrop-filter:blur(4px);}
+    #skill-overlay.open{display:flex;}
+    #skill-modal{background:#181818;border-radius:8px;width:100%;max-width:480px;padding:2rem;position:relative;animation:mIn .2s ease;}
+    #skill-modal h3{font-size:1.5rem;font-weight:800;margin-bottom:.85rem;padding-left:.85rem;border-left:3px solid var(--red);}
+    #skill-modal p{font-size:.9rem;line-height:1.75;color:#ccc;}
+    .skm-close{position:absolute;top:.85rem;right:.85rem;background:rgba(50,50,50,.9);border:none;color:var(--text);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+    .skm-close:hover{background:#444;}
 
-    /* ── HERO REDESIGN ────────────────────────────────── */
-    .hero-tagline{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,8.5vw,9rem);line-height:.88;letter-spacing:.025em;margin-bottom:1.8rem;display:flex;flex-direction:column;}
-    .hero-tag-line{color:#fff;}
-    .hero-tag-accent{color:var(--cyan);text-shadow:0 0 40px rgba(1,255,255,.5),0 0 80px rgba(1,255,255,.2);}
+    /* VIEW PAGES */
+    .page-wrap{padding:calc(var(--nav-h) + 2.5rem) 4% 3rem;}
+    .view-title{font-size:2.5rem;font-weight:800;margin-bottom:.4rem;}
+    .view-sub{color:var(--muted);font-size:.95rem;margin-bottom:2.5rem;}
 
-    /* ── COMING SOON CONTACT ──────────────────────────── */
-    .c-soon{opacity:.4!important;cursor:default;pointer-events:none;}
-    .c-soon .c-lbl{opacity:.7;}
+    /* PROJECTS */
+    .pv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;}
+    .pv-card{background:#1e1e1e;border-radius:6px;overflow:hidden;cursor:pointer;transition:background .2s,transform .2s;}
+    .pv-card:hover{background:#282828;transform:translateY(-3px);}
+    .pv-card-img{height:160px;position:relative;overflow:hidden;}
+    .pv-card-img img{width:100%;height:100%;object-fit:cover;object-position:center center;display:block;}
+    .pv-card-img img.logo-contain{object-fit:contain;padding:14px;background:#111;}
+    .pv-progress{position:absolute;bottom:0;left:0;right:0;height:4px;background:rgba(255,255,255,.15);}
+    .pv-bar{height:100%;background:var(--red);}
+    .pv-card-body{padding:1rem;}
+    .pv-card-title{font-size:1.05rem;font-weight:700;margin-bottom:.2rem;}
+    .pv-card-role{font-size:.76rem;color:var(--muted);margin-bottom:.45rem;}
+    .pv-card-what{font-size:.83rem;line-height:1.5;color:#ccc;margin-bottom:.6rem;}
+    .pv-card-tags{display:flex;flex-wrap:wrap;gap:.25rem;}
 
-    /* ── NAV CONTROLS (lang + theme) ──────────────────── */
-    .nav-controls{display:flex;align-items:center;gap:.6rem;}
-    .lang-select{background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.12em;padding:.3rem .5rem;cursor:pointer;outline:none;transition:border-color .2s,color .2s;-webkit-appearance:none;appearance:none;text-align:center;}
-    .lang-select:hover,.lang-select:focus{border-color:var(--cyan);color:var(--cyan);}
-    .lang-select option{background:#010a0a;color:#01ffff;}
-    @keyframes fadeUp{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:none;}}
-    @keyframes fadeDown{from{opacity:0;transform:translateY(-18px);}to{opacity:1;transform:none;}}
-    @media(max-width:900px){
-      .hero-3d{opacity:.3;pointer-events:none;width:70%;}
-      .hero-content{max-width:100%;}
-      .about-grid{grid-template-columns:1fr;}
-      .about-facts{border-left:none;padding-left:0;border-top:1px solid var(--border);padding-top:2rem;}
-      .work-grid{grid-template-columns:1fr;}
-      .skills-grid{grid-template-columns:repeat(2,1fr);}
-      .caps-bar{grid-template-columns:1fr 1fr;}
-      .nav-links{display:none;}
-      .nav-cta{display:none;}
+    /* SKILLS */
+    .sv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1px;background:#2a2a2a;border:1px solid #2a2a2a;border-radius:8px;overflow:hidden;}
+    .sv-card{background:var(--dark);padding:1.25rem 1.5rem 1.25rem 1.75rem;border-left:4px solid var(--red);transition:background .2s;cursor:default;position:relative;}
+    .sv-card:hover{background:#1c1c1c;}
+    .sv-card::after{content:'';position:absolute;top:0;left:0;bottom:0;width:4px;background:var(--red);opacity:0;transition:opacity .2s;}
+    .sv-card:hover::after{opacity:.6;}
+    .sv-icon{font-size:1.5rem;margin-bottom:.35rem;}
+    .sv-name{font-size:1rem;font-weight:800;margin-bottom:.3rem;color:var(--text);letter-spacing:-.3px;}
+    .sv-desc{font-size:.8rem;color:var(--muted);line-height:1.6;}
+    #view-skills .page-wrap{padding-top:calc(var(--nav-h) + 1rem);padding-bottom:1rem;}
+    #view-skills .view-sub{margin-bottom:1rem;}
+
+    /* ABOUT */
+    .about-inner{max-width:800px;margin:0 auto;}
+    .about-hero{display:flex;align-items:flex-start;gap:2.5rem;margin-bottom:2.5rem;}
+    .about-avatar{width:140px;height:140px;border-radius:4px;overflow:hidden;flex-shrink:0;border:3px solid rgba(229,9,20,.4);}
+    .about-avatar img{width:100%;height:100%;object-fit:cover;}
+    .about-name{font-size:2.5rem;font-weight:800;margin-bottom:.25rem;letter-spacing:-.5px;}
+    .about-role{color:var(--red);font-size:1rem;font-weight:600;margin-bottom:.75rem;letter-spacing:.5px;text-transform:uppercase;}
+    .about-status{display:inline-flex;align-items:center;gap:.4rem;font-size:.8rem;color:#46d369;background:rgba(70,211,105,.1);border:1px solid rgba(70,211,105,.2);padding:.2rem .7rem;border-radius:12px;}
+    .about-dot{width:7px;height:7px;border-radius:50%;background:#46d369;animation:pulse 2s infinite;}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+    .about-bio{font-size:1rem;line-height:1.8;color:#e5e5e5;margin-bottom:1.5rem;}
+    .about-facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.75rem;margin-top:1.5rem;}
+    .about-fact{background:#1e1e1e;border-radius:6px;padding:1rem;}
+    .about-fact-label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:.3rem;}
+    .about-fact-val{font-size:.95rem;font-weight:600;}
+    .about-stats{display:flex;gap:2rem;flex-wrap:wrap;margin:2rem 0;padding:1.5rem;background:rgba(229,9,20,.05);border:1px solid rgba(229,9,20,.2);border-radius:8px;overflow-x:auto;}
+    .as-item{flex:0 0 auto;text-align:center;}
+    .as-val{font-size:1.5rem;font-weight:800;color:var(--red);display:block;}
+    .as-lbl{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-top:.2rem;display:block;}
+
+    /* CONTENT */
+    .content-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem;}
+    .content-card{background:#1e1e1e;border-radius:6px;overflow:hidden;cursor:pointer;transition:background .2s,transform .2s;}
+    .content-card:hover{background:#282828;transform:translateY(-3px);}
+    .content-thumb{position:relative;height:190px;overflow:hidden;background:#111;}
+    .content-thumb img{width:100%;height:100%;object-fit:cover;object-position:center center;display:block;}
+    .content-play{position:absolute;bottom:.75rem;right:.75rem;background:transparent;}
+    .content-play-btn{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;transition:transform .2s,opacity .2s;opacity:.85;}
+    .content-card:hover .content-play-btn{transform:scale(1.1);opacity:1;}
+    .content-card-body{padding:1rem;}
+    .content-card-title{font-size:1rem;font-weight:700;margin-bottom:.25rem;}
+    .content-card-desc{font-size:.82rem;color:var(--muted);line-height:1.5;}
+
+    /* VIDEO MODAL */
+    #video-modal{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:900;display:none;align-items:center;justify-content:center;padding:1.5rem;backdrop-filter:blur(8px);}
+    #video-modal.open{display:flex;}
+    .vm-inner{width:100%;max-width:900px;position:relative;}
+    .vm-close{position:absolute;top:-2.5rem;right:0;background:none;border:none;color:var(--text);font-size:1.5rem;cursor:pointer;opacity:.7;transition:opacity .2s;}
+    .vm-close:hover{opacity:1;}
+    .vm-inner video{width:100%;border-radius:8px;display:block;}
+
+    /* CONTACT */
+    .contact-inner{max-width:580px;margin:0 auto;}
+    .contact-list{display:flex;flex-direction:column;gap:1px;background:#2a2a2a;border-radius:8px;overflow:hidden;margin-top:1.5rem;}
+    .contact-row{display:flex;align-items:center;gap:1.25rem;padding:1.25rem 1.5rem;background:var(--dark);text-decoration:none;color:var(--text);transition:background .2s;}
+    .contact-row:hover{background:#1e1e1e;}
+    .cr-icon{width:44px;height:44px;border-radius:50%;background:rgba(229,9,20,.12);border:1px solid rgba(229,9,20,.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .cr-info{flex:1;min-width:0;}
+    .cr-platform{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:.2rem;}
+    .cr-val{font-size:1rem;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .cr-arrow{color:var(--muted);font-size:1.2rem;flex-shrink:0;transition:color .2s;}
+    .contact-row:hover .cr-arrow{color:var(--text);}
+    .contact-note{margin-top:1.5rem;font-size:.875rem;color:var(--muted);line-height:1.7;padding:1.25rem;background:#1a1a1a;border-radius:6px;border-left:3px solid var(--red);}
+
+    /* FOOTER */
+    footer{padding:3rem 4% 2rem;border-top:1px solid #2a2a2a;display:flex;flex-direction:column;align-items:flex-end;text-align:right;}
+    .footer-brand{font-size:1.2rem;margin-bottom:1rem;}
+    .footer-links{display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:1rem;justify-content:flex-end;}
+    .footer-links a{color:var(--muted);text-decoration:none;font-size:.82rem;transition:color .2s;}
+    .footer-links a:hover{color:var(--text);}
+    .footer-copy{font-size:.75rem;color:#555;}
+
+    /* HAMBURGER + MOBILE */
+    @media(max-width:768px){
+      .ps-logo{font-size:2.2rem;margin-bottom:1.5rem;}
+      .ps-title{font-size:1.6rem;margin-bottom:1.5rem;}
+      .ps-grid{gap:.85rem;}
+      .ps-avatar{width:75px;height:75px;}
+      .ps-avatar .av-fb{font-size:2.5rem;}
+      .ps-name{font-size:.8rem;}
+      .nav-links,.price-pills{display:none;}
+      .nav-logo{margin-right:auto;}
       .hamburger{display:flex;}
-      .contact-links{flex-direction:column;align-items:center;}
+      .hero{height:75vh;min-height:480px;}
+      .hero-slide{padding:0 5% 10%;}
+      .hero-bg img{width:100%;opacity:.35;}
+      .hero-bg::after{background:linear-gradient(to right,rgba(0,0,0,.85) 0%,rgba(0,0,0,.6) 100%),linear-gradient(to top,var(--dark) 0%,rgba(20,20,20,.3) 30%,transparent 100%);}
+      .hero-title{font-size:2.8rem;}
+      .hero-desc{font-size:.875rem;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+      .btn-white,.btn-grey{padding:.6rem 1.25rem;font-size:.875rem;}
+      .hero-dots{bottom:2rem;}
+      .rows{margin-top:-60px;padding:0 3%;}
+      .row{margin-bottom:6vw;}
+      .row-label{font-size:1rem;}
+      .pc{flex:0 0 140px;height:82px;}
+      #modal-overlay{padding:.75rem;}
+      #modal{border-radius:6px;max-height:95vh;}
+      .modal-hero{height:200px;}
+      .modal-hero-img{width:100%;opacity:.4;}
+      .modal-title{font-size:1.7rem;}
+      .modal-body{padding:1rem;}
+      .modal-cols{grid-template-columns:1fr;}
+      .page-wrap{padding:calc(var(--nav-h) + 1.5rem) 4% 2.5rem;}
+      .view-title{font-size:1.8rem;}
+      .pv-grid{grid-template-columns:1fr 1fr;}
+      .pv-card-what{display:none;}
+      .pv-card-img{height:120px;}
+      .sv-grid{grid-template-columns:1fr 1fr;}
+      .sv-card{padding:1.1rem;}
+      .sv-name{font-size:.9rem;}
+      .sv-desc{font-size:.76rem;}
+      .about-hero{flex-direction:column;gap:1.25rem;}
+      .about-avatar{width:100px;height:100px;}
+      .about-name{font-size:1.8rem;}
+      .about-bio{font-size:.9rem;}
+      .about-facts{grid-template-columns:1fr 1fr;}
+      .content-grid{grid-template-columns:1fr;}
+      .contact-grid{grid-template-columns:1fr 1fr;}
+      .contact-val{font-size:.85rem;word-break:break-all;}
     }
-
-    /* ── FOCUS STATES (keyboard nav) ─────────────────── */
-    a:focus-visible,button:focus-visible,select:focus-visible{outline:1px solid var(--cyan);outline-offset:3px;border-radius:3px;}
-
-    /* ── BACK TO TOP ──────────────────────────────────── */
-    .back-top{position:fixed;bottom:2rem;right:2rem;z-index:150;background:rgba(1,10,10,0.85);border:1px solid rgba(1,255,255,.25);color:var(--cyan);width:38px;height:38px;border-radius:50%;font-size:.9rem;cursor:pointer;opacity:0;transform:translateY(12px);transition:opacity .35s,transform .35s,border-color .2s;pointer-events:none;backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;}
-    .back-top.visible{opacity:1;transform:none;pointer-events:all;}
-    .back-top:hover{border-color:var(--cyan);box-shadow:0 0 12px rgba(1,255,255,.2);}
-
-    /* ── WORK GRID 3-COLUMN ───────────────────────────── */
-    .work-grid{grid-template-columns:repeat(3,1fr);}
-    @media(max-width:1100px){.work-grid{grid-template-columns:1fr 1fr;}}
-    @media(max-width:600px){.work-grid{grid-template-columns:1fr;}.skills-grid{grid-template-columns:1fr;}}
-
-    /* ── STATUS PULSE IN FACTS ────────────────────────── */
-    .fact-status-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#4ade80;margin-right:6px;vertical-align:middle;flex-shrink:0;animation:pulseDot 2s ease-in-out infinite;}
-
-    /* ── FOOTER IMPROVEMENTS ──────────────────────────── */
-    .f-nav{display:flex;gap:2.5rem;margin:.8rem 0 .4rem;}
-    .f-nav a{font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s;}
-    .f-nav a:hover{color:var(--cyan);}
-    .f-copy{font-size:.5rem;letter-spacing:.12em;opacity:.3;margin-top:.2rem;}
-
-    /* ── CONTACT PRIMARY LINK ─────────────────────────── */
-    .c-primary{border-color:rgba(1,255,255,.2);padding:1.6rem 2rem;transition:border-color .2s,box-shadow .2s;}
-    .c-primary:hover{border-color:var(--cyan);box-shadow:0 0 20px rgba(1,255,255,.1);}
-    .c-primary .c-lbl{color:var(--cyan);}
-    /* ── WORK CARD LINK ICONS ─────────────────────────── */
-    .wc-links-row{display:flex;gap:.5rem;margin:.7rem 0 .5rem;}
-    .wc-icon-link{display:inline-flex;align-items:center;gap:.35rem;font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-decoration:none;border:1px solid var(--border);border-radius:4px;padding:.25rem .55rem;transition:color .2s,border-color .2s;}
-    .wc-icon-link:hover{color:var(--cyan);border-color:var(--cyan);}
-
-    /* ── CONTRACT ADDRESS ─────────────────────────────── */
-    .wc-ca{display:flex;align-items:center;gap:.5rem;margin-top:.75rem;padding:.45rem .65rem;background:rgba(1,255,255,.03);border:1px solid var(--border);border-radius:4px;}
-    .wc-ca-label{font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan);opacity:.6;flex-shrink:0;}
-    .wc-ca-addr{font-size:.58rem;color:var(--muted);letter-spacing:.03em;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-    .wc-ca-copy{background:transparent;border:1px solid var(--border);border-radius:3px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:.48rem;letter-spacing:.14em;text-transform:uppercase;padding:.18rem .42rem;cursor:pointer;transition:color .2s,border-color .2s;flex-shrink:0;}
-    .wc-ca-copy:hover{color:var(--cyan);border-color:var(--cyan);}
-    .wc-ca-copy.copied{color:#4ade80;border-color:rgba(74,222,128,.4);}
-
-    /* ── FLEX CARDS: bottom stats always pinned ───────── */
-    .work-card{display:flex;flex-direction:column;}
-    .wc-desc{flex-grow:1;}
-    /* prevent inline/logo elements from stretching full-width in flex column */
-    .project-status{align-self:flex-start;}
-    .work-card > a:not(.wc-link){align-self:flex-start;}
-
-    /* ── MEDIA SECTION ───────────────────────────────── */
-    .media-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start;}
-    .media-item-title{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.07em;color:#fff;line-height:1;margin-bottom:.2rem;}
-    .media-item-sub{font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan);opacity:.5;margin-bottom:1rem;}
-    .media-item .twitter-tweet{margin:0 !important;}
-    @media(max-width:900px){.media-grid{grid-template-columns:1fr;}}
-
-    /* ── EASTER EGG CHEST ────────────────────────────── */
-    #seedChest{position:fixed;bottom:5.5rem;left:1.8rem;z-index:3;cursor:pointer;opacity:0.055;transition:opacity .5s,transform .3s;user-select:none;pointer-events:all;}
-    #seedChest:hover{opacity:0.6;transform:scale(1.08);}
-    #seedChest svg{display:block;}
-    #seedChest .chest-label{font-family:'JetBrains Mono',monospace;font-size:.36rem;text-align:center;color:var(--cyan);letter-spacing:.13em;text-transform:uppercase;margin-top:3px;text-shadow:0 0 6px var(--cyan);}
-
-    /* ── SMALL PHONE FIXES ────────────────────────────── */
-    @media(max-width:480px){
-      .hero-tagline{font-size:clamp(1.8rem,11vw,2.8rem);}
-      .cap-num{font-size:clamp(1.5rem,6vw,2.2rem);}
-      .caps-bar{grid-template-columns:1fr 1fr;}
-      .contact-hl{font-size:clamp(1.8rem,10vw,2.5rem);}
-      .section{padding:4rem 5vw;}
-      .hero-3d{display:none;}
-      #termWidget{display:none;}
+    @media(max-width:400px){
+      .ps-avatar{width:65px;height:65px;}
+      .ps-title{font-size:1.4rem;}
+      .hero-title{font-size:2.2rem;}
+      .pv-grid{grid-template-columns:1fr;}
+      .contact-grid{grid-template-columns:1fr;}
     }
-
-    /* ── TOUCH DEVICES: restore cursor, hide sonar ───── */
-    @media(hover:none){
-      body{cursor:auto;}
-      .cursor,.cursor-ring{display:none;}
-      #termWidget{display:none;}
-    }
-
-    /* ── MOBILE NAV TWEAKS ───────────────────────────── */
-    @media(max-width:900px){
-      .sol-ticker{display:none;}
-      .cap-item:nth-child(2n){border-right:none;}
-      .contact-section{min-height:auto;padding:6rem 5vw;}
-    }
-
-    /* ── MOBILE WORK CARD PADDING ────────────────────── */
-    @media(max-width:600px){
-      .work-card{padding:1.75rem 1.25rem;}
-    }
-
-    /* ── MOBILE FOOTER STACK ─────────────────────────── */
-    @media(max-width:640px){
-      footer{flex-direction:column;gap:.8rem;text-align:center;}
-      .f-nav{justify-content:center;flex-wrap:wrap;gap:1.5rem;margin:.4rem 0;}
-    }
-
-    /* ── TOUCH FEEDBACK ──────────────────────────────── */
-    a,button,select{-webkit-tap-highlight-color:transparent;}
-    a,button{touch-action:manipulation;}
-
-    /* ── TERMINAL SESSION WIDGET ─────────────────────── */
-    #termWidget{position:fixed;top:5rem;right:1.4rem;z-index:100;font-family:'JetBrains Mono',monospace;font-size:.46rem;letter-spacing:.1em;line-height:1.85;color:rgba(1,255,255,0.22);pointer-events:none;user-select:none;text-align:right;}
-    #termWidget .tw-line{white-space:nowrap;}
-    #termWidget .tw-flicker{animation:twFlicker 8s infinite;}
-    @keyframes twFlicker{0%,89%,91%,93%,100%{opacity:1}90%{opacity:.15}92%{opacity:.7}}
   </style>
 </head>
 <body>
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
-<div id="termWidget" aria-hidden="true">
-  <div class="tw-line tw-flicker" id="tw-date"></div>
-  <div class="tw-line" id="tw-browser"></div>
-  <div class="tw-line" id="tw-res"></div>
-  <div class="tw-line">&nbsp;</div>
-  <div class="tw-line" id="tw-clicks">[CLICKS: 0]</div>
-  <div class="tw-line" id="tw-scroll">[DEPTH: 0%]</div>
-</div>
-<canvas id="causticCanvas"></canvas>
-<canvas id="bloodCanvas"></canvas>
-<div class="wrapper">
-<nav>
-  <a href="#" class="nav-logo"><img src="https://unavatar.io/x/jawsonchain" alt="JAWS" class="nav-logo-img" loading="lazy"></a>
-  <ul class="nav-links">
-    <li><a href="#about" data-i18n="nav_about">About</a></li>
-    <li><a href="#work" data-i18n="nav_work">Work</a></li>
-    <li><a href="#media">Media</a></li>
-    <li><a href="#skills" data-i18n="nav_skills">Skills</a></li>
-    <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
-  </ul>
-  <a href="#contact" class="nav-cta">Let's Talk →</a>
-  <div class="nav-controls">
-    <select id="langSelect" class="lang-select" aria-label="Language">
-      <option value="en">EN</option>
-      <option value="es">ES</option>
-      <option value="zh">ZH</option>
-      <option value="ru">RU</option>
-      <option value="fr">FR</option>
-    </select>
-    <a id="solPrice" class="sol-ticker" href="https://www.binance.com/en/trade/SOL_USDT" target="_blank" rel="noopener">SOL —</a>
-  </div>
-  <button class="hamburger" id="hamburger" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
-</nav>
-<div class="mobile-menu" id="mobileMenu">
-  <a href="#about" class="mob-link" data-i18n="nav_about">About</a>
-  <a href="#work" class="mob-link" data-i18n="nav_work">Work</a>
-  <a href="#media" class="mob-link">Media</a>
-  <a href="#skills" class="mob-link" data-i18n="nav_skills">Skills</a>
-  <a href="#contact" class="mob-link" data-i18n="nav_contact">Contact</a>
-</div>
-<!-- HERO -->
-<section class="hero">
-  <div class="surface"></div>
-  <!-- Spotlight beam -->
-  <svg class="hero-spotlight" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3787 2842" fill="none" aria-hidden="true">
-    <g filter="url(#heroSpot)">
-      <ellipse cx="1924.71" cy="273.501" rx="1924.71" ry="273.501" transform="matrix(-0.822377 -0.568943 -0.568943 0.822377 3631.88 2291.09)" fill="rgba(1,255,255,0.18)" fill-opacity="0.21"/>
-    </g>
-    <defs>
-      <filter id="heroSpot" x="0.860352" y="0.838989" width="3785.16" height="2840.26" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-        <feFlood flood-opacity="0" result="BackgroundImageFix"/>
-        <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-        <feGaussianBlur stdDeviation="151" result="effect1"/>
-      </filter>
-    </defs>
-  </svg>
-  <!-- Spline 3D scene -->
-  <div class="hero-3d">
-    <spline-viewer url="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode" loading="lazy"></spline-viewer>
-  </div>
-  <div class="hero-content">
-    <p class="hero-eyebrow" data-i18n="hero_eyebrow">@JawsOnChain &middot; Chronically online. Terminally effective.</p>
-    <div class="hero-tagline">
-      <span class="hero-tag-line" data-i18n="hero_h1">WEB3 MARKETING</span>
-      <span class="hero-tag-line" data-i18n="hero_h2">THAT MOVES</span>
-      <span class="hero-tag-accent" data-i18n="hero_h3">MARKETS.</span>
-    </div>
-    <p class="hero-sub" data-i18n="hero_sub">I don't have a job title. I have results.</p>
-    <a href="#work" class="hero-cta" data-i18n="hero_cta">View My Work ↓</a>
-  </div>
-  <div class="scroll-indicator">
-    <span>Scroll</span>
-    <div class="scroll-arrow"></div>
-  </div>
-</section>
-<!-- TICKER -->
-<div class="ticker-wrap">
-  <div class="ticker-track">
-    <div class="ticker-item">Meme Coin Marketing <span class="tdot">&#10022;</span> Community Growth <span class="tdot">&#10022;</span> Token Launch Strategy <span class="tdot">&#10022;</span> X Marketing <span class="tdot">&#10022;</span> PNL Cards <span class="tdot">&#10022;</span> Trend Execution <span class="tdot">&#10022;</span> KOL Outreach <span class="tdot">&#10022;</span> Brand Narratives <span class="tdot">&#10022;</span> Viral Campaigns <span class="tdot">&#10022;</span> X Spaces <span class="tdot">&#10022;</span> Creator Capital Markets <span class="tdot">&#10022;</span> Clipper Economy <span class="tdot">&#10022;</span> Discord Community <span class="tdot">&#10022;</span> Investor Outreach <span class="tdot">&#10022;</span> Video Production <span class="tdot">&#10022;</span> IRL Event Coverage <span class="tdot">&#10022;</span> Political Meme Strategy <span class="tdot">&#10022;</span> DeFi Platform Marketing <span class="tdot">&#10022;</span> Platform Co-Founder <span class="tdot">&#10022;</span> Payout Processing <span class="tdot">&#10022;</span> Social Proof <span class="tdot">&#10022;</span> Web3 Native <span class="tdot">&#10022;</span></div>
-    <div class="ticker-item">Meme Coin Marketing <span class="tdot">&#10022;</span> Community Growth <span class="tdot">&#10022;</span> Token Launch Strategy <span class="tdot">&#10022;</span> X Marketing <span class="tdot">&#10022;</span> PNL Cards <span class="tdot">&#10022;</span> Trend Execution <span class="tdot">&#10022;</span> KOL Outreach <span class="tdot">&#10022;</span> Brand Narratives <span class="tdot">&#10022;</span> Viral Campaigns <span class="tdot">&#10022;</span> X Spaces <span class="tdot">&#10022;</span> Creator Capital Markets <span class="tdot">&#10022;</span> Clipper Economy <span class="tdot">&#10022;</span> Discord Community <span class="tdot">&#10022;</span> Investor Outreach <span class="tdot">&#10022;</span> Video Production <span class="tdot">&#10022;</span> IRL Event Coverage <span class="tdot">&#10022;</span> Political Meme Strategy <span class="tdot">&#10022;</span> DeFi Platform Marketing <span class="tdot">&#10022;</span> Platform Co-Founder <span class="tdot">&#10022;</span> Payout Processing <span class="tdot">&#10022;</span> Social Proof <span class="tdot">&#10022;</span> Web3 Native <span class="tdot">&#10022;</span></div>
-  </div>
-</div>
-<!-- CAPS BAR -->
-<div class="caps-bar">
-  <div class="cap-item"><div class="cap-num">10M+</div><div class="cap-label">Impressions Generated</div></div>
-  <div class="cap-item"><div class="cap-num">7</div><div class="cap-label">Projects Shipped</div></div>
-  <div class="cap-item"><div class="cap-num">$10K+</div><div class="cap-label">Creator Payouts Processed</div></div>
-  <div class="cap-item"><div class="cap-num">5+</div><div class="cap-label">Communities Built</div></div>
-</div>
-<!-- TEETH -->
-<div class="teeth-div" style="background:var(--deep);">
-  <svg viewBox="0 0 1440 140" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <rect width="1440" height="140" fill="var(--teal)"/>
-    <path d="M0 30 C10 30 15 28 20 0 C25 28 30 30 40 30 C50 30 55 28 60 0 C65 28 70 30 80 30 C90 30 95 28 100 0 C105 28 110 30 120 30 C130 30 135 28 140 0 C145 28 150 30 160 30 C170 30 175 28 180 0 C185 28 190 30 200 30 C210 30 215 28 220 0 C225 28 230 30 240 30 C250 30 255 28 260 0 C265 28 270 30 280 30 C290 30 295 28 300 0 C305 28 310 30 320 30 C330 30 335 28 340 0 C345 28 350 30 360 30 C370 30 375 28 380 0 C385 28 390 30 400 30 C410 30 415 28 420 0 C425 28 430 30 440 30 C450 30 455 28 460 0 C465 28 470 30 480 30 C490 30 495 28 500 0 C505 28 510 30 520 30 C530 30 535 28 540 0 C545 28 550 30 560 30 C570 30 575 28 580 0 C585 28 590 30 600 30 C610 30 615 28 620 0 C625 28 630 30 640 30 C650 30 655 28 660 0 C665 28 670 30 680 30 C690 30 695 28 700 0 C705 28 710 30 720 30 C730 30 735 28 740 0 C745 28 750 30 760 30 C770 30 775 28 780 0 C785 28 790 30 800 30 C810 30 815 28 820 0 C825 28 830 30 840 30 C850 30 855 28 860 0 C865 28 870 30 880 30 C890 30 895 28 900 0 C905 28 910 30 920 30 C930 30 935 28 940 0 C945 28 950 30 960 30 C970 30 975 28 980 0 C985 28 990 30 1000 30 C1010 30 1015 28 1020 0 C1025 28 1030 30 1040 30 C1050 30 1055 28 1060 0 C1065 28 1070 30 1080 30 C1090 30 1095 28 1100 0 C1105 28 1110 30 1120 30 C1130 30 1135 28 1140 0 C1145 28 1150 30 1160 30 C1170 30 1175 28 1180 0 C1185 28 1190 30 1200 30 C1210 30 1215 28 1220 0 C1225 28 1230 30 1240 30 C1250 30 1255 28 1260 0 C1265 28 1270 30 1280 30 C1290 30 1295 28 1300 0 C1305 28 1310 30 1320 30 C1330 30 1335 28 1340 0 C1345 28 1350 30 1360 30 C1370 30 1375 28 1380 0 C1385 28 1390 30 1400 30 C1410 30 1415 28 1420 0 C1425 28 1430 30 1440 30 L1440 140 L0 140 Z" fill="var(--abyss)" stroke="none"/>
-    <path d="M0 30 C10 30 15 28 20 0 C25 28 30 30 40 30 C50 30 55 28 60 0 C65 28 70 30 80 30 C90 30 95 28 100 0 C105 28 110 30 120 30 C130 30 135 28 140 0 C145 28 150 30 160 30 C170 30 175 28 180 0 C185 28 190 30 200 30 C210 30 215 28 220 0 C225 28 230 30 240 30 C250 30 255 28 260 0 C265 28 270 30 280 30 C290 30 295 28 300 0 C305 28 310 30 320 30 C330 30 335 28 340 0 C345 28 350 30 360 30 C370 30 375 28 380 0 C385 28 390 30 400 30 C410 30 415 28 420 0 C425 28 430 30 440 30 C450 30 455 28 460 0 C465 28 470 30 480 30 C490 30 495 28 500 0 C505 28 510 30 520 30 C530 30 535 28 540 0 C545 28 550 30 560 30 C570 30 575 28 580 0 C585 28 590 30 600 30 C610 30 615 28 620 0 C625 28 630 30 640 30 C650 30 655 28 660 0 C665 28 670 30 680 30 C690 30 695 28 700 0 C705 28 710 30 720 30 C730 30 735 28 740 0 C745 28 750 30 760 30 C770 30 775 28 780 0 C785 28 790 30 800 30 C810 30 815 28 820 0 C825 28 830 30 840 30 C850 30 855 28 860 0 C865 28 870 30 880 30 C890 30 895 28 900 0 C905 28 910 30 920 30 C930 30 935 28 940 0 C945 28 950 30 960 30 C970 30 975 28 980 0 C985 28 990 30 1000 30 C1010 30 1015 28 1020 0 C1025 28 1030 30 1040 30 C1050 30 1055 28 1060 0 C1065 28 1070 30 1080 30 C1090 30 1095 28 1100 0 C1105 28 1110 30 1120 30 C1130 30 1135 28 1140 0 C1145 28 1150 30 1160 30 C1170 30 1175 28 1180 0 C1185 28 1190 30 1200 30 C1210 30 1215 28 1220 0 C1225 28 1230 30 1240 30 C1250 30 1255 28 1260 0 C1265 28 1270 30 1280 30 C1290 30 1295 28 1300 0 C1305 28 1310 30 1320 30 C1330 30 1335 28 1340 0 C1345 28 1350 30 1360 30 C1370 30 1375 28 1380 0 C1385 28 1390 30 1400 30 C1410 30 1415 28 1420 0 C1425 28 1430 30 1440 30" fill="none" stroke="rgba(1,255,255,0.45)" stroke-width="1.8"/>
-  </svg>
-</div>
-<!-- ABOUT -->
-<section class="section teal-bg" id="about">
-  <div class="scroll-fin">
-    <svg viewBox="0 0 60 80" fill="none"><path d="M30 75 C28 60,20 40,10 20 C18 35,26 50,30 60 C34 50,42 35,50 20 C40 40,32 60,30 75Z" fill="#041c1c" stroke="rgba(1,255,255,0.5)" stroke-width="1.5"/></svg>
-  </div>
-  <div class="s-tag" data-i18n="about_tag">About</div>
-  <h2 class="s-title" data-i18n="about_title">Who I Am</h2>
-  <div class="about-grid">
-    <div class="about-body">
-      <p data-i18n="about_p1">A social media strategist and marketer who's been operating anonymously in Web3 since 2024. I got into this space because it moves fast, rewards creativity, and has no rulebook &mdash; which is exactly how I like it.</p>
-      <p data-i18n="about_p2">I build accounts from nothing, turn performance data into shareable content, and grow communities that actually care. What I care about is making things that work &mdash; not things that just look good on a deck.</p>
-      <p data-i18n="about_p3">Always in the water. Always moving.</p>
-    </div>
-    <div class="about-facts">
-      <div class="fact"><div class="fact-l">Handle</div><div class="fact-v">@JawsOnChain</div></div>
-      <div class="fact"><div class="fact-l">Niche</div><div class="fact-v">Web3 &middot; Crypto &middot; DeFi</div></div>
-      <div class="fact"><div class="fact-l">Background</div><div class="fact-v">BA Business Management &amp; Marketing</div></div>
-      <div class="fact"><div class="fact-l">Status</div><div class="fact-v"><span class="fact-status-dot"></span><span data-i18n="fact_status">Open to new projects</span></div></div>
-    </div>
-  </div>
-</section>
-<!-- TEETH FLIPPED -->
-<div class="teeth-div" style="background:var(--teal);transform:scaleY(-1);">
-  <svg viewBox="0 0 1440 140" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <rect width="1440" height="140" fill="var(--abyss)"/>
-    <path d="M0 30 C10 30 15 28 20 0 C25 28 30 30 40 30 C50 30 55 28 60 0 C65 28 70 30 80 30 C90 30 95 28 100 0 C105 28 110 30 120 30 C130 30 135 28 140 0 C145 28 150 30 160 30 C170 30 175 28 180 0 C185 28 190 30 200 30 C210 30 215 28 220 0 C225 28 230 30 240 30 C250 30 255 28 260 0 C265 28 270 30 280 30 C290 30 295 28 300 0 C305 28 310 30 320 30 C330 30 335 28 340 0 C345 28 350 30 360 30 C370 30 375 28 380 0 C385 28 390 30 400 30 C410 30 415 28 420 0 C425 28 430 30 440 30 C450 30 455 28 460 0 C465 28 470 30 480 30 C490 30 495 28 500 0 C505 28 510 30 520 30 C530 30 535 28 540 0 C545 28 550 30 560 30 C570 30 575 28 580 0 C585 28 590 30 600 30 C610 30 615 28 620 0 C625 28 630 30 640 30 C650 30 655 28 660 0 C665 28 670 30 680 30 C690 30 695 28 700 0 C705 28 710 30 720 30 C730 30 735 28 740 0 C745 28 750 30 760 30 C770 30 775 28 780 0 C785 28 790 30 800 30 C810 30 815 28 820 0 C825 28 830 30 840 30 C850 30 855 28 860 0 C865 28 870 30 880 30 C890 30 895 28 900 0 C905 28 910 30 920 30 C930 30 935 28 940 0 C945 28 950 30 960 30 C970 30 975 28 980 0 C985 28 990 30 1000 30 C1010 30 1015 28 1020 0 C1025 28 1030 30 1040 30 C1050 30 1055 28 1060 0 C1065 28 1070 30 1080 30 C1090 30 1095 28 1100 0 C1105 28 1110 30 1120 30 C1130 30 1135 28 1140 0 C1145 28 1150 30 1160 30 C1170 30 1175 28 1180 0 C1185 28 1190 30 1200 30 C1210 30 1215 28 1220 0 C1225 28 1230 30 1240 30 C1250 30 1255 28 1260 0 C1265 28 1270 30 1280 30 C1290 30 1295 28 1300 0 C1305 28 1310 30 1320 30 C1330 30 1335 28 1340 0 C1345 28 1350 30 1360 30 C1370 30 1375 28 1380 0 C1385 28 1390 30 1400 30 C1410 30 1415 28 1420 0 C1425 28 1430 30 1440 30 L1440 140 L0 140 Z" fill="var(--teal)" stroke="none"/>
-    <path d="M0 30 C10 30 15 28 20 0 C25 28 30 30 40 30 C50 30 55 28 60 0 C65 28 70 30 80 30 C90 30 95 28 100 0 C105 28 110 30 120 30 C130 30 135 28 140 0 C145 28 150 30 160 30 C170 30 175 28 180 0 C185 28 190 30 200 30 C210 30 215 28 220 0 C225 28 230 30 240 30 C250 30 255 28 260 0 C265 28 270 30 280 30 C290 30 295 28 300 0 C305 28 310 30 320 30 C330 30 335 28 340 0 C345 28 350 30 360 30 C370 30 375 28 380 0 C385 28 390 30 400 30 C410 30 415 28 420 0 C425 28 430 30 440 30 C450 30 455 28 460 0 C465 28 470 30 480 30 C490 30 495 28 500 0 C505 28 510 30 520 30 C530 30 535 28 540 0 C545 28 550 30 560 30 C570 30 575 28 580 0 C585 28 590 30 600 30 C610 30 615 28 620 0 C625 28 630 30 640 30 C650 30 655 28 660 0 C665 28 670 30 680 30 C690 30 695 28 700 0 C705 28 710 30 720 30 C730 30 735 28 740 0 C745 28 750 30 760 30 C770 30 775 28 780 0 C785 28 790 30 800 30 C810 30 815 28 820 0 C825 28 830 30 840 30 C850 30 855 28 860 0 C865 28 870 30 880 30 C890 30 895 28 900 0 C905 28 910 30 920 30 C930 30 935 28 940 0 C945 28 950 30 960 30 C970 30 975 28 980 0 C985 28 990 30 1000 30 C1010 30 1015 28 1020 0 C1025 28 1030 30 1040 30 C1050 30 1055 28 1060 0 C1065 28 1070 30 1080 30 C1090 30 1095 28 1100 0 C1105 28 1110 30 1120 30 C1130 30 1135 28 1140 0 C1145 28 1150 30 1160 30 C1170 30 1175 28 1180 0 C1185 28 1190 30 1200 30 C1210 30 1215 28 1220 0 C1225 28 1230 30 1240 30 C1250 30 1255 28 1260 0 C1265 28 1270 30 1280 30 C1290 30 1295 28 1300 0 C1305 28 1310 30 1320 30 C1330 30 1335 28 1340 0 C1345 28 1350 30 1360 30 C1370 30 1375 28 1380 0 C1385 28 1390 30 1400 30 C1410 30 1415 28 1420 0 C1425 28 1430 30 1440 30" fill="none" stroke="rgba(1,255,255,0.4)" stroke-width="1.8"/>
-  </svg>
-</div>
-<!-- WORK -->
-<section class="section" id="work" style="border-top:none;">
-  <div class="s-tag" data-i18n="work_tag">Selected Work</div>
-  <h2 class="s-title" data-i18n="work_title">Projects</h2>
-  <p class="work-sub">Meme coins move fast. Most don't make it. Here's what I built while they lasted &mdash; and what's still running.</p>
-  <div class="work-grid">
-    <!-- DOOP APP — $12.98M -->
-    <div class="work-card">
-<a href="https://x.com/DoopApp" target="_blank" rel="noopener"><div class="wc-logo-wrap"><img class="wc-logo-img" src="https://unavatar.io/x/doopapp" alt="DoopApp" loading="lazy"></div></a>
-      <div class="project-status status-rugged">&#9760; Rugged</div>
-      <div class="wc-tag">Marketing &amp; Community Lead</div>
-      <div class="wc-links-row">
-        <a href="https://x.com/DoopApp" target="_blank" rel="noopener" class="wc-icon-link"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> X</a>
-        <a href="https://doopapp.com/" target="_blank" rel="noopener" class="wc-icon-link"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Website</a>
-      </div>
-      <a href="https://doopapp.com/" target="_blank" rel="noopener" class="wc-link"><div class="wc-co">DoopApp</div></a>
-      <div class="wc-desc">Took this gut health app from zero social presence to <em>5,000 followers and 500,000 impressions in a single month</em>. Built the whole content identity from scratch &mdash; graphics, Spaces, campaigns &mdash; and managed the community day-to-day. Went viral more than once.</div>
-      <div class="wc-stat">&#8599; 500K impressions &middot; 5K followers &middot; Community &middot; month 1</div>
-      <div class="wc-stat-ath"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg> ATH MC: $12.98M</div>
-      <div class="wc-ca">
-        <span class="wc-ca-label">CA</span>
-        <span class="wc-ca-addr">7uwNJaMRj9FZuubmzguU8A4cR15ykpBymhAiVJEFTjZ5</span>
-        <button class="wc-ca-copy" data-ca="7uwNJaMRj9FZuubmzguU8A4cR15ykpBymhAiVJEFTjZ5">Copy</button>
-      </div>
-    </div>
 
-    <!-- LORE.VISION — $4.3M -->
-    <div class="work-card">
-<a href="https://x.com/lore_vision" target="_blank" rel="noopener"><div class="wc-logo-wrap"><img class="wc-logo-img" src="https://unavatar.io/x/lore_vision" alt="Lore.Vision" loading="lazy"></div></a>
-      <div class="project-status status-active"><span class="pulse-dot"></span> Active</div>
-      <div class="wc-tag">Social Media Manager</div>
-      <div class="wc-links-row">
-        <a href="https://x.com/lore_vision" target="_blank" rel="noopener" class="wc-icon-link"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> X</a>
-        <a href="https://lore.trade/" target="_blank" rel="noopener" class="wc-icon-link"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Website</a>
+<!-- PROFILE SELECT -->
+<div id="profile-screen">
+  <canvas id="shader-bg"></canvas>
+  <div class="ps-content">
+  <div class="ps-logo">
+    <img src="JAWS LOGO NO BACKGROUND.png" alt="JAWSFLIX" class="jf-logo-img lg">
+  </div>
+  <h1 class="ps-title">Who's watching?</h1>
+  <div class="ps-grid">
+    <div class="ps-item" onclick="selectProfile('client')">
+      <div class="ps-avatar">
+        <img src="https://unavatar.io/x/aeyakovenko" alt="Potential Client" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="av-fb" style="background:linear-gradient(135deg,#0a1a3a,#1a3a6a);">💼</div>
       </div>
-      <a href="https://lore.trade/" target="_blank" rel="noopener" class="wc-link"><div class="wc-co">LORE</div></a>
-      <div class="wc-desc">Jumped in and immediately <em>doubled engagement in 30 days</em> by staying sharp on market movements, trends and timing. Built PNL cards that turned performance into proof. Scripted livestreams, clipped highlights, wore a lot of hats.</div>
-      <div class="wc-stat">&#8599; 120% engagement increase &middot; month 1</div>
-      <div class="wc-stat-ath"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg> ATH MC: $4.3M</div>
-      <div class="wc-ca">
-        <span class="wc-ca-label">CA</span>
-        <span class="wc-ca-addr">G2AbNxcyXV6QiXptMm6MuQPBDJYp9AVQHTdWAV1Wpump</span>
-        <button class="wc-ca-copy" data-ca="G2AbNxcyXV6QiXptMm6MuQPBDJYp9AVQHTdWAV1Wpump">Copy</button>
-      </div>
+      <span class="ps-name">Potential Client</span>
     </div>
-
-    <!-- TAMPON TIM — $2M -->
-    <div class="work-card">
-<a href="https://x.com/TamponTimMeme" target="_blank" rel="noopener"><div class="wc-logo-wrap"><img class="wc-logo-img" src="https://unavatar.io/x/TamponTimMeme" alt="Tampon Tim" loading="lazy"></div></a>
-      <div class="project-status status-ice">&#10052; On Ice</div>
-      <div class="wc-tag">Social Campaign Lead</div>
-      <div class="wc-links-row">
-        <a href="https://x.com/TamponTimMeme" target="_blank" rel="noopener" class="wc-icon-link"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> X</a>
-        <a href="https://tampontimmeme.com/" target="_blank" rel="noopener" class="wc-icon-link"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Website</a>
+    <div class="ps-item" onclick="selectProfile('recruiter')">
+      <div class="ps-avatar">
+        <img src="https://unavatar.io/x/BillGates" alt="Recruiter" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="av-fb" style="background:linear-gradient(135deg,#0a2a0a,#1a4a1a);">🎯</div>
       </div>
-      <a href="https://tampontimmeme.com/" target="_blank" rel="noopener" class="wc-link"><div class="wc-co">Tampon Tim</div></a>
-      <div class="wc-desc">Built and ran the Telegram and hit the ground running on X with fast-paced, politically-charged campaigns. Leaned hard into <em>rage-bait positioning</em> to drive replies and quote tweets &mdash; and pulled <em>100,000 impressions in week one</em>.</div>
-      <div class="wc-stat">&#8599; 100K impressions &middot; week 1</div>
-      <div class="wc-stat-ath"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg> ATH MC: $2M</div>
-      <div class="wc-ca">
-        <span class="wc-ca-label">CA</span>
-        <span class="wc-ca-addr">tptmXt82GmGnoE4qDRgHiTGKMBCh4fCdxjjCBYbgpZV</span>
-        <button class="wc-ca-copy" data-ca="tptmXt82GmGnoE4qDRgHiTGKMBCh4fCdxjjCBYbgpZV">Copy</button>
-      </div>
+      <span class="ps-name">Recruiter</span>
     </div>
-
-    <!-- CLIPPED.FUN — $666K -->
-    <div class="work-card">
-      <a href="https://x.com/clippeddotfun" target="_blank" rel="noopener"><div class="wc-logo-wrap"><img class="wc-logo-img" src="https://unavatar.io/x/clippeddotfun" alt="Clipped.fun" loading="lazy"></div></a>
-      <div class="project-status status-active"><span class="pulse-dot"></span> Active</div>
-      <div class="wc-tag">Co-Founder · Creator Economy</div>
-      <div class="wc-links-row">
-        <a href="https://x.com/clippeddotfun" target="_blank" rel="noopener" class="wc-icon-link"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> X</a>
-        <a href="https://clipped.fun/" target="_blank" rel="noopener" class="wc-icon-link"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Website</a>
+    <div class="ps-item" onclick="selectProfile('degen')">
+      <div class="ps-avatar">
+        <img src="Degen Image.jpg" alt="Degen" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="av-fb" style="background:linear-gradient(135deg,#1a0505,#3d0c0c);">🦍</div>
       </div>
-      <div class="wc-co">Clipped.fun</div>
-      <div class="wc-desc">Co-founded Clipped.fun, a Web3 clips platform built around Creator Capital Markets (CCM). Ran socials and community marketing, bug-tested the website and upcoming app, and managed the clipper economy end-to-end&mdash;including tracking and processing <em>$10,000+ in payouts</em> to clippers to help bootstrap and sustain the ecosystem.</div>
-      <div class="wc-stat">&#9670; Socials · Community · Bug Testing · Clipper Economy</div>
-      <div class="wc-stat-ath"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg> ATH MC: $666K</div>
-      <div class="wc-ca">
-        <span class="wc-ca-label">CA</span>
-        <span class="wc-ca-addr">8WHMgk4kRdZaBDZkgyBpb6bw9XkZzJ2jXCv4gj1zpump</span>
-        <button class="wc-ca-copy" data-ca="8WHMgk4kRdZaBDZkgyBpb6bw9XkZzJ2jXCv4gj1zpump">Copy</button>
-      </div>
+      <span class="ps-name">Degen</span>
     </div>
-
-    <!-- GENTLY USED BLUNT — $652K -->
-    <div class="work-card">
-      <div class="wc-logo-wrap"><img class="wc-logo-img" src="GUB.jpg" alt="Gently Used Blunt" loading="lazy"></div>
-      <div class="project-status status-rugged">&#9760; Rugged</div>
-      <div class="wc-tag">Social &amp; Content</div>
-      <div class="wc-co">Gently Used Blunt</div>
-      <div class="wc-desc">Handled day-to-day socials and <em>meme production</em> to keep the project culturally relevant and in the feed. Shot a promotional video on-location at a real weed shop &mdash; turned a grassroots vibe into a proper marketing asset.</div>
-      <a href="https://x.com/JawsOnChain/status/2028516773364908096" target="_blank" rel="noopener" class="wc-icon-link" style="align-self:flex-start;margin:.25rem 0 .75rem;"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg> Watch video</a>
-      <div class="wc-stat">&#9670; Socials · Memes · Promo Video</div>
-      <div class="wc-stat-ath"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg> ATH MC: $652K</div>
-      <div class="wc-ca">
-        <span class="wc-ca-label">CA</span>
-        <span class="wc-ca-addr">48NjRqcWLj3k72BdomHbqSMfxPssGRBAzqzQFN1pqpB4</span>
-        <button class="wc-ca-copy" data-ca="48NjRqcWLj3k72BdomHbqSMfxPssGRBAzqzQFN1pqpB4">Copy</button>
+    <div class="ps-item" onclick="selectProfile('builder')">
+      <div class="ps-avatar">
+        <img src="https://unavatar.io/x/cz_binance" alt="Builder" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="av-fb" style="background:linear-gradient(135deg,#1a0a2a,#3a1a5a);">🔨</div>
       </div>
+      <span class="ps-name">Builder</span>
     </div>
-
-    <!-- BONGO -->
-    <div class="work-card">
-<a href="https://x.com/ASKBongoCoin" target="_blank" rel="noopener"><div class="wc-logo-wrap"><img class="wc-logo-img" src="https://unavatar.io/x/ASKBongoCoin" alt="Bongo" loading="lazy"></div></a>
-      <div class="project-status status-rugged">&#9760; Rugged</div>
-      <div class="wc-tag">Event Marketing &amp; Content</div>
-      <div class="wc-links-row">
-        <a href="https://x.com/ASKBongoCoin" target="_blank" rel="noopener" class="wc-icon-link"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> X</a>
-        <a href="https://askbongo.ai/" target="_blank" rel="noopener" class="wc-icon-link"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Website</a>
+    <div class="ps-item" onclick="selectProfile('lurker')">
+      <div class="ps-avatar">
+        <img src="Pepe Lurk.png" alt="Lurker" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="av-fb" style="background:linear-gradient(135deg,#111,#222);display:none;font-size:3.5rem;">👀</div>
       </div>
-      <div class="wc-co">Bongo</div>
-      <div class="wc-desc">Helped breathe new life into an established meme IP through event-driven marketing and content. <em>Flew out to NFC Lisbon</em> with a teammate &mdash; captured on-the-ground footage, marketed the project live, and reignited community momentum.</div>
-      <a href="https://x.com/AskBongoCoin/status/1932397941282541790" target="_blank" rel="noopener" class="wc-icon-link" style="align-self:flex-start;margin:.25rem 0 .75rem;"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg> Watch video</a>
-      <div class="wc-stat">&#9670; NFC Lisbon · Event Content · Community Revival</div>
-      <div class="wc-stat-ath"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg> ATH MC: $1.217M</div>
-      <div class="wc-ca">
-        <span class="wc-ca-label">CA</span>
-        <span class="wc-ca-addr">9Es9ttvHj9UUHwyy7QLEPBTyJatYo2FbkuHcQR4cVxJr</span>
-        <button class="wc-ca-copy" data-ca="9Es9ttvHj9UUHwyy7QLEPBTyJatYo2FbkuHcQR4cVxJr">Copy</button>
-      </div>
-    </div>
-
-    <!-- PTSD -->
-    <div class="work-card">
-<a href="https://x.com/PTSDshow" target="_blank" rel="noopener"><div class="wc-logo-wrap"><img class="wc-logo-img" src="https://unavatar.io/x/PTSDshow" alt="PTSD" loading="lazy"></div></a>
-      <div class="project-status status-active"><span class="pulse-dot"></span> Active</div>
-      <div class="wc-tag">Community Lead &amp; Host</div>
-      <div class="wc-links-row">
-        <a href="https://x.com/PTSDshow" target="_blank" rel="noopener" class="wc-icon-link"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> X</a>
-        <a href="https://www.ptsdshow.com/" target="_blank" rel="noopener" class="wc-icon-link"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Website</a>
-      </div>
-      <div class="wc-co">PTSD</div>
-      <div class="wc-desc">Got involved at launch for this <em>animated Web3 series</em> &mdash; hosted X Spaces to build early hype, built and moderated the Discord community from the ground up, and helped open doors with potential investors and partners.</div>
-      <div class="wc-stat">&#9670; Community · Spaces · Investor Outreach</div>
-      <div class="wc-stat" style="color:#fbbf24;opacity:.85;">&#9711; Token: Coming Soon</div>
-    </div>
-
-    <!-- QUAIFLIP -->
-    <div class="work-card">
-<a href="https://x.com/QuaiFlip" target="_blank" rel="noopener"><div class="wc-logo-wrap"><img class="wc-logo-img" src="https://unavatar.io/x/QuaiFlip" alt="QuaiFlip" loading="lazy"></div></a>
-      <div class="project-status status-active"><span class="pulse-dot"></span> Active</div>
-      <div class="wc-tag">Co-Founder &amp; Growth Lead</div>
-      <div class="wc-links-row">
-        <a href="https://x.com/QuaiFlip" target="_blank" rel="noopener" class="wc-icon-link"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> X</a>
-        <a href="https://quaiflip.com/" target="_blank" rel="noopener" class="wc-icon-link"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Website</a>
-      </div>
-      <a href="https://quaiflip.com/" target="_blank" rel="noopener" class="wc-link"><div class="wc-co">QuaiFlip</div></a>
-      <div class="wc-desc">Co-founded the <em>first provably fair on-chain coin flip game on Quai Network</em> from scratch alongside lead dev Ludz. Built the full brand identity &mdash; logo, colour system, typography, tagline. Grew the X account from zero, architected the Discord community end-to-end, wrote and submitted a <em>$40,000 grant proposal</em> to the Quai Builders Program, and repped the project across multiple Quai Network X Spaces. Launched on mainnet.</div>
-      <div class="wc-stat">&#8599; $40K grant proposal · Discord · Spaces · Brand</div>
-      <div class="wc-stat-ath"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg> Live on Quai Mainnet</div>
-    </div>
-
-    <div class="work-card wc-anon">
-      <div class="wc-anon-lock">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1.5" fill="currentColor" stroke="none"/></svg>
-      </div>
-      <div class="project-status status-active"><span class="pulse-dot"></span> Active</div>
-      <div class="wc-tag">Growth &amp; Community</div>
-      <div class="wc-co" style="font-size:1.8rem;color:var(--muted);letter-spacing:.1em;">CONFIDENTIAL</div>
-      <div class="wc-desc">Currently embedded with a stealth-phase Web3 project. NDA means the details stay in the deep. Results surface when the time is right &mdash; always does.</div>
-      <div class="wc-stat" style="opacity:.4;">&#9670; Results embargoed until launch</div>
+      <span class="ps-name">Lurker</span>
     </div>
   </div>
-</section>
-<!-- TEETH -->
-<div class="teeth-div" style="background:var(--abyss);">
-  <svg viewBox="0 0 1440 140" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <rect width="1440" height="140" fill="var(--deep)"/>
-    <path d="M0 30 C10 30 15 28 20 0 C25 28 30 30 40 30 C50 30 55 28 60 0 C65 28 70 30 80 30 C90 30 95 28 100 0 C105 28 110 30 120 30 C130 30 135 28 140 0 C145 28 150 30 160 30 C170 30 175 28 180 0 C185 28 190 30 200 30 C210 30 215 28 220 0 C225 28 230 30 240 30 C250 30 255 28 260 0 C265 28 270 30 280 30 C290 30 295 28 300 0 C305 28 310 30 320 30 C330 30 335 28 340 0 C345 28 350 30 360 30 C370 30 375 28 380 0 C385 28 390 30 400 30 C410 30 415 28 420 0 C425 28 430 30 440 30 C450 30 455 28 460 0 C465 28 470 30 480 30 C490 30 495 28 500 0 C505 28 510 30 520 30 C530 30 535 28 540 0 C545 28 550 30 560 30 C570 30 575 28 580 0 C585 28 590 30 600 30 C610 30 615 28 620 0 C625 28 630 30 640 30 C650 30 655 28 660 0 C665 28 670 30 680 30 C690 30 695 28 700 0 C705 28 710 30 720 30 C730 30 735 28 740 0 C745 28 750 30 760 30 C770 30 775 28 780 0 C785 28 790 30 800 30 C810 30 815 28 820 0 C825 28 830 30 840 30 C850 30 855 28 860 0 C865 28 870 30 880 30 C890 30 895 28 900 0 C905 28 910 30 920 30 C930 30 935 28 940 0 C945 28 950 30 960 30 C970 30 975 28 980 0 C985 28 990 30 1000 30 C1010 30 1015 28 1020 0 C1025 28 1030 30 1040 30 C1050 30 1055 28 1060 0 C1065 28 1070 30 1080 30 C1090 30 1095 28 1100 0 C1105 28 1110 30 1120 30 C1130 30 1135 28 1140 0 C1145 28 1150 30 1160 30 C1170 30 1175 28 1180 0 C1185 28 1190 30 1200 30 C1210 30 1215 28 1220 0 C1225 28 1230 30 1240 30 C1250 30 1255 28 1260 0 C1265 28 1270 30 1280 30 C1290 30 1295 28 1300 0 C1305 28 1310 30 1320 30 C1330 30 1335 28 1340 0 C1345 28 1350 30 1360 30 C1370 30 1375 28 1380 0 C1385 28 1390 30 1400 30 C1410 30 1415 28 1420 0 C1425 28 1430 30 1440 30 L1440 140 L0 140 Z" fill="var(--abyss)" stroke="none"/>
-    <path d="M0 30 C10 30 15 28 20 0 C25 28 30 30 40 30 C50 30 55 28 60 0 C65 28 70 30 80 30 C90 30 95 28 100 0 C105 28 110 30 120 30 C130 30 135 28 140 0 C145 28 150 30 160 30 C170 30 175 28 180 0 C185 28 190 30 200 30 C210 30 215 28 220 0 C225 28 230 30 240 30 C250 30 255 28 260 0 C265 28 270 30 280 30 C290 30 295 28 300 0 C305 28 310 30 320 30 C330 30 335 28 340 0 C345 28 350 30 360 30 C370 30 375 28 380 0 C385 28 390 30 400 30 C410 30 415 28 420 0 C425 28 430 30 440 30 C450 30 455 28 460 0 C465 28 470 30 480 30 C490 30 495 28 500 0 C505 28 510 30 520 30 C530 30 535 28 540 0 C545 28 550 30 560 30 C570 30 575 28 580 0 C585 28 590 30 600 30 C610 30 615 28 620 0 C625 28 630 30 640 30 C650 30 655 28 660 0 C665 28 670 30 680 30 C690 30 695 28 700 0 C705 28 710 30 720 30 C730 30 735 28 740 0 C745 28 750 30 760 30 C770 30 775 28 780 0 C785 28 790 30 800 30 C810 30 815 28 820 0 C825 28 830 30 840 30 C850 30 855 28 860 0 C865 28 870 30 880 30 C890 30 895 28 900 0 C905 28 910 30 920 30 C930 30 935 28 940 0 C945 28 950 30 960 30 C970 30 975 28 980 0 C985 28 990 30 1000 30 C1010 30 1015 28 1020 0 C1025 28 1030 30 1040 30 C1050 30 1055 28 1060 0 C1065 28 1070 30 1080 30 C1090 30 1095 28 1100 0 C1105 28 1110 30 1120 30 C1130 30 1135 28 1140 0 C1145 28 1150 30 1160 30 C1170 30 1175 28 1180 0 C1185 28 1190 30 1200 30 C1210 30 1215 28 1220 0 C1225 28 1230 30 1240 30 C1250 30 1255 28 1260 0 C1265 28 1270 30 1280 30 C1290 30 1295 28 1300 0 C1305 28 1310 30 1320 30 C1330 30 1335 28 1340 0 C1345 28 1350 30 1360 30 C1370 30 1375 28 1380 0 C1385 28 1390 30 1400 30 C1410 30 1415 28 1420 0 C1425 28 1430 30 1440 30" fill="none" stroke="rgba(1,255,255,0.4)" stroke-width="1.8"/>
-  </svg>
+  </div><!-- /ps-content -->
 </div>
-<!-- MEDIA -->
-<section class="section" id="media" style="background:var(--deep);border-top:1px solid var(--border);">
-  <div class="s-tag">Clips &amp; Content</div>
-  <h2 class="s-title">Media</h2>
-  <div class="media-grid">
-    <div class="media-item">
-      <div class="media-item-title">Gently Used Blunt</div>
-      <div class="media-item-sub">On-location weed shop shoot</div>
-      <video class="media-video" src="GUB%20promo.mp4" controls playsinline preload="metadata" poster="gub-poster.jpg"></video>
+
+<!-- MAIN SITE -->
+<div id="main-site" style="display:none;">
+
+  <nav id="navbar">
+    <div style="cursor:pointer;flex-shrink:0;" onclick="showView('home')">
+      <img src="JAWS LOGO NO BACKGROUND.png" alt="JAWSFLIX" class="jf-logo-img sm">
     </div>
-    <div class="media-item">
-      <div class="media-item-title">Bongo — NFC Lisbon</div>
-      <div class="media-item-sub">IRL event coverage</div>
-      <video class="media-video" src="Bongo%20Promo.mp4" controls playsinline preload="metadata" poster="bongo-poster.jpg"></video>
+    <ul class="nav-links">
+      <li><a id="nav-home" class="active" onclick="showView('home')">Home</a></li>
+      <li><a id="nav-about" onclick="showView('about')">About</a></li>
+      <li><a id="nav-projects" onclick="showView('projects')">Projects</a></li>
+      <li><a id="nav-skills" onclick="showView('skills')">Skills</a></li>
+      <li><a id="nav-content" onclick="showView('content')">Content</a></li>
+      <li><a id="nav-contact" onclick="showView('contact')">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="price-pills">
+        <div class="price-pill sol">SOL $<span id="sol-price">—</span></div>
+        <div class="price-pill quai">QUAI $<span id="quai-price">—</span></div>
+      </div>
+      <div class="nav-pfp" onclick="document.getElementById('main-site').style.display='none';document.getElementById('profile-screen').style.display='flex';">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--muted)"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+      </div>
+      <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
-  </div>
-</section>
-<!-- SKILLS -->
-<div class="mouth-wrap" id="skills">
-  <div class="mouth-header">
-    <div class="s-tag" data-i18n="skills_tag">Capabilities</div>
-    <h2 class="s-title" style="margin-bottom:1.5rem;" data-i18n="skills_title">Skills</h2>
-  </div>
-  <svg class="mouth-svg-outer" viewBox="0 0 1200 110" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <defs><linearGradient id="jg" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="rgba(1,255,255,0.3)"/><stop offset="50%" stop-color="rgba(1,255,255,0.9)"/><stop offset="100%" stop-color="rgba(1,255,255,0.3)"/></linearGradient></defs>
-    <path d="M 0 0 Q 600 -10 1200 0 L 1200 32 C1180 32 1168 28 1158 70 C1148 28 1136 32 1116 32 C1096 32 1084 28 1074 70 C1064 28 1052 32 1032 32 C1012 32 1000 28 990 70 C980 28 968 32 948 32 C928 32 916 28 906 70 C896 28 884 32 864 32 C844 32 832 28 822 70 C812 28 800 32 780 32 C760 32 748 28 738 70 C728 28 716 32 696 32 C676 32 664 28 654 70 C644 28 632 32 612 32 C592 32 580 28 570 70 C560 28 548 32 528 32 C508 32 496 28 486 70 C476 28 464 32 444 32 C424 32 412 28 402 70 C392 28 380 32 360 32 C340 32 328 28 318 70 C308 28 296 32 276 32 C256 32 244 28 234 70 C224 28 212 32 192 32 C172 32 160 28 150 70 C140 28 128 32 108 32 C88 32 76 28 66 70 C56 28 44 32 24 32 L 0 32 L 0 110 L 1200 110 Z" fill="#020d0d" stroke="none"/>
-    <path d="M 0 0 Q 600 -10 1200 0 L 1200 32 C1180 32 1168 28 1158 70 C1148 28 1136 32 1116 32 C1096 32 1084 28 1074 70 C1064 28 1052 32 1032 32 C1012 32 1000 28 990 70 C980 28 968 32 948 32 C928 32 916 28 906 70 C896 28 884 32 864 32 C844 32 832 28 822 70 C812 28 800 32 780 32 C760 32 748 28 738 70 C728 28 716 32 696 32 C676 32 664 28 654 70 C644 28 632 32 612 32 C592 32 580 28 570 70 C560 28 548 32 528 32 C508 32 496 28 486 70 C476 28 464 32 444 32 C424 32 412 28 402 70 C392 28 380 32 360 32 C340 32 328 28 318 70 C308 28 296 32 276 32 C256 32 244 28 234 70 C224 28 212 32 192 32 C172 32 160 28 150 70 C140 28 128 32 108 32 C88 32 76 28 66 70 C56 28 44 32 24 32 L 0 32 L 0 110 L 1200 110 Z" fill="none" stroke="url(#jg)" stroke-width="1.8"/>
-    <line x1="0" y1="0" x2="0" y2="110" stroke="rgba(1,255,255,0.45)" stroke-width="2"/>
-    <line x1="1200" y1="0" x2="1200" y2="110" stroke="rgba(1,255,255,0.45)" stroke-width="2"/>
-  </svg>
-  <div class="mouth-inner">
-    <div class="skills-grid">
-      <div class="skill-tile"><div class="sk-name" data-i18n="sk1_name">Content Strategy</div><div class="sk-desc" data-i18n="sk1_desc">Building narratives that resonate with crypto-native audiences. From DoopApp to LORE &mdash; 500K impressions in a single month, 120% engagement lifts.</div></div>
-      <div class="skill-tile"><div class="sk-name" data-i18n="sk2_name">Community Growth</div><div class="sk-desc" data-i18n="sk2_desc">Built and moderated Discord communities from scratch, ran Telegram groups, and grew social accounts from zero. Discord, Telegram, X &mdash; all channels.</div></div>
-      <div class="skill-tile"><div class="sk-name" data-i18n="sk3_name">Trend Execution</div><div class="sk-desc" data-i18n="sk3_desc">Moving on emerging narratives before everyone else. Rage-bait, political memes, DeFi meta &mdash; in position before the crowd arrives.</div></div>
-      <div class="skill-tile"><div class="sk-name" data-i18n="sk4_name">Visual Content</div><div class="sk-desc" data-i18n="sk4_desc">PNL cards, branded graphics, meme production, scripted livestreams &mdash; turning performance and culture into shareable assets.</div></div>
-      <div class="skill-tile"><div class="sk-name" data-i18n="sk5_name">X Spaces &amp; Live</div><div class="sk-desc" data-i18n="sk5_desc">Hosted early-stage Spaces to build launch hype, drove investor discovery, and kept communities engaged through live sessions.</div></div>
-      <div class="skill-tile"><div class="sk-name" data-i18n="sk6_name">Event Marketing</div><div class="sk-desc" data-i18n="sk6_desc">Flew to NFC Lisbon to capture on-the-ground footage and market live. Turning IRL moments into online momentum.</div></div>
-      <div class="skill-tile"><div class="sk-name" data-i18n="sk7_name">Video Production</div><div class="sk-desc" data-i18n="sk7_desc">Shot on-location promo content at a real weed shop for GUB. Turning grassroots ideas into polished marketing assets.</div></div>
-      <div class="skill-tile"><div class="sk-name" data-i18n="sk8_name">Economy Management</div><div class="sk-desc" data-i18n="sk8_desc">Tracked and processed $10K+ in payouts to clippers for Clipped.fun &mdash; managing a live creator economy end-to-end.</div></div>
-      <div class="skill-tile"><div class="sk-name" data-i18n="sk9_name">Co-Founding</div><div class="sk-desc" data-i18n="sk9_desc">Co-founded Clipped.fun, a Web3 Creator Capital Markets platform. Ran socials, bug-tested the app, and built the clipper ecosystem from zero.</div></div>
-    </div>
-  </div>
-  <svg class="mouth-svg-outer" viewBox="0 0 1200 110" preserveAspectRatio="none" style="transform:scaleY(-1);" xmlns="http://www.w3.org/2000/svg">
-    <path d="M 0 0 Q 600 -10 1200 0 L 1200 32 C1180 32 1168 28 1158 70 C1148 28 1136 32 1116 32 C1096 32 1084 28 1074 70 C1064 28 1052 32 1032 32 C1012 32 1000 28 990 70 C980 28 968 32 948 32 C928 32 916 28 906 70 C896 28 884 32 864 32 C844 32 832 28 822 70 C812 28 800 32 780 32 C760 32 748 28 738 70 C728 28 716 32 696 32 C676 32 664 28 654 70 C644 28 632 32 612 32 C592 32 580 28 570 70 C560 28 548 32 528 32 C508 32 496 28 486 70 C476 28 464 32 444 32 C424 32 412 28 402 70 C392 28 380 32 360 32 C340 32 328 28 318 70 C308 28 296 32 276 32 C256 32 244 28 234 70 C224 28 212 32 192 32 C172 32 160 28 150 70 C140 28 128 32 108 32 C88 32 76 28 66 70 C56 28 44 32 24 32 L 0 32 L 0 110 L 1200 110 Z" fill="#020d0d" stroke="none"/>
-    <path d="M 0 0 Q 600 -10 1200 0 L 1200 32 C1180 32 1168 28 1158 70 C1148 28 1136 32 1116 32 C1096 32 1084 28 1074 70 C1064 28 1052 32 1032 32 C1012 32 1000 28 990 70 C980 28 968 32 948 32 C928 32 916 28 906 70 C896 28 884 32 864 32 C844 32 832 28 822 70 C812 28 800 32 780 32 C760 32 748 28 738 70 C728 28 716 32 696 32 C676 32 664 28 654 70 C644 28 632 32 612 32 C592 32 580 28 570 70 C560 28 548 32 528 32 C508 32 496 28 486 70 C476 28 464 32 444 32 C424 32 412 28 402 70 C392 28 380 32 360 32 C340 32 328 28 318 70 C308 28 296 32 276 32 C256 32 244 28 234 70 C224 28 212 32 192 32 C172 32 160 28 150 70 C140 28 128 32 108 32 C88 32 76 28 66 70 C56 28 44 32 24 32 L 0 32 L 0 110 L 1200 110 Z" fill="none" stroke="url(#jg)" stroke-width="1.8"/>
-    <line x1="0" y1="0" x2="0" y2="110" stroke="rgba(1,255,255,0.45)" stroke-width="2"/>
-    <line x1="1200" y1="0" x2="1200" y2="110" stroke="rgba(1,255,255,0.45)" stroke-width="2"/>
-  </svg>
-</div>
-<!-- TEETH before contact -->
-<div class="teeth-div" style="background:var(--deep);">
-  <svg viewBox="0 0 1440 140" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <rect width="1440" height="140" fill="var(--abyss)"/>
-    <path d="M0 30 C10 30 15 28 20 0 C25 28 30 30 40 30 C50 30 55 28 60 0 C65 28 70 30 80 30 C90 30 95 28 100 0 C105 28 110 30 120 30 C130 30 135 28 140 0 C145 28 150 30 160 30 C170 30 175 28 180 0 C185 28 190 30 200 30 C210 30 215 28 220 0 C225 28 230 30 240 30 C250 30 255 28 260 0 C265 28 270 30 280 30 C290 30 295 28 300 0 C305 28 310 30 320 30 C330 30 335 28 340 0 C345 28 350 30 360 30 C370 30 375 28 380 0 C385 28 390 30 400 30 C410 30 415 28 420 0 C425 28 430 30 440 30 C450 30 455 28 460 0 C465 28 470 30 480 30 C490 30 495 28 500 0 C505 28 510 30 520 30 C530 30 535 28 540 0 C545 28 550 30 560 30 C570 30 575 28 580 0 C585 28 590 30 600 30 C610 30 615 28 620 0 C625 28 630 30 640 30 C650 30 655 28 660 0 C665 28 670 30 680 30 C690 30 695 28 700 0 C705 28 710 30 720 30 C730 30 735 28 740 0 C745 28 750 30 760 30 C770 30 775 28 780 0 C785 28 790 30 800 30 C810 30 815 28 820 0 C825 28 830 30 840 30 C850 30 855 28 860 0 C865 28 870 30 880 30 C890 30 895 28 900 0 C905 28 910 30 920 30 C930 30 935 28 940 0 C945 28 950 30 960 30 C970 30 975 28 980 0 C985 28 990 30 1000 30 C1010 30 1015 28 1020 0 C1025 28 1030 30 1040 30 C1050 30 1055 28 1060 0 C1065 28 1070 30 1080 30 C1090 30 1095 28 1100 0 C1105 28 1110 30 1120 30 C1130 30 1135 28 1140 0 C1145 28 1150 30 1160 30 C1170 30 1175 28 1180 0 C1185 28 1190 30 1200 30 C1210 30 1215 28 1220 0 C1225 28 1230 30 1240 30 C1250 30 1255 28 1260 0 C1265 28 1270 30 1280 30 C1290 30 1295 28 1300 0 C1305 28 1310 30 1320 30 C1330 30 1335 28 1340 0 C1345 28 1350 30 1360 30 C1370 30 1375 28 1380 0 C1385 28 1390 30 1400 30 C1410 30 1415 28 1420 0 C1425 28 1430 30 1440 30 L1440 140 L0 140 Z" fill="var(--deep)" stroke="none"/>
-    <path d="M0 30 C10 30 15 28 20 0 C25 28 30 30 40 30 C50 30 55 28 60 0 C65 28 70 30 80 30 C90 30 95 28 100 0 C105 28 110 30 120 30 C130 30 135 28 140 0 C145 28 150 30 160 30 C170 30 175 28 180 0 C185 28 190 30 200 30 C210 30 215 28 220 0 C225 28 230 30 240 30 C250 30 255 28 260 0 C265 28 270 30 280 30 C290 30 295 28 300 0 C305 28 310 30 320 30 C330 30 335 28 340 0 C345 28 350 30 360 30 C370 30 375 28 380 0 C385 28 390 30 400 30 C410 30 415 28 420 0 C425 28 430 30 440 30 C450 30 455 28 460 0 C465 28 470 30 480 30 C490 30 495 28 500 0 C505 28 510 30 520 30 C530 30 535 28 540 0 C545 28 550 30 560 30 C570 30 575 28 580 0 C585 28 590 30 600 30 C610 30 615 28 620 0 C625 28 630 30 640 30 C650 30 655 28 660 0 C665 28 670 30 680 30 C690 30 695 28 700 0 C705 28 710 30 720 30 C730 30 735 28 740 0 C745 28 750 30 760 30 C770 30 775 28 780 0 C785 28 790 30 800 30 C810 30 815 28 820 0 C825 28 830 30 840 30 C850 30 855 28 860 0 C865 28 870 30 880 30 C890 30 895 28 900 0 C905 28 910 30 920 30 C930 30 935 28 940 0 C945 28 950 30 960 30 C970 30 975 28 980 0 C985 28 990 30 1000 30 C1010 30 1015 28 1020 0 C1025 28 1030 30 1040 30 C1050 30 1055 28 1060 0 C1065 28 1070 30 1080 30 C1090 30 1095 28 1100 0 C1105 28 1110 30 1120 30 C1130 30 1135 28 1140 0 C1145 28 1150 30 1160 30 C1170 30 1175 28 1180 0 C1185 28 1190 30 1200 30 C1210 30 1215 28 1220 0 C1225 28 1230 30 1240 30 C1250 30 1255 28 1260 0 C1265 28 1270 30 1280 30 C1290 30 1295 28 1300 0 C1305 28 1310 30 1320 30 C1330 30 1335 28 1340 0 C1345 28 1350 30 1360 30 C1370 30 1375 28 1380 0 C1385 28 1390 30 1400 30 C1410 30 1415 28 1420 0 C1425 28 1430 30 1440 30" fill="none" stroke="rgba(1,255,255,0.4)" stroke-width="1.8"/>
-  </svg>
-</div>
-<!-- CONTACT -->
-<section class="contact-section" id="contact">
-  <div class="contact-eyebrow" data-i18n="contact_eyebrow">Contact</div>
-  <h2 class="contact-hl">
-    LET'S BUILD<br>SOMETHING
-    <span class="hl">WORTH BIDDING.</span>
-  </h2>
-  <p class="contact-sub" style="margin-bottom:.6rem;" data-i18n="contact_sub">Anonymous doesn't mean unreachable.</p>
-  <p class="contact-sub" style="opacity:.45;">Eyes get you buys.</p>
-  <div class="contact-links">
-    <a href="https://x.com/JawsOnChain" target="_blank" class="c-link c-primary">
-      <svg class="c-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-      <div><span class="c-lbl">Twitter / X</span>@JawsOnChain</div>
-    </a>
-    <a href="https://t.me/jaws98" target="_blank" rel="noopener" class="c-link">
-      <svg class="c-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.281c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.94z"/></svg>
-      <div><span class="c-lbl">Telegram</span>@jaws98</div>
-    </a>
-    <a href="mailto:JawsOnChain@proton.me" class="c-link">
-      <svg class="c-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>
-      <div><span class="c-lbl">Email</span>JawsOnChain@proton.me</div>
-    </a>
-  </div>
-</section>
-<footer>
-  <div class="f-logo">JAWS</div>
-  <nav class="f-nav">
-    <a href="#about">About</a>
-    <a href="#work">Work</a>
-    <a href="#media">Media</a>
-    <a href="#skills">Skills</a>
-    <a href="#contact">Contact</a>
   </nav>
-  <div class="f-txt">@JawsOnChain &middot; Web3 Marketing</div>
-  <div class="f-copy">&copy; 2026 &middot; Always in the water.</div>
-</footer>
+
+  <div id="mobile-menu">
+    <div class="mm-link active" id="mm-home" onclick="showView('home');toggleMenu()">Home</div>
+    <div class="mm-link" id="mm-about" onclick="showView('about');toggleMenu()">About</div>
+    <div class="mm-link" id="mm-projects" onclick="showView('projects');toggleMenu()">Projects</div>
+    <div class="mm-link" id="mm-skills" onclick="showView('skills');toggleMenu()">Skills</div>
+    <div class="mm-link" id="mm-content" onclick="showView('content');toggleMenu()">Content</div>
+    <div class="mm-link" id="mm-contact" onclick="showView('contact');toggleMenu()">Contact</div>
+  </div>
+
+  <!-- HOME VIEW -->
+  <div id="view-home" class="view active">
+
+    <div class="hero">
+
+      <!-- DoopApp -->
+      <div class="hero-slide active">
+        <div class="hero-bg"><img src="https://unavatar.io/x/doopapp" alt=""></div>
+        <div class="hero-content">
+          <div class="hero-eyebrow">Marketing and Community Lead</div>
+          <h1 class="hero-title">DoopApp</h1>
+          <div class="hero-meta"><span class="hero-year">2024</span><span class="hero-ath">ATH $13M</span></div>
+          <p class="hero-desc">A Web3 health app that paid you to poop. Gamified gut health on-chain with real token rewards.</p>
+          <div class="hero-btns"><button class="btn-white" onclick="window.open('https://x.com/DoopApp','_blank')"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg> View Project</button><button class="btn-grey" onclick="openModal('doopapp')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> More Info</button></div>
+        </div>
+      </div>
+
+      <!-- LORE -->
+      <div class="hero-slide">
+        <div class="hero-bg"><img src="https://unavatar.io/x/lore_vision" alt=""></div>
+        <div class="hero-content">
+          <div class="hero-eyebrow">Social Media Manager</div>
+          <h1 class="hero-title">LORE</h1>
+          <div class="hero-meta"><span class="hero-year">2024</span><span class="hero-ath">ATH $4.3M</span></div>
+          <p class="hero-desc">A dApp that surfaced potential meme coins before they pumped. Real alpha, real gains.</p>
+          <div class="hero-btns"><button class="btn-white" onclick="window.open('https://lore.trade','_blank')"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg> View Project</button><button class="btn-grey" onclick="openModal('lore')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> More Info</button></div>
+        </div>
+      </div>
+
+      <!-- QuaiFlip -->
+      <div class="hero-slide">
+        <div class="hero-bg"><img src="QF no background.png" alt="" style="object-fit:contain;padding:40px;background:#0a0a1a;"></div>
+        <div class="hero-content">
+          <div class="hero-eyebrow">Co-Founder and Growth Lead</div>
+          <h1 class="hero-title">QuaiFlip</h1>
+          <div class="hero-meta"><span class="hero-year">2025</span><span class="hero-ath">$40K Grant</span></div>
+          <p class="hero-desc">The first provably fair on-chain coin flip game built on Quai Network. Double or nothing, fully on-chain, no admin backdoors.</p>
+          <div class="hero-btns"><button class="btn-white" onclick="window.open('https://quaiflip.com','_blank')"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg> View Project</button><button class="btn-grey" onclick="openModal('quaiflip')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> More Info</button></div>
+        </div>
+      </div>
+
+      <!-- Clipped.fun -->
+      <div class="hero-slide">
+        <div class="hero-bg"><img src="https://unavatar.io/x/clippeddotfun" alt=""></div>
+        <div class="hero-content">
+          <div class="hero-eyebrow">Co-Founder · Creator Economy</div>
+          <h1 class="hero-title">Clipped.fun</h1>
+          <div class="hero-meta"><span class="hero-year">2024</span><span class="hero-ath">ATH $666K</span></div>
+          <p class="hero-desc">A Web3 clipping platform built around Creator Capital Markets. Clippers uploaded content and got paid.</p>
+          <div class="hero-btns"><button class="btn-white" onclick="window.open('https://clipped.fun','_blank')"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg> View Project</button><button class="btn-grey" onclick="openModal('clipped')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> More Info</button></div>
+        </div>
+      </div>
+
+      <!-- PTSD -->
+      <div class="hero-slide">
+        <div class="hero-bg"><img src="https://unavatar.io/x/PTSDshow" alt=""></div>
+        <div class="hero-content">
+          <div class="hero-eyebrow">Community Lead and Host</div>
+          <h1 class="hero-title">PTSD Show</h1>
+          <div class="hero-meta"><span class="hero-year">2025</span></div>
+          <p class="hero-desc">An animated Web3 series building a universe around crypto culture.</p>
+          <div class="hero-btns"><button class="btn-white" onclick="window.open('https://x.com/PTSDshow','_blank')"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg> View Project</button><button class="btn-grey" onclick="openModal('ptsd')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> More Info</button></div>
+        </div>
+      </div>
+
+      <!-- Tampon Tim -->
+      <div class="hero-slide">
+        <div class="hero-bg"><img src="https://unavatar.io/x/TamponTimMeme" alt=""></div>
+        <div class="hero-content">
+          <div class="hero-eyebrow">Social Campaign Lead</div>
+          <h1 class="hero-title">Tampon Tim</h1>
+          <div class="hero-meta"><span class="hero-year">2024</span><span class="hero-ath">ATH $2M</span></div>
+          <p class="hero-desc">A political meme coin created around the US political figure Tim Walz.</p>
+          <div class="hero-btns"><button class="btn-white" onclick="window.open('https://x.com/TamponTimMeme','_blank')"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg> View Project</button><button class="btn-grey" onclick="openModal('tampontim')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> More Info</button></div>
+        </div>
+      </div>
+
+      <!-- Bongo -->
+      <div class="hero-slide">
+        <div class="hero-bg"><img src="https://unavatar.io/x/ASKBongoCoin" alt=""></div>
+        <div class="hero-content">
+          <div class="hero-eyebrow">Event Marketing and Content</div>
+          <h1 class="hero-title">Bongo</h1>
+          <div class="hero-meta"><span class="hero-year">2024</span><span class="hero-ath">ATH $1.2M</span></div>
+          <p class="hero-desc">Based on the viral Web2 SMS sensation from Australia. Meme legacy brought on-chain.</p>
+          <div class="hero-btns"><button class="btn-white" onclick="window.open('https://askbongo.ai','_blank')"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg> View Project</button><button class="btn-grey" onclick="openModal('bongo')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> More Info</button></div>
+        </div>
+      </div>
+
+      <!-- GUB -->
+      <div class="hero-slide">
+        <div class="hero-bg"><img src="GUB.jpg" alt=""></div>
+        <div class="hero-content">
+          <div class="hero-eyebrow">Social and Content</div>
+          <h1 class="hero-title">Gently Used Blunt</h1>
+          <div class="hero-meta"><span class="hero-year">2024</span><span class="hero-ath">ATH $652K</span></div>
+          <p class="hero-desc">A 420 meme coin built for the culture.</p>
+          <div class="hero-btns"><button class="btn-white" onclick="window.open('https://x.com/JawsOnChain/status/2028516773364908096','_blank')"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg> Watch Promo</button><button class="btn-grey" onclick="openModal('gub')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> More Info</button></div>
+        </div>
+      </div>
+
+      <div class="hero-dots" id="hero-dots">
+        <div class="hero-dot active" onclick="goSlide(0)"></div>
+        <div class="hero-dot" onclick="goSlide(1)"></div>
+        <div class="hero-dot" onclick="goSlide(2)"></div>
+        <div class="hero-dot" onclick="goSlide(3)"></div>
+        <div class="hero-dot" onclick="goSlide(4)"></div>
+        <div class="hero-dot" onclick="goSlide(5)"></div>
+        <div class="hero-dot" onclick="goSlide(6)"></div>
+        <div class="hero-dot" onclick="goSlide(7)"></div>
+      </div>
+    </div>
+
+    <div class="rows">
+
+      <!-- ALL PROJECTS -->
+      <div class="row">
+        <div class="row-header">
+          <div class="row-label">All Projects</div>
+          <div class="row-arrows">
+            <button class="row-arr" onclick="scrollRow('row-all',-1)">&#8249;</button>
+            <button class="row-arr" onclick="scrollRow('row-all',1)">&#8250;</button>
+          </div>
+        </div>
+        <div class="row-track" id="row-all">
+          <div class="pc" onclick="openModal('bongo')"><img src="https://unavatar.io/x/ASKBongoCoin" alt="Bongo"><div class="pc-overlay"></div><div class="pc-name">Bongo</div><div class="pc-progress"><div class="pc-bar" style="width:100%"></div></div></div>
+          <div class="pc" onclick="openModal('clipped')"><img src="https://unavatar.io/x/clippeddotfun" alt="Clipped.fun"><div class="pc-overlay"></div><div class="pc-name">Clipped.fun</div><div class="pc-progress"><div class="pc-bar" style="width:100%"></div></div></div>
+          <div class="pc" onclick="openModal('doopapp')"><img src="https://unavatar.io/x/doopapp" alt="DoopApp"><div class="pc-overlay"></div><div class="pc-name">DoopApp</div><div class="pc-progress"><div class="pc-bar" style="width:100%"></div></div></div>
+          <div class="pc" onclick="openModal('gub')"><img src="GUB.jpg" alt="GUB"><div class="pc-overlay"></div><div class="pc-name">Gently Used Blunt</div><div class="pc-progress"><div class="pc-bar" style="width:100%"></div></div></div>
+          <div class="pc" onclick="openModal('lore')"><img src="https://unavatar.io/x/lore_vision" alt="LORE"><div class="pc-overlay"></div><div class="pc-name">LORE</div><div class="pc-progress"><div class="pc-bar" style="width:100%"></div></div></div>
+          <div class="pc" onclick="openModal('ptsd')"><img src="https://unavatar.io/x/PTSDshow" alt="PTSD"><div class="pc-overlay"></div><div class="pc-name">PTSD Show</div><div class="pc-progress"><div class="pc-bar" style="width:8%"></div></div></div>
+          <div class="pc" onclick="openModal('quaiflip')"><img src="QF no background.png" alt="QuaiFlip" class="logo-contain"><div class="pc-overlay"></div><div class="pc-name">QuaiFlip</div><div class="pc-progress"><div class="pc-bar" style="width:15%"></div></div></div>
+          <div class="pc" onclick="openModal('tampontim')"><img src="https://unavatar.io/x/TamponTimMeme" alt="Tampon Tim"><div class="pc-overlay"></div><div class="pc-name">Tampon Tim</div><div class="pc-progress"><div class="pc-bar" style="width:100%"></div></div></div>
+        </div>
+      </div>
+
+      <!-- ALL SKILLS -->
+      <div class="row">
+        <div class="row-header">
+          <div class="row-label">All Skills</div>
+          <div class="row-arrows">
+            <button class="row-arr" onclick="scrollRow('row-skills',-1)">&#8249;</button>
+            <button class="row-arr" onclick="scrollRow('row-skills',1)">&#8250;</button>
+          </div>
+        </div>
+        <div class="row-track" id="row-skills">
+          <div class="pc" onclick="openSkill('AI Tooling')"><div class="pc-emoji-bg">🤖</div><div class="pc-overlay"></div><div class="pc-name">AI Tooling</div><div class="pc-progress"><div class="pc-bar" style="width:100%"></div></div></div>
+          <div class="pc" onclick="openSkill('Data Analysis')"><div class="pc-emoji-bg">📈</div><div class="pc-overlay"></div><div class="pc-name">Data Analysis</div><div class="pc-progress"><div class="pc-bar" style="width:100%"></div></div></div>
+          <div class="pc" onclick="openSkill('Content Strategy')"><div class="pc-emoji-bg">📢</div><div class="pc-overlay"></div><div class="pc-name">Content Strategy</div><div class="pc-progress"><div class="pc-bar" style="width:100%"></div></div></div>
+          <div class="pc" onclick="openSkill('Community Building')"><div class="pc-emoji-bg">🏘️</div><div class="pc-overlay"></div><div class="pc-name">Community Building</div><div class="pc-progress"><div class="pc-bar" style="width:100%"></div></div></div>
+          <div class="pc" onclick="openSkill('Brand Identity')"><div class="pc-emoji-bg">🎨</div><div class="pc-overlay"></div><div class="pc-name">Brand Identity</div><div class="pc-progress"><div class="pc-bar" style="width:100%"></div></div></div>
+          <div class="pc" onclick="openSkill('X Spaces')"><div class="pc-emoji-bg">🎙️</div><div class="pc-overlay"></div><div class="pc-name">X Spaces</div><div class="pc-progress"><div class="pc-bar" style="width:100%"></div></div></div>
+          <div class="pc" onclick="openSkill('Video Production')"><div class="pc-emoji-bg">🎬</div><div class="pc-overlay"></div><div class="pc-name">Video Production</div><div class="pc-progress"><div class="pc-bar" style="width:100%"></div></div></div>
+          <div class="pc" onclick="openSkill('Copywriting')"><div class="pc-emoji-bg">📝</div><div class="pc-overlay"></div><div class="pc-name">Copywriting</div><div class="pc-progress"><div class="pc-bar" style="width:100%"></div></div></div>
+          <div class="pc" onclick="openSkill('Grant Writing')"><div class="pc-emoji-bg">💰</div><div class="pc-overlay"></div><div class="pc-name">Grant Writing</div><div class="pc-progress"><div class="pc-bar" style="width:100%"></div></div></div>
+          <div class="pc" onclick="openSkill('BD and Partnerships')"><div class="pc-emoji-bg">🤝</div><div class="pc-overlay"></div><div class="pc-name">BD and Partnerships</div><div class="pc-progress"><div class="pc-bar" style="width:100%"></div></div></div>
+          <div class="pc" onclick="openSkill('Growth Analytics')"><div class="pc-emoji-bg">📊</div><div class="pc-overlay"></div><div class="pc-name">Growth Analytics</div><div class="pc-progress"><div class="pc-bar" style="width:100%"></div></div></div>
+          <div class="pc" onclick="openSkill('Launch Strategy')"><div class="pc-emoji-bg">⚡</div><div class="pc-overlay"></div><div class="pc-name">Launch Strategy</div><div class="pc-progress"><div class="pc-bar" style="width:100%"></div></div></div>
+        </div>
+      </div>
+
+      <!-- RECENTLY WORKED -->
+      <div class="row">
+        <div class="row-label">Recently Worked</div>
+        <div class="row-track">
+          <div class="pc" onclick="openModal('quaiflip')"><img src="QF no background.png" alt="QuaiFlip" class="logo-contain"><div class="pc-overlay"></div><div class="pc-name">QuaiFlip</div><div class="pc-progress"><div class="pc-bar" style="width:15%"></div></div></div>
+          <div class="pc" onclick="openModal('ptsd')"><img src="https://unavatar.io/x/PTSDshow" alt="PTSD"><div class="pc-overlay"></div><div class="pc-name">PTSD Show</div><div class="pc-progress"><div class="pc-bar" style="width:8%"></div></div></div>
+          <div class="pc" onclick="openModal('clipped')"><img src="https://unavatar.io/x/clippeddotfun" alt="Clipped.fun"><div class="pc-overlay"></div><div class="pc-name">Clipped.fun</div><div class="pc-progress"><div class="pc-bar" style="width:100%"></div></div></div>
+          <div class="pc" onclick="openModal('lore')"><img src="https://unavatar.io/x/lore_vision" alt="LORE"><div class="pc-overlay"></div><div class="pc-name">LORE</div><div class="pc-progress"><div class="pc-bar" style="width:100%"></div></div></div>
+        </div>
+      </div>
+
+      <!-- SOLANA MEMES -->
+      <div class="row">
+        <div class="row-header">
+          <div class="row-label">Solana Memes</div>
+          <div class="row-arrows">
+            <button class="row-arr" onclick="scrollRow('row-sol',-1)">&#8249;</button>
+            <button class="row-arr" onclick="scrollRow('row-sol',1)">&#8250;</button>
+          </div>
+        </div>
+        <div class="row-track" id="row-sol">
+          <div class="pc" onclick="openModal('doopapp')"><img src="https://unavatar.io/x/doopapp" alt="DoopApp"><div class="pc-overlay"></div><div class="pc-name">DoopApp</div><div class="pc-progress"><div class="pc-bar" style="width:100%"></div></div></div>
+          <div class="pc" onclick="openModal('lore')"><img src="https://unavatar.io/x/lore_vision" alt="LORE"><div class="pc-overlay"></div><div class="pc-name">LORE</div><div class="pc-progress"><div class="pc-bar" style="width:100%"></div></div></div>
+          <div class="pc" onclick="openModal('tampontim')"><img src="https://unavatar.io/x/TamponTimMeme" alt="Tampon Tim"><div class="pc-overlay"></div><div class="pc-name">Tampon Tim</div><div class="pc-progress"><div class="pc-bar" style="width:100%"></div></div></div>
+          <div class="pc" onclick="openModal('bongo')"><img src="https://unavatar.io/x/ASKBongoCoin" alt="Bongo"><div class="pc-overlay"></div><div class="pc-name">Bongo</div><div class="pc-progress"><div class="pc-bar" style="width:100%"></div></div></div>
+          <div class="pc" onclick="openModal('clipped')"><img src="https://unavatar.io/x/clippeddotfun" alt="Clipped.fun"><div class="pc-overlay"></div><div class="pc-name">Clipped.fun</div><div class="pc-progress"><div class="pc-bar" style="width:100%"></div></div></div>
+          <div class="pc" onclick="openModal('gub')"><img src="GUB.jpg" alt="GUB"><div class="pc-overlay"></div><div class="pc-name">Gently Used Blunt</div><div class="pc-progress"><div class="pc-bar" style="width:100%"></div></div></div>
+          <div class="pc" onclick="openModal('ptsd')"><img src="https://unavatar.io/x/PTSDshow" alt="PTSD"><div class="pc-overlay"></div><div class="pc-name">PTSD Show</div><div class="pc-progress"><div class="pc-bar" style="width:8%"></div></div></div>
+        </div>
+      </div>
+
+      <!-- CO-FOUNDED -->
+      <div class="row">
+        <div class="row-label">Co-Founded</div>
+        <div class="row-track">
+          <div class="pc" onclick="openModal('quaiflip')"><img src="QF no background.png" alt="QuaiFlip" class="logo-contain"><div class="pc-overlay"></div><div class="pc-name">QuaiFlip</div><div class="pc-progress"><div class="pc-bar" style="width:15%"></div></div></div>
+          <div class="pc" onclick="openModal('clipped')"><img src="https://unavatar.io/x/clippeddotfun" alt="Clipped.fun"><div class="pc-overlay"></div><div class="pc-name">Clipped.fun</div><div class="pc-progress"><div class="pc-bar" style="width:100%"></div></div></div>
+          <div class="pc" onclick="openModal('gub')"><img src="GUB.jpg" alt="GUB"><div class="pc-overlay"></div><div class="pc-name">Gently Used Blunt</div><div class="pc-progress"><div class="pc-bar" style="width:100%"></div></div></div>
+        </div>
+      </div>
+
+    </div>
+
+    <footer>
+      <div class="footer-brand">
+        <img src="JAWS LOGO NO BACKGROUND.png" alt="JAWSFLIX" class="jf-logo-img md">
+      </div>
+      <div class="footer-copy">2026 JAWS · Web3 Growth &amp; Marketing · All projects real. Rugs included.</div>
+    </footer>
+
+  </div><!-- /view-home -->
+
+  <!-- PROJECTS VIEW -->
+  <div id="view-projects" class="view">
+    <div class="page-wrap">
+      <h1 class="view-title">All Projects</h1>
+      <p class="view-sub">Projects I've been part of - active and rugged.</p>
+      <div class="pv-grid">
+
+        <div class="pv-card" onclick="openModal('bongo')">
+          <div class="pv-card-img"><img src="https://unavatar.io/x/ASKBongoCoin" alt="Bongo"><div class="pv-progress"><div class="pv-bar" style="width:100%"></div></div></div>
+          <div class="pv-card-body"><div class="pv-card-title">Bongo</div><div class="pv-card-role">Event Marketing and Content</div><div class="pv-card-what">Based on the viral Web2 SMS sensation from Australia. Meme legacy brought on-chain.</div><div class="pv-card-tags"><span class="tag tag-rugged">Rugged</span><span class="tag">ATH $1.2M</span><span class="tag">NFC Lisbon</span></div></div>
+        </div>
+
+        <div class="pv-card" onclick="openModal('clipped')">
+          <div class="pv-card-img"><img src="https://unavatar.io/x/clippeddotfun" alt="Clipped.fun"><div class="pv-progress"><div class="pv-bar" style="width:100%"></div></div></div>
+          <div class="pv-card-body"><div class="pv-card-title">Clipped.fun</div><div class="pv-card-role">Co-Founder · Creator Economy</div><div class="pv-card-what">A Web3 clipping platform built around Creator Capital Markets. Clippers uploaded content and got paid.</div><div class="pv-card-tags"><span class="tag tag-rugged">Rugged</span><span class="tag">Co-Founder</span><span class="tag">ATH $666K</span></div></div>
+        </div>
+
+        <div class="pv-card" onclick="openModal('doopapp')">
+          <div class="pv-card-img"><img src="https://unavatar.io/x/doopapp" alt="DoopApp"><div class="pv-progress"><div class="pv-bar" style="width:100%"></div></div></div>
+          <div class="pv-card-body"><div class="pv-card-title">DoopApp</div><div class="pv-card-role">Marketing and Community Lead</div><div class="pv-card-what">A Web3 health app that paid you to poop. Gamified gut health on-chain.</div><div class="pv-card-tags"><span class="tag tag-rugged">Rugged</span><span class="tag">ATH $13M</span></div></div>
+        </div>
+
+        <div class="pv-card" onclick="openModal('gub')">
+          <div class="pv-card-img"><img src="GUB.jpg" alt="GUB"><div class="pv-progress"><div class="pv-bar" style="width:100%"></div></div></div>
+          <div class="pv-card-body"><div class="pv-card-title">Gently Used Blunt</div><div class="pv-card-role">Co-Founder and Social</div><div class="pv-card-what">A 420 meme coin built for the culture.</div><div class="pv-card-tags"><span class="tag tag-rugged">Rugged</span><span class="tag">ATH $652K</span></div></div>
+        </div>
+
+        <div class="pv-card" onclick="openModal('lore')">
+          <div class="pv-card-img"><img src="https://unavatar.io/x/lore_vision" alt="LORE"><div class="pv-progress"><div class="pv-bar" style="width:100%"></div></div></div>
+          <div class="pv-card-body"><div class="pv-card-title">LORE</div><div class="pv-card-role">Social Media Manager</div><div class="pv-card-what">A dApp that surfaced potential meme coins before they pumped. Real alpha, real gains.</div><div class="pv-card-tags"><span class="tag tag-rugged">Rugged</span><span class="tag">ATH $4.3M</span></div></div>
+        </div>
+
+        <div class="pv-card" onclick="openModal('ptsd')">
+          <div class="pv-card-img"><img src="https://unavatar.io/x/PTSDshow" alt="PTSD"><div class="pv-progress"><div class="pv-bar" style="width:8%"></div></div></div>
+          <div class="pv-card-body"><div class="pv-card-title">PTSD Show</div><div class="pv-card-role">Community Lead and Host</div><div class="pv-card-what">An animated Web3 series building a universe around crypto culture.</div><div class="pv-card-tags"><span class="tag tag-active">Active</span><span class="tag">Community</span></div></div>
+        </div>
+
+        <div class="pv-card" onclick="openModal('quaiflip')">
+          <div class="pv-card-img"><img src="QF no background.png" alt="QuaiFlip" class="logo-contain"><div class="pv-progress"><div class="pv-bar" style="width:15%"></div></div></div>
+          <div class="pv-card-body"><div class="pv-card-title">QuaiFlip</div><div class="pv-card-role">Co-Founder and Growth Lead</div><div class="pv-card-what">The first provably fair on-chain coin flip game built on Quai Network. Double or nothing, fully on-chain, no admin backdoors.</div><div class="pv-card-tags"><span class="tag tag-active">Active</span><span class="tag">Co-Founder</span><span class="tag">$40K Grant</span></div></div>
+        </div>
+
+        <div class="pv-card" onclick="openModal('tampontim')">
+          <div class="pv-card-img"><img src="https://unavatar.io/x/TamponTimMeme" alt="Tampon Tim"><div class="pv-progress"><div class="pv-bar" style="width:100%"></div></div></div>
+          <div class="pv-card-body"><div class="pv-card-title">Tampon Tim</div><div class="pv-card-role">Social Campaign Lead</div><div class="pv-card-what">A political meme coin created around the US political figure Tim Walz.</div><div class="pv-card-tags"><span class="tag tag-rugged">Rugged</span><span class="tag">ATH $2M</span></div></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENT VIEW -->
+  <div id="view-content" class="view">
+    <div class="page-wrap">
+      <h1 class="view-title">Content</h1>
+      <p class="view-sub">Real assets. Shot in the field, produced for the culture.</p>
+      <div class="content-grid">
+
+        <div class="content-card" onclick="openVideo('Bongo%20Promo.mp4',0)">
+          <div class="content-thumb">
+            <img src="https://unavatar.io/x/ASKBongoCoin" alt="Bongo NFC Lisbon">
+            <div class="content-play"><div class="content-play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#141414"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+          </div>
+          <div class="content-card-body">
+            <div class="content-card-title">Bongo - NFC Lisbon</div>
+            <div class="content-card-desc">On-the-ground footage from NFC Lisbon. Live event content that reignited community momentum.</div>
+          </div>
+        </div>
+
+        <div class="content-card" onclick="openVideo('GUB%20promo.mp4',1)">
+          <div class="content-thumb">
+            <img src="GUB.jpg" alt="Gently Used Blunt">
+            <div class="content-play"><div class="content-play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#141414"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+          </div>
+          <div class="content-card-body">
+            <div class="content-card-title">Gently Used Blunt - Promo</div>
+            <div class="content-card-desc">Shot on-location at a real weed shop. Turned a grassroots vibe into a proper marketing asset.</div>
+          </div>
+        </div>
+
+        <div class="content-card" onclick="openVideo('Lore%20video.mp4',2)">
+          <div class="content-thumb">
+            <img src="https://unavatar.io/x/lore_vision" alt="LORE">
+            <div class="content-play"><div class="content-play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#141414"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+          </div>
+          <div class="content-card-body">
+            <div class="content-card-title">LORE - PNL Card</div>
+            <div class="content-card-desc">Example PNL card content created for LORE.Vision. Turning performance into visual proof that gets shared.</div>
+          </div>
+        </div>
+
+        <div class="content-card" onclick="openVideo('Future%20Quai.mp4',3)">
+          <div class="content-thumb">
+            <img src="QF no background.png" alt="QuaiFlip" style="object-fit:contain;padding:20px;background:#0a0a1a;">
+            <div class="content-play"><div class="content-play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#141414"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+          </div>
+          <div class="content-card-body">
+            <div class="content-card-title">QuaiFlip - Mainnet Promo</div>
+            <div class="content-card-desc">Original content produced for the QuaiFlip mainnet launch on Quai Network.</div>
+          </div>
+        </div>
+
+        <div class="content-card" onclick="openVideo('PTSD%20EP%201.mp4',4)">
+          <div class="content-thumb">
+            <img src="https://unavatar.io/x/PTSDshow" alt="PTSD Show">
+            <div class="content-play"><div class="content-play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#141414"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+          </div>
+          <div class="content-card-body">
+            <div class="content-card-title">PTSD Show - Episode 1: Enter The Trenches</div>
+            <div class="content-card-desc">The first episode of the animated Web3 series. A universe built around crypto culture — from the trenches up.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- SKILLS VIEW -->
+  <div id="view-skills" class="view">
+    <div class="page-wrap">
+      <h1 class="view-title">Skills</h1>
+      <p class="view-sub">Built in the trenches, not a classroom.</p>
+      <div class="sv-grid">
+        <div class="sv-card"><div class="sv-icon">🤖</div><div class="sv-name">AI Tooling</div><div class="sv-desc">Using AI tools daily across content creation, data analysis, product building, and workflow automation. Built an AI personal trainer bot and an AI football analysis system.</div></div>
+        <div class="sv-card"><div class="sv-icon">📈</div><div class="sv-name">Data Analysis</div><div class="sv-desc">Turning raw data into decisions. PNL cards, engagement tracking, prediction modelling. Built systems that surface insight and drive action.</div></div>
+        <div class="sv-card"><div class="sv-icon">📢</div><div class="sv-name">Content Strategy</div><div class="sv-desc">Building narratives that resonate with crypto-native audiences. From organic threads to full campaign architecture across multiple projects.</div></div>
+        <div class="sv-card"><div class="sv-icon">🏘️</div><div class="sv-name">Community Building</div><div class="sv-desc">Discord architecture, role systems, moderation, FAQ, T&Cs. Built multiple communities from zero to active and engaged.</div></div>
+        <div class="sv-card"><div class="sv-icon">🎨</div><div class="sv-name">Brand Identity</div><div class="sv-desc">Logo direction, colour systems, typography, tagline. Built the full QuaiFlip brand from scratch including a custom colour system and typeface selection.</div></div>
+        <div class="sv-card"><div class="sv-icon">🎙️</div><div class="sv-name">X Spaces</div><div class="sv-desc">Hosted and spoken at multiple X Spaces for QuaiFlip, PTSD, and across the Quai Network ecosystem. Comfortable live in front of any audience.</div></div>
+        <div class="sv-card"><div class="sv-icon">🎬</div><div class="sv-name">Video Production</div><div class="sv-desc">Shot on-location promos at a real weed shop. Produced the QuaiFlip launch video. Cinematic storytelling with no budget excuses.</div></div>
+        <div class="sv-card"><div class="sv-icon">📝</div><div class="sv-name">Copywriting</div><div class="sv-desc">All marketing copy, social posts, X threads, community announcements. Tone that fits the project, not a generic template.</div></div>
+        <div class="sv-card"><div class="sv-icon">💰</div><div class="sv-name">Grant Writing</div><div class="sv-desc">Wrote and submitted a $40,000 grant proposal via Questbook to the Quai Builders Program. Know how to make a case that gets taken seriously.</div></div>
+        <div class="sv-card"><div class="sv-icon">🤝</div><div class="sv-name">BD and Partnerships</div><div class="sv-desc">Investor outreach, partner introductions, hiring mods and marketing leads. Open doors and keep them open.</div></div>
+        <div class="sv-card"><div class="sv-icon">📊</div><div class="sv-name">Growth Analytics</div><div class="sv-desc">PNL cards, engagement tracking, community polls. Turning raw numbers into proof that gets shared and screenshot.</div></div>
+        <div class="sv-card"><div class="sv-icon">⚡</div><div class="sv-name">Launch Strategy</div><div class="sv-desc">Coordinated launches across socials, Discord, and X Spaces simultaneously. Build hype before day one and sustain it after.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ABOUT VIEW -->
+  <div id="view-about" class="view">
+    <div class="page-wrap">
+      <div class="about-inner">
+        <div class="about-hero">
+          <div class="about-avatar">
+            <img src="https://unavatar.io/x/JawsOnChain" alt="JAWS">
+          </div>
+          <div>
+            <div class="about-name">JAWS</div>
+            <div class="about-role">Web3 Growth &amp; Marketing Strategist</div>
+          </div>
+        </div>
+        <div class="about-bio">
+          I'm a Web3 marketing strategist who has been in the trenches since the meme coin era, building brands, communities, and campaigns for projects from zero to multi-million dollar market caps.<br><br>
+          I co-founded QuaiFlip, the first provably fair on-chain coin flip game on Quai Network, and Clipped.fun, a Web3 Creator Capital Markets platform. I have led marketing and community across 8+ projects on Solana and beyond, from political meme coins to animated Web3 series to on-chain gaming.<br><br>
+          I move fast, stay culturally sharp, and actually give a shit about the projects I work on. Bear market or bull, I am building. If you need someone who understands the culture and knows how to grow in it, that is me.
+        </div>
+        <div class="about-facts">
+          <div class="about-fact"><div class="about-fact-label">Based</div><div class="about-fact-val">UK</div></div>
+          <div class="about-fact"><div class="about-fact-label">Networks</div><div class="about-fact-val">Solana · Quai</div></div>
+          <div class="about-fact"><div class="about-fact-label">Peak Project ATH</div><div class="about-fact-val">$13M</div></div>
+          <div class="about-fact"><div class="about-fact-label">IRL Events</div><div class="about-fact-val">NFC Lisbon</div></div>
+          <div class="about-fact"><div class="about-fact-label">Background</div><div class="about-fact-val">BA Business Management and Marketing</div></div>
+          <div class="about-fact"><div class="about-fact-label">Co-Founded</div><div class="about-fact-val">2 Projects</div></div>
+          <div class="about-fact"><div class="about-fact-label">AI Projects Built</div><div class="about-fact-val">3+</div></div>
+          <div class="about-fact"><div class="about-fact-label">Years Active in Web3</div><div class="about-fact-val">4</div></div>
+        </div>
+        <div style="text-align:center;margin-top:2.5rem;">
+          <button class="btn-white" style="padding:1rem 3rem;font-size:1.1rem;" onclick="showView('contact')">Get in Touch</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACT VIEW -->
+  <div id="view-contact" class="view">
+    <div class="page-wrap">
+      <div class="contact-inner">
+        <h1 class="view-title">Get in Touch</h1>
+        <p class="view-sub">Got a project? Want to work together? Slide in.</p>
+        <div class="contact-list">
+          <a class="contact-row" href="https://x.com/JawsOnChain" target="_blank" rel="noopener">
+            <div class="cr-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></div>
+            <div class="cr-info"><div class="cr-val">@JawsOnChain</div></div>
+            <span class="cr-arrow">›</span>
+          </a>
+          <a class="contact-row" href="https://t.me/Jaws98" target="_blank" rel="noopener">
+            <div class="cr-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 14.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.496.969z"/></svg></div>
+            <div class="cr-info"><div class="cr-val">@Jaws98</div></div>
+            <span class="cr-arrow">›</span>
+          </a>
+          <a class="contact-row" href="mailto:JawsOnChain@proton.me">
+            <div class="cr-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></div>
+            <div class="cr-info"><div class="cr-val">JawsOnChain@proton.me</div></div>
+            <span class="cr-arrow">›</span>
+          </a>
+        </div>
+        <div class="contact-note">Response time is fast. Based in the UK. If you are building something real in Web3 and need someone who understands the culture and knows how to grow in it, let us talk.</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main-site -->
+
+<!-- DETAIL MODAL -->
+<div id="modal-overlay" onclick="if(event.target===this)closeModal()">
+  <button class="modal-nav-btn" id="modal-prev" onclick="navigateModal(-1)">&#8249;</button>
+  <div id="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-hero">
+      <img class="modal-hero-img" id="modal-img" src="" alt="">
+      <div class="modal-hero-content">
+        <h2 class="modal-title" id="modal-title"></h2>
+        <div class="modal-hero-btns">
+          <button class="btn-white" id="modal-play-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg> View Project</button>
+          <button class="modal-x-btn" id="modal-x-btn" style="display:none;" title="X Profile"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-cols">
+        <div>
+          <div class="modal-what" id="modal-what-label">What is it</div>
+          <div class="modal-project-desc" id="modal-project-desc"></div>
+          <div class="modal-desc" id="modal-desc"></div>
+          <div class="modal-ach" id="modal-ach"></div>
+        </div>
+        <div>
+          <div class="modal-meta"><span>Role: </span><span id="modal-role"></span></div>
+          <div class="modal-meta" style="margin-top:.4rem;"><span>ATH MC: </span><span class="modal-ath" id="modal-ath"></span></div>
+          <div class="modal-tags" id="modal-tags"></div>
+          <div class="modal-ca" id="modal-ca" style="display:none;">
+            <span class="modal-ca-label">CA</span>
+            <span class="modal-ca-addr" id="modal-ca-addr"></span>
+            <button class="modal-ca-copy" id="modal-ca-btn" onclick="copyCA()">Copy</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="modal-nav-btn" id="modal-next" onclick="navigateModal(1)">&#8250;</button>
 </div>
-<button id="backTop" class="back-top" aria-label="Back to top">↑</button>
+
+<!-- SKILL MODAL -->
+<div id="skill-overlay" onclick="if(event.target===this)closeSkill()">
+  <button class="modal-nav-btn" id="skill-prev" onclick="navigateSkill(-1)" style="left:calc(50% - 298px);">&#8249;</button>
+  <div id="skill-modal">
+    <button class="skm-close" onclick="closeSkill()">✕</button>
+    <h3 id="skill-modal-title"></h3>
+    <p id="skill-modal-desc"></p>
+  </div>
+  <button class="modal-nav-btn" id="skill-next" onclick="navigateSkill(1)" style="right:calc(50% - 298px);">&#8250;</button>
+</div>
+
+<!-- VIDEO MODAL -->
+<div id="video-modal" onclick="if(event.target===this)closeVideo()">
+  <button class="modal-nav-btn" id="vm-prev" onclick="navigateVideo(-1)" style="left:8px;">&#8249;</button>
+  <div class="vm-inner">
+    <button class="vm-close" onclick="closeVideo()">✕</button>
+    <video id="vm-video" controls playsinline></video>
+  </div>
+  <button class="modal-nav-btn" id="vm-next" onclick="navigateVideo(1)" style="right:8px;">&#8250;</button>
+</div>
+
 <script>
-// CURSOR
-const cur=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
-if(window.matchMedia('(hover:hover)').matches){
-  let mx=0,my=0,rx=0,ry=0;
-  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
-  (function ar(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(ar);})();
-  document.querySelectorAll('a,button').forEach(el=>{
-    el.addEventListener('mouseenter',()=>{cur.style.width='18px';cur.style.height='18px';ring.style.width='48px';ring.style.height='48px';});
-    el.addEventListener('mouseleave',()=>{cur.style.width='8px';cur.style.height='8px';ring.style.width='30px';ring.style.height='30px';});
-  });
-}
-// CAUSTIC
-const cc=document.getElementById('causticCanvas'),cctx=cc.getContext('2d');
-let CW,CH;
-function cR(){CW=cc.width=window.innerWidth;CH=cc.height=window.innerHeight;}
-cR();window.addEventListener('resize',cR);
-const blobs=Array.from({length:16},()=>({x:Math.random()*window.innerWidth,y:Math.random()*window.innerHeight,r:80+Math.random()*160,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.3,phase:Math.random()*Math.PI*2,speed:.0004+Math.random()*.0006}));
-let ct=0;
-(function dC(){
-  cctx.clearRect(0,0,CW,CH);
-  blobs.forEach(b=>{
-    b.x+=b.vx;b.y+=b.vy;
-    if(b.x<-b.r)b.x=CW+b.r;if(b.x>CW+b.r)b.x=-b.r;
-    if(b.y<-b.r)b.y=CH+b.r;if(b.y>CH+b.r)b.y=-b.r;
-    const p=Math.sin(ct*b.speed*1000+b.phase),r2=b.r*(.85+p*.15);
-    const g=cctx.createRadialGradient(b.x,b.y,0,b.x,b.y,r2);
-    g.addColorStop(0,`rgba(1,255,255,${.05+p*.03})`);
-    g.addColorStop(.5,`rgba(1,255,255,${.02+p*.01})`);
-    g.addColorStop(1,'rgba(1,255,255,0)');
-    cctx.beginPath();cctx.arc(b.x,b.y,r2,0,Math.PI*2);cctx.fillStyle=g;cctx.fill();
-  });
-  ct+=.016;requestAnimationFrame(dC);
-})();
-// BUBBLES ON CLICK
-const bc=document.getElementById('bloodCanvas'),bctx=bc.getContext('2d');
-let BW,BH;
-function bR(){BW=bc.width=window.innerWidth;BH=bc.height=window.innerHeight;}
-bR();window.addEventListener('resize',bR);
-let bp=[];
-document.addEventListener('click',e=>{for(let i=0;i<18;i++){const a=Math.random()*Math.PI*2,s=.5+Math.random()*3;bp.push({x:e.clientX,y:e.clientY,vx:Math.cos(a)*s,vy:Math.sin(a)*s-(1+Math.random()*2),life:1,r:2+Math.random()*5,wobble:Math.random()*Math.PI*2});}});
-(function dB(){bctx.clearRect(0,0,BW,BH);bp.forEach(p=>{p.wobble+=.08;p.x+=p.vx+Math.sin(p.wobble)*.4;p.y+=p.vy;p.vy-=.04;p.life-=.018;p.vx*=.97;const a=p.life*0.6;bctx.save();bctx.globalAlpha=a;bctx.strokeStyle=`rgba(1,255,255,${a})`;bctx.shadowColor='rgba(1,255,255,0.6)';bctx.shadowBlur=6;bctx.lineWidth=1;bctx.beginPath();bctx.arc(p.x,p.y,p.r,0,Math.PI*2);bctx.stroke();bctx.restore();});bp=bp.filter(p=>p.life>0);requestAnimationFrame(dB);})();
-
-// SPLINE WATERMARK
-(function hideSplineWatermark(){
-  const iv=setInterval(()=>{
-    const v=document.querySelector('spline-viewer');
-    if(v&&v.shadowRoot){
-      const sr=v.shadowRoot;
-      sr.querySelectorAll('a,#logo,[class*="watermark"],[class*="logo"],[class*="built"]').forEach(el=>el.style.display='none');
-      const style=sr.querySelector('#jaws-hide')||document.createElement('style');
-      style.id='jaws-hide';
-      style.textContent='a,#logo,[class*="watermark"],[class*="logo"],[class*="built"]{display:none!important;}';
-      sr.appendChild(style);
-    }
-  },500);
-  setTimeout(()=>clearInterval(iv),15000);
-})();
-
-// SOL PRICE
-const solEl=document.getElementById('solPrice');
-let lastSOL=0;
-async function fetchSOL(){
-  try{
-    const r=await fetch('https://api.binance.com/api/v3/ticker/price?symbol=SOLUSDT');
-    const d=await r.json();
-    const p=parseFloat(d.price);
-    solEl.textContent=`SOL $${p.toFixed(2)}`;
-    if(lastSOL>0){
-      solEl.className='sol-ticker '+(p>=lastSOL?'sol-up':'sol-down');
-      setTimeout(()=>{solEl.className='sol-ticker';},2500);
-    }
-    lastSOL=p;
-  }catch(e){solEl.textContent='SOL —';}
-}
-fetchSOL();
-setInterval(fetchSOL,30000);
-
-// LANG SWITCHER
-const LANGS={
-  en:{
-    nav_about:'About',nav_work:'Work',nav_skills:'Skills',nav_contact:'Contact',
-    hero_eyebrow:'@JawsOnChain · Chronically online. Terminally effective.',
-    hero_h1:'WEB3 MARKETING',hero_h2:'THAT MOVES',hero_h3:'MARKETS.',
-    hero_sub:"I don't have a job title. I have results.",
-    about_tag:'About',about_title:'Who I Am',
-    about_p1:"A social media strategist and marketer who's been operating anonymously in Web3 since 2024. I got into this space because it moves fast, rewards creativity, and has no rulebook — which is exactly how I like it.",
-    about_p2:'I build accounts from nothing, turn performance data into shareable content, and grow communities that actually care. What I care about is making things that work — not things that just look good on a deck.',
-    about_p3:'Always in the water. Always moving.',
-    fact_status:'Open to new projects',
-    work_tag:'Selected Work',work_title:'Projects',
-    skills_tag:'Capabilities',skills_title:'Skills',
-    hero_cta:'View My Work ↓',
-    contact_eyebrow:'Contact',
-    contact_sub:"Anonymous doesn't mean unreachable.",
-    sk1_name:'Content Strategy',sk1_desc:'Building narratives that resonate with crypto-native audiences. From DoopApp to LORE — 500K impressions in a single month, 120% engagement lifts.',
-    sk2_name:'Community Growth',sk2_desc:'Built and moderated Discord communities from scratch, ran Telegram groups, and grew social accounts from zero. Discord, Telegram, X — all channels.',
-    sk3_name:'Trend Execution',sk3_desc:'Moving on emerging narratives before everyone else. Rage-bait, political memes, DeFi meta — in position before the crowd arrives.',
-    sk4_name:'Visual Content',sk4_desc:'PNL cards, branded graphics, meme production, scripted livestreams — turning performance and culture into shareable assets.',
-    sk5_name:'X Spaces & Live',sk5_desc:'Hosted early-stage Spaces to build launch hype, drove investor discovery, and kept communities engaged through live sessions.',
-    sk6_name:'Event Marketing',sk6_desc:'Flew to NFC Lisbon to capture on-the-ground footage and market live. Turning IRL moments into online momentum.',
-    sk7_name:'Video Production',sk7_desc:'Shot on-location promo content at a real weed shop for GUB. Turning grassroots ideas into polished marketing assets.',
-    sk8_name:'Economy Management',sk8_desc:'Tracked and processed $10K+ in payouts to clippers for Clipped.fun — managing a live creator economy end-to-end.',
-    sk9_name:'Co-Founding',sk9_desc:'Co-founded Clipped.fun, a Web3 Creator Capital Markets platform. Ran socials, bug-tested the app, and built the clipper ecosystem from zero.',
-  },
-  es:{
-    nav_about:'Acerca',nav_work:'Trabajo',nav_skills:'Habilidades',nav_contact:'Contacto',
-    hero_eyebrow:'@JawsOnChain · Chronically online. Terminally effective.',
-    hero_h1:'MARKETING WEB3',hero_h2:'QUE MUEVE',hero_h3:'MERCADOS.',
-    hero_sub:'No tengo título de trabajo. Tengo resultados.',
-    hero_cta:'Ver Mi Trabajo ↓',
-    about_tag:'Acerca',about_title:'Quién Soy',
-    about_p1:'Estratega y marketer de redes sociales que opera de forma anónima en Web3. Entré en este espacio porque es rápido, premia la creatividad y no tiene reglas — exactamente como me gusta.',
-    about_p2:'Construyo cuentas desde cero, convierto datos en contenido viral y hago crecer comunidades que realmente importan. Lo que me importa es hacer cosas que funcionen — no que solo queden bien en un deck.',
-    about_p3:'Siempre en el agua. Siempre en movimiento.',
-    fact_status:'Disponible para nuevos proyectos',
-    work_tag:'Trabajo Selecto',work_title:'Proyectos',
-    skills_tag:'Capacidades',skills_title:'Habilidades',
-    contact_eyebrow:'Contacto',
-    contact_sub:'Anónimo no significa inalcanzable.',
-    sk1_name:'Estrategia de Contenido',sk1_desc:'Construyendo narrativas que resuenan con audiencias nativas de cripto. De DoopApp a LORE — 500K impresiones en un mes, 120% de aumento en engagement.',
-    sk2_name:'Crecimiento de Comunidad',sk2_desc:'Construí y moderé comunidades de Discord desde cero, dirigí grupos de Telegram y crecí cuentas sociales de nada. Discord, Telegram, X — todos los canales.',
-    sk3_name:'Ejecución de Tendencias',sk3_desc:'Moviéndose en narrativas emergentes antes que todos. Rage-bait, memes políticos, meta DeFi — en posición antes de que llegue la multitud.',
-    sk4_name:'Contenido Visual',sk4_desc:'Tarjetas PNL, gráficos con marca, producción de memes, livestreams guionizados — convirtiendo rendimiento y cultura en activos compartibles.',
-    sk5_name:'X Spaces y Live',sk5_desc:'Organicé Spaces en etapas tempranas para generar hype de lanzamiento, impulsé el descubrimiento de inversores y mantuve las comunidades comprometidas.',
-    sk6_name:'Marketing de Eventos',sk6_desc:'Viajé a NFC Lisboa para capturar material en terreno y hacer marketing en vivo. Convirtiendo momentos IRL en impulso online.',
-    sk7_name:'Producción de Video',sk7_desc:'Grabé contenido promocional en una tienda real para GUB. Convirtiendo ideas grassroots en activos de marketing pulidos.',
-    sk8_name:'Gestión de Economía',sk8_desc:'Rastreé y procesé más de $10K en pagos a clippers para Clipped.fun — gestionando una economía de creadores en vivo de principio a fin.',
-    sk9_name:'Co-Fundador',sk9_desc:'Co-fundé Clipped.fun, una plataforma de Mercados de Capital para Creadores Web3. Manejé redes sociales, probé la app y construí el ecosistema de clippers desde cero.',
-  },
-  zh:{
-    nav_about:'关于',nav_work:'作品',nav_skills:'技能',nav_contact:'联系',
-    hero_eyebrow:'@JawsOnChain · Chronically online. Terminally effective.',
-    hero_h1:'WEB3 营销',hero_h2:'推动',hero_h3:'市场。',
-    hero_sub:'我没有职位头衔。我有结果。',
-    hero_cta:'查看我的作品 ↓',
-    about_tag:'关于',about_title:'我是谁',
-    about_p1:'在Web3领域匿名运营的社交媒体策略师与营销专家。我进入这个空间，因为它发展迅速，奖励创意，没有规则——这正是我喜欢的方式。',
-    about_p2:'我从零开始建立账号，将数据转化为可分享的内容，培育真正有价值的社区。我关心的是让事情真正奏效——而不只是在PPT上好看。',
-    about_p3:'始终在水中。始终在移动。',
-    fact_status:'接受新项目',
-    work_tag:'精选作品',work_title:'项目',
-    skills_tag:'能力',skills_title:'技能',
-    contact_eyebrow:'联系',
-    contact_sub:'匿名不代表无法联系。',
-    sk1_name:'内容策略',sk1_desc:'为加密原生受众打造共鸣叙事。从DoopApp到LORE — 单月50万印象，参与度提升120%。',
-    sk2_name:'社区增长',sk2_desc:'从零构建并管理Discord社区，运营Telegram群组，从零增长社交账号。Discord、Telegram、X — 全渠道覆盖。',
-    sk3_name:'趋势执行',sk3_desc:'在所有人之前捕捉新兴叙事。愤怒诱饵、政治梗图、DeFi元叙事 — 在大众涌入之前就已就位。',
-    sk4_name:'视觉内容',sk4_desc:'盈亏卡片、品牌图形、梗图制作、脚本直播 — 将表现和文化转化为可分享资产。',
-    sk5_name:'X Spaces与直播',sk5_desc:'主持早期Spaces积累发布热度，推动投资者发现，通过直播保持社区活跃。',
-    sk6_name:'活动营销',sk6_desc:'飞赴里斯本NFC现场拍摄素材并实时营销。将线下时刻转化为线上动能。',
-    sk7_name:'视频制作',sk7_desc:'在真实大麻店实地拍摄GUB推广内容。将草根创意转化为精良营销资产。',
-    sk8_name:'经济管理',sk8_desc:'追踪并处理Clipped.fun超过1万美元的剪辑者报酬 — 端到端管理真实创作者经济。',
-    sk9_name:'联合创始人',sk9_desc:'联合创立Clipped.fun，一个Web3创作者资本市场平台。负责社交媒体、应用测试，并从零搭建剪辑者生态。',
-  },
-  ru:{
-    nav_about:'Обо мне',nav_work:'Работа',nav_skills:'Навыки',nav_contact:'Контакт',
-    hero_eyebrow:'@JawsOnChain · Chronically online. Terminally effective.',
-    hero_h1:'МАРКЕТИНГ WEB3',hero_h2:'КОТОРЫЙ ДВИГАЕТ',hero_h3:'РЫНКИ.',
-    hero_sub:'У меня нет должности. У меня есть результаты.',
-    hero_cta:'Посмотреть Работы ↓',
-    about_tag:'Обо мне',about_title:'Кто Я',
-    about_p1:'Анонимный стратег социальных сетей и маркетолог в Web3. Я вошёл в эту сферу, потому что она быстра, вознаграждает творчество и не имеет правил — именно так, как мне нравится.',
-    about_p2:'Я строю аккаунты с нуля, превращаю данные в вирусный контент и создаю сообщества, которым не всё равно. Меня интересует то, что работает — а не то, что выглядит красиво в презентации.',
-    about_p3:'Всегда в воде. Всегда в движении.',
-    fact_status:'Открыт для новых проектов',
-    work_tag:'Избранное',work_title:'Проекты',
-    skills_tag:'Возможности',skills_title:'Навыки',
-    contact_eyebrow:'Контакт',
-    contact_sub:'Анонимность — не значит недосягаемость.',
-    sk1_name:'Контент-стратегия',sk1_desc:'Создаю нарративы, которые резонируют с крипто-аудиторией. От DoopApp до LORE — 500K показов за месяц, рост вовлечённости на 120%.',
-    sk2_name:'Рост сообщества',sk2_desc:'Строил и модерировал Discord-сообщества с нуля, вёл Telegram-группы, развивал соцсети с нуля. Discord, Telegram, X — все каналы.',
-    sk3_name:'Работа с трендами',sk3_desc:'Занимаю позицию в нарративах до того, как они становятся мейнстримом. Rage-bait, политические мемы, DeFi-мета — всегда первым.',
-    sk4_name:'Визуальный контент',sk4_desc:'PNL-карточки, брендированная графика, производство мемов, стриминги по сценарию — превращаю перформанс в вирусные активы.',
-    sk5_name:'X Spaces и Live',sk5_desc:'Проводил ранние Spaces для создания хайпа, помогал инвесторам обнаруживать проекты, удерживал аудиторию в прямом эфире.',
-    sk6_name:'Ивент-маркетинг',sk6_desc:'Летел на NFC Лиссабон, снимал материал на месте и маркетинговал в реальном времени. IRL-моменты — в онлайн-импульс.',
-    sk7_name:'Видеопроизводство',sk7_desc:'Снял промо-контент в настоящем магазине для GUB. Превращаю grassroots-идеи в полированные маркетинговые активы.',
-    sk8_name:'Управление экономикой',sk8_desc:'Отслеживал и обрабатывал выплаты клипперам Clipped.fun на сумму $10K+ — управление живой экономикой создателей от начала до конца.',
-    sk9_name:'Со-основатель',sk9_desc:'Со-основал Clipped.fun — платформу рынков капитала для создателей в Web3. Вёл соцсети, тестировал приложение, выстроил экосистему клипперов с нуля.',
-  },
-  fr:{
-    nav_about:'À propos',nav_work:'Travail',nav_skills:'Compétences',nav_contact:'Contact',
-    hero_eyebrow:'@JawsOnChain · Chronically online. Terminally effective.',
-    hero_h1:'MARKETING WEB3',hero_h2:'QUI BOUGE',hero_h3:'LES MARCHÉS.',
-    hero_sub:"Je n'ai pas de titre. J'ai des résultats.",
-    hero_cta:'Voir Mon Travail ↓',
-    about_tag:'À propos',about_title:'Qui Je Suis',
-    about_p1:"Stratège et marketeur en réseaux sociaux opérant anonymement dans le Web3. J'ai rejoint cet espace parce qu'il évolue vite, récompense la créativité et n'a pas de règles — exactement comme je l'aime.",
-    about_p2:"Je construis des comptes de zéro, transforme des données en contenu viral et développe des communautés engagées. Ce qui m'importe, c'est créer des choses qui fonctionnent — pas des choses qui semblent bonnes dans un deck.",
-    about_p3:'Toujours dans l\'eau. Toujours en mouvement.',
-    fact_status:'Disponible pour de nouveaux projets',
-    work_tag:'Travail Sélectionné',work_title:'Projets',
-    skills_tag:'Capacités',skills_title:'Compétences',
-    contact_eyebrow:'Contact',
-    contact_sub:'Anonyme ne signifie pas inaccessible.',
-    sk1_name:'Stratégie de Contenu',sk1_desc:'Construire des récits qui résonnent avec les audiences crypto-natives. De DoopApp à LORE — 500K impressions en un mois, +120% d\'engagement.',
-    sk2_name:'Croissance de Communauté',sk2_desc:'Construit et modéré des communautés Discord de zéro, géré des groupes Telegram, développé des comptes sociaux de rien. Discord, Telegram, X — tous les canaux.',
-    sk3_name:'Exécution de Tendances',sk3_desc:'Positionné sur les narratifs émergents avant tout le monde. Rage-bait, mèmes politiques, méta DeFi — en position avant que la foule arrive.',
-    sk4_name:'Contenu Visuel',sk4_desc:'Cartes PNL, graphiques brandés, production de mèmes, livestreams scénarisés — transformer performance et culture en actifs partageables.',
-    sk5_name:'X Spaces & Live',sk5_desc:'Animé des Spaces en phase précoce pour créer du hype, facilité la découverte par les investisseurs, maintenu les communautés engagées en direct.',
-    sk6_name:'Marketing Événementiel',sk6_desc:'Volé à NFC Lisbonne pour capturer du contenu sur le terrain et marketer en direct. Transformer les moments IRL en élan online.',
-    sk7_name:'Production Vidéo',sk7_desc:'Tourné du contenu promotionnel dans une vraie boutique pour GUB. Transformer des idées grassroots en actifs marketing soignés.',
-    sk8_name:'Gestion d\'Économie',sk8_desc:'Suivi et traité plus de 10K$ de paiements aux clippers de Clipped.fun — gérer une économie de créateurs en direct de bout en bout.',
-    sk9_name:'Co-Fondateur',sk9_desc:'Co-fondé Clipped.fun, une plateforme de marchés de capitaux pour créateurs Web3. Géré les réseaux sociaux, testé l\'app, construit l\'écosystème de clippers de zéro.',
-  },
+const PROJECTS = {
+  doopapp:{title:'DoopApp',role:'Marketing and Community Lead',img:'https://unavatar.io/x/doopapp',link:'https://doopapp.com/',xLink:'https://x.com/DoopApp',ca:'7uwNJaMRj9FZuubmzguU8A4cR15ykpBymhAiVJEFTjZ5',ath:'$13M',what:'A Web3 health app that paid you to poop. Gamified gut health on-chain with real token rewards.',desc:'Took this gut health app from zero social presence to 5,000 followers and 500,000 impressions in a single month. Built the whole content identity from scratch and went viral more than once.',achievements:['500K impressions in month 1','5,000 followers from zero','Built full content identity from scratch','Went viral multiple times'],tags:['Rugged','Marketing Lead','Content','Community','Solana']},
+  lore:{title:'LORE',role:'Social Media Manager',img:'https://unavatar.io/x/lore_vision',link:'https://lore.trade/',xLink:'https://x.com/lore_vision',ca:'G2AbNxcyXV6QiXptMm6MuQPBDJYp9AVQHTdWAV1Wpump',ath:'$4.3M',what:'A dApp that surfaced potential meme coins before they pumped. Real alpha, real gains.',desc:'Doubled engagement in 30 days by staying sharp on market movements, trends and timing. Built PNL cards that turned performance into proof. Scripted livestreams and wore a lot of hats.',achievements:['120% engagement increase in month 1','Built PNL cards for social proof','Scripted and managed livestreams','Sharp market timing content'],tags:['Rugged','SMM','Content','PNL Cards','Solana']},
+  quaiflip:{title:'QuaiFlip',role:'Co-Founder and Growth Lead',img:'QF no background.png',link:'https://quaiflip.com/',xLink:'https://x.com/QuaiFlip',ath:'Live on Quai Mainnet',what:'The first provably fair on-chain coin flip game on Quai Network. Double or nothing, fully on-chain, no admin backdoors.',desc:'Co-founded from zero alongside lead dev Ludz. Built the full brand, Discord community, and grew the X account organically. Submitted a $40K grant proposal and took the product to mainnet.',achievements:['Co-founded from zero with lead dev Ludz','Wrote $40,000 grant proposal to Quai Builders Program','Built full brand including logo, colour system, typography','Built Discord from scratch with channels, roles, moderation','Grew @QuaiFlip on X from zero','Produced the launch promo video','Spoken at multiple Quai Network X Spaces','First coin flip game on Quai Network','Live on mainnet at quaiflip.com'],tags:['Active','Co-Founder','Brand','Quai Network','Grant','Discord']},
+  clipped:{title:'Clipped.fun',role:'Co-Founder · Creator Economy',img:'https://unavatar.io/x/clippeddotfun',link:'https://clipped.fun/',xLink:'https://x.com/clippeddotfun',ca:'8WHMgk4kRdZaBDZkgyBpb6bw9XkZzJ2jXCv4gj1zpump',ath:'$666K',what:'A Web3 clipping platform built around Creator Capital Markets. Clippers uploaded content, earned real payouts.',desc:'Co-founded the project. Ran socials and community marketing, bug-tested the platform, and managed the clipper economy end-to-end including tracking and processing $10K+ in payouts.',achievements:['Co-founded the project','Ran all socials and community marketing','Bug-tested website and app','Tracked and processed $10,000+ in clipper payouts'],tags:['Rugged','Co-Founder','Creator Economy','CCM','Solana']},
+  ptsd:{title:'PTSD Show',role:'Community Lead and Host',img:'https://unavatar.io/x/PTSDshow',link:'https://www.ptsdshow.com/',xLink:'https://x.com/PTSDshow',ath:'Token: Coming Soon',what:'An animated Web3 series building a universe around crypto culture.',desc:'Got involved at launch. Hosted X Spaces to build early hype, built and moderated Discord from the ground up, and helped open doors with potential investors and partners.',achievements:['Hosted X Spaces to build early hype','Built Discord community from scratch','Investor and partner outreach'],tags:['Active','Community','Spaces','Investor Outreach']},
+  tampontim:{title:'Tampon Tim',role:'Social Campaign Lead',img:'https://unavatar.io/x/TamponTimMeme',link:'https://tampontimmeme.com/',xLink:'https://x.com/TamponTimMeme',ca:'tptmXt82GmGnoE4qDRgHiTGKMBCh4fCdxjjCBYbgpZV',ath:'$2M',what:'A political meme coin created around the US political figure Tim Walz.',desc:'Built and ran the Telegram then hit the ground running on X with politically-charged campaigns. Rage-bait positioning drove replies and quote tweets. 100K impressions in week one.',achievements:['100K impressions in week 1','Built and ran Telegram community','Rage-bait positioning strategy'],tags:['Rugged','Campaign Lead','Telegram','Solana']},
+  bongo:{title:'Bongo',role:'Event Marketing and Content',img:'https://unavatar.io/x/ASKBongoCoin',link:'https://askbongo.ai/',xLink:'https://x.com/ASKBongoCoin',ca:'9Es9ttvHj9UUHwyy7QLEPBTyJatYo2FbkuHcQR4cVxJr',ath:'$1.2M',what:'Based on the viral Web2 SMS sensation from Australia. Meme legacy brought on-chain.',desc:'Helped breathe new life into an established meme IP through event-driven marketing. Flew to NFC Lisbon, captured on-the-ground footage, and reignited community momentum.',achievements:['Flew to NFC Lisbon for IRL event marketing','On-location footage and content creation','Community revival campaign'],tags:['Rugged','NFC Lisbon','Event Content','Community']},
+  gub:{title:'Gently Used Blunt',role:'Co-Founder and Social',img:'GUB.jpg',link:'https://x.com/JawsOnChain/status/2028516773364908096',xLink:null,ca:'48NjRqcWLj3k72BdomHbqSMfxPssGRBAzqzQFN1pqpB4',ath:'$652K',what:'A 420 meme coin built for the culture.',desc:'Co-founded and ran the project. Shot the promotional video on-location at a real weed shop, handled day-to-day socials, meme production, and turned a grassroots vibe into a proper marketing asset.',achievements:['Co-founded the project','Produced on-location promo video at a real weed shop','Day-to-day social media management','Meme production and distribution'],tags:['Rugged','Co-Founder','Social','Memes','Video','Solana']}
 };
-function applyLang(code){
-  const t=LANGS[code]||LANGS.en;
-  document.querySelectorAll('[data-i18n]').forEach(el=>{
-    const k=el.getAttribute('data-i18n');
-    if(t[k]!==undefined)el.textContent=t[k];
-  });
-  localStorage.setItem('lang',code);
-}
-const langSelect=document.getElementById('langSelect');
-const savedLang=localStorage.getItem('lang')||'en';
-langSelect.value=savedLang;
-applyLang(savedLang);
-langSelect.addEventListener('change',e=>applyLang(e.target.value));
-// HAMBURGER
-const hbg=document.getElementById('hamburger'),mob=document.getElementById('mobileMenu');
-hbg.addEventListener('click',()=>{hbg.classList.toggle('open');mob.classList.toggle('open');document.body.style.overflow=mob.classList.contains('open')?'hidden':'';});
-document.querySelectorAll('.mob-link').forEach(a=>a.addEventListener('click',()=>{hbg.classList.remove('open');mob.classList.remove('open');document.body.style.overflow='';}));
-// SCROLL REVEAL
-const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.08});
-document.querySelectorAll('.cap-item,.work-card,.skill-tile').forEach(el=>obs.observe(el));
 
-// CA COPY
-document.querySelectorAll('.wc-ca-copy').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    navigator.clipboard.writeText(btn.dataset.ca).then(()=>{
-      btn.textContent='Copied!';btn.classList.add('copied');
-      setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},2000);
-    });
-  });
+function openModal(id){
+  const p=PROJECTS[id];if(!p)return;
+  _curProject=id;
+  document.getElementById('modal-img').src=p.img;
+  document.getElementById('modal-title').textContent=p.title;
+  document.getElementById('modal-role').textContent=p.role;
+  document.getElementById('modal-ath').textContent=p.ath;
+  document.getElementById('modal-project-desc').textContent=p.what||'';
+  document.getElementById('modal-desc').textContent=p.desc;
+  const ach=document.getElementById('modal-ach');
+  ach.innerHTML=p.achievements?.length?'<h4>Key Achievements</h4><ul>'+p.achievements.map(a=>`<li>${a}</li>`).join('')+'</ul>':'';
+  document.getElementById('modal-tags').innerHTML=p.tags.map(t=>{
+    const c=t==='Rugged'?'tag-rugged':t==='Active'?'tag-active':'';
+    return`<span class="tag ${c}">${t}</span>`;
+  }).join('');
+  const pb=document.getElementById('modal-play-btn');pb.onclick=()=>window.open(p.link,'_blank');
+  const xb=document.getElementById('modal-x-btn');
+  if(p.xLink){xb.style.display='flex';xb.onclick=()=>window.open(p.xLink,'_blank');}
+  else{xb.style.display='none';}
+  const caEl=document.getElementById('modal-ca');
+  const caAddr=document.getElementById('modal-ca-addr');
+  if(p.ca){caEl.style.display='flex';caAddr.textContent=p.ca;}
+  else{caEl.style.display='none';}
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+  _updateModalNav();
+}
+const PROJECT_ORDER=['bongo','clipped','doopapp','gub','lore','ptsd','quaiflip','tampontim'];
+let _curProject=null;
+function navigateModal(dir){
+  const idx=PROJECT_ORDER.indexOf(_curProject);
+  if(idx===-1)return;
+  const next=idx+dir;
+  if(next<0||next>=PROJECT_ORDER.length)return;
+  openModal(PROJECT_ORDER[next]);
+}
+function _updateModalNav(){
+  const idx=PROJECT_ORDER.indexOf(_curProject);
+  const prev=document.getElementById('modal-prev');
+  const next=document.getElementById('modal-next');
+  if(prev)prev.disabled=idx<=0;
+  if(next)next.disabled=idx>=PROJECT_ORDER.length-1;
+}
+function closeModal(){document.getElementById('modal-overlay').classList.remove('open');document.body.style.overflow='';}
+function copyCA(){
+  const addr=document.getElementById('modal-ca-addr')?.textContent;
+  if(!addr)return;
+  navigator.clipboard.writeText(addr).then(()=>{
+    const btn=document.getElementById('modal-ca-btn');
+    btn.textContent='Copied!';setTimeout(()=>btn.textContent='Copy',2000);
+  }).catch(()=>{});
+}
+
+const VIDEO_ORDER=['Bongo%20Promo.mp4','GUB%20promo.mp4','Lore%20video.mp4','Future%20Quai.mp4','PTSD%20EP%201.mp4'];
+let _curVideo=0;
+function openVideo(src,idx){
+  _curVideo=idx??0;
+  const v=document.getElementById('vm-video');
+  v.src=decodeURIComponent(src);v.load();
+  document.getElementById('video-modal').classList.add('open');
+  document.body.style.overflow='hidden';
+  _updateVideoNav();
+}
+function navigateVideo(dir){
+  const next=_curVideo+dir;
+  if(next<0||next>=VIDEO_ORDER.length)return;
+  openVideo(VIDEO_ORDER[next],next);
+}
+function _updateVideoNav(){
+  const p=document.getElementById('vm-prev');const n=document.getElementById('vm-next');
+  if(p)p.disabled=_curVideo<=0;if(n)n.disabled=_curVideo>=VIDEO_ORDER.length-1;
+}
+function closeVideo(){
+  const v=document.getElementById('vm-video');v.pause();v.src='';
+  document.getElementById('video-modal').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){closeModal();closeVideo();closeSkill();}
+  if(e.key==='ArrowRight'){if(document.getElementById('modal-overlay').classList.contains('open'))navigateModal(1);else if(document.getElementById('skill-overlay').classList.contains('open'))navigateSkill(1);else if(document.getElementById('video-modal').classList.contains('open'))navigateVideo(1);}
+  if(e.key==='ArrowLeft'){if(document.getElementById('modal-overlay').classList.contains('open'))navigateModal(-1);else if(document.getElementById('skill-overlay').classList.contains('open'))navigateSkill(-1);else if(document.getElementById('video-modal').classList.contains('open'))navigateVideo(-1);}
 });
 
-// BACK TO TOP
-const bt=document.getElementById('backTop');
-window.addEventListener('scroll',()=>bt.classList.toggle('visible',window.scrollY>500),{passive:true});
-bt.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+function showView(name){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+name)?.classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  document.getElementById('nav-'+name)?.classList.add('active');
+  document.querySelectorAll('.mm-link').forEach(a=>a.classList.remove('active'));
+  document.getElementById('mm-'+name)?.classList.add('active');
+  window.scrollTo(0,0);
+}
 
-// TERMINAL WIDGET
+function toggleMenu(){
+  const m=document.getElementById('mobile-menu'),h=document.getElementById('hamburger');
+  const open=m.classList.toggle('open');
+  h.classList.toggle('open',open);
+  document.body.style.overflow=open?'hidden':'';
+}
+
+function selectProfile(type){
+  document.getElementById('profile-screen').style.display='none';
+  document.getElementById('main-site').style.display='block';
+  showView('home');
+  try{const t=JSON.parse(localStorage.getItem('jf_views')||'{}');t[type]=(t[type]||0)+1;localStorage.setItem('jf_views',JSON.stringify(t));}catch(e){}
+}
+
+// Hero carousel
+let cur=0;
+const TOTAL=8;
+function goSlide(n){
+  document.querySelectorAll('.hero-slide').forEach((s,i)=>s.classList.toggle('active',i===n));
+  document.querySelectorAll('.hero-dot').forEach((d,i)=>d.classList.toggle('active',i===n));
+  cur=n;
+}
+setInterval(()=>goSlide((cur+1)%TOTAL),6000);
+
+// SOL price
 (function(){
-  const twDate=document.getElementById('tw-date');
-  const twBrowser=document.getElementById('tw-browser');
-  const twRes=document.getElementById('tw-res');
-  const twClicks=document.getElementById('tw-clicks');
-  const twScroll=document.getElementById('tw-scroll');
-  let clicks=0;
-  function pad(n){return String(n).padStart(2,'0');}
-  function updateDate(){
-    const d=new Date();
-    twDate.textContent=`${d.getFullYear()}.${pad(d.getMonth()+1)}.${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+  const ws=new WebSocket('wss://stream.binance.com:9443/ws/solusdt@ticker');
+  ws.onmessage=e=>{
+    const el=document.getElementById('sol-price');
+    if(el)el.textContent=parseFloat(JSON.parse(e.data).c).toFixed(2);
+  };
+})();
+
+// QUAI price via CoinGecko
+async function fetchQuaiPrice(){
+  try{
+    const r=await fetch('https://api.coingecko.com/api/v3/simple/price?ids=quai-network&vs_currencies=usd');
+    const d=await r.json();
+    const el=document.getElementById('quai-price');
+    if(el&&d['quai-network'])el.textContent=d['quai-network'].usd.toFixed(4);
+  }catch(e){}
+}
+fetchQuaiPrice();
+setInterval(fetchQuaiPrice,30000);
+
+const SKILLS={
+  'AI Tooling':'Using AI tools daily across content creation, data analysis, product building, and workflow automation. Built an AI personal trainer bot and an AI football analysis system running at 77.9% prediction accuracy.',
+  'Data Analysis':'Turning raw data into decisions. PNL cards, engagement tracking, prediction modelling, community analytics. Built systems that surface insight and drive action.',
+  'Content Strategy':'Building narratives that resonate with crypto-native audiences. From organic threads to full campaign architecture across multiple projects, consistent results.',
+  'Community Building':'Discord architecture, role systems, moderation, FAQ, T&Cs. Built multiple communities from zero to active and engaged.',
+  'Brand Identity':'Logo direction, colour systems, typography, tagline. Built the full QuaiFlip brand from scratch including a custom colour system and typeface selection.',
+  'X Spaces':'Hosted and spoken at multiple X Spaces for QuaiFlip, PTSD, and across the Quai Network ecosystem. Comfortable live in front of any audience.',
+  'Video Production':'Shot on-location promos at a real weed shop. Produced the QuaiFlip launch video. Cinematic storytelling with no budget excuses.',
+  'Copywriting':'All marketing copy, social posts, X threads, community announcements. Tone that fits the project, not a generic template.',
+  'Grant Writing':'Wrote and submitted a $40,000 grant proposal via Questbook to the Quai Builders Program. Know how to make a case that gets taken seriously.',
+  'BD and Partnerships':'Investor outreach, partner introductions, hiring mods and marketing leads. Open doors and keep them open.',
+  'Growth Analytics':'PNL cards, engagement tracking, community polls. Turning raw numbers into proof that gets shared and screenshot.',
+  'Launch Strategy':'Coordinated launches across socials, Discord, and X Spaces simultaneously. Build hype before day one and sustain it after.'
+};
+const SKILL_ORDER=['AI Tooling','BD and Partnerships','Brand Identity','Community Building','Content Strategy','Copywriting','Data Analysis','Grant Writing','Growth Analytics','Launch Strategy','Video Production','X Spaces'];
+let _curSkill=null;
+function openSkill(name){
+  const desc=SKILLS[name];if(!desc)return;
+  _curSkill=name;
+  document.getElementById('skill-modal-title').textContent=name;
+  document.getElementById('skill-modal-desc').textContent=desc;
+  document.getElementById('skill-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+  const idx=SKILL_ORDER.indexOf(name);
+  const sp=document.getElementById('skill-prev');const sn=document.getElementById('skill-next');
+  if(sp)sp.disabled=idx<=0;if(sn)sn.disabled=idx>=SKILL_ORDER.length-1;
+}
+function navigateSkill(dir){
+  const idx=SKILL_ORDER.indexOf(_curSkill);if(idx===-1)return;
+  const next=idx+dir;if(next<0||next>=SKILL_ORDER.length)return;
+  openSkill(SKILL_ORDER[next]);
+}
+function closeSkill(){
+  document.getElementById('skill-overlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+function scrollRow(id,dir){
+  const t=document.getElementById(id);
+  if(!t)return;
+  const step=290;
+  const max=t.scrollWidth-t.clientWidth;
+  if(dir>0){
+    if(t.scrollLeft>=max-10){t.scrollTo({left:0,behavior:'smooth'});}
+    else{t.scrollBy({left:step,behavior:'smooth'});}
+  } else {
+    if(t.scrollLeft<=10){t.scrollTo({left:max,behavior:'smooth'});}
+    else{t.scrollBy({left:-step,behavior:'smooth'});}
   }
-  function getBrowser(){
-    const ua=navigator.userAgent;
-    if(ua.includes('Firefox'))return 'FIREFOX';
-    if(ua.includes('Edg'))return 'EDGE';
-    if(ua.includes('OPR')||ua.includes('Opera'))return 'OPERA';
-    if(ua.includes('Chrome'))return 'CHROME';
-    if(ua.includes('Safari'))return 'SAFARI';
-    return 'BROWSER';
+}
+
+window.addEventListener('scroll',()=>{document.getElementById('navbar')?.classList.toggle('scrolled',scrollY>50);},{passive:true});
+
+// ── PROFILE SCREEN SHADER ────────────────────────────────
+(function(){
+  const canvas=document.getElementById('shader-bg');
+  if(!canvas)return;
+  const gl=canvas.getContext('webgl2');
+  if(!gl)return;
+
+  const vert=`#version 300 es
+precision highp float;
+in vec4 position;
+void main(){gl_Position=position;}`;
+
+  const frag=`#version 300 es
+precision highp float;
+out vec4 O;
+uniform float time;
+uniform vec2 resolution;
+uniform vec3 u_color;
+#define FC gl_FragCoord.xy
+#define R resolution
+#define T (time+660.)
+float rnd(vec2 p){p=fract(p*vec2(12.9898,78.233));p+=dot(p,p+34.56);return fract(p.x*p.y);}
+float noise(vec2 p){vec2 i=floor(p),f=fract(p),u=f*f*(3.-2.*f);return mix(mix(rnd(i),rnd(i+vec2(1,0)),u.x),mix(rnd(i+vec2(0,1)),rnd(i+1.),u.x),u.y);}
+float fbm(vec2 p){float t=.0,a=1.;for(int i=0;i<5;i++){t+=a*noise(p);p*=mat2(1,-1.2,.2,1.2)*2.;a*=.5;}return t;}
+void main(){
+  vec2 uv=(FC-.5*R)/R.y;
+  vec3 col=vec3(1);
+  uv.x+=.25;uv*=vec2(2,1);
+  float n=fbm(uv*.28-vec2(T*.01,0));
+  n=noise(uv*3.+n*2.);
+  col.r-=fbm(uv+vec2(0,T*.015)+n);
+  col.g-=fbm(uv*1.003+vec2(0,T*.015)+n+.003);
+  col.b-=fbm(uv*1.006+vec2(0,T*.015)+n+.006);
+  col=mix(col,u_color,dot(col,vec3(.21,.71,.07)));
+  col=mix(vec3(.04),col,min(time*.1,1.));
+  col=clamp(col,.04,1.);
+  O=vec4(col,1);
+}`;
+
+  function mk(type,src){const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);return s;}
+  const prog=gl.createProgram();
+  gl.attachShader(prog,mk(gl.VERTEX_SHADER,vert));
+  gl.attachShader(prog,mk(gl.FRAGMENT_SHADER,frag));
+  gl.linkProgram(prog);
+
+  const buf=gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,1,-1,-1,1,1,1,-1]),gl.STATIC_DRAW);
+  const posLoc=gl.getAttribLocation(prog,'position');
+  gl.enableVertexAttribArray(posLoc);
+  gl.vertexAttribPointer(posLoc,2,gl.FLOAT,false,0,0);
+
+  const uRes=gl.getUniformLocation(prog,'resolution');
+  const uTime=gl.getUniformLocation(prog,'time');
+  const uColor=gl.getUniformLocation(prog,'u_color');
+  const RED=[229/255,9/255,20/255];
+
+  function resize(){
+    const dpr=Math.max(1,devicePixelRatio);
+    canvas.width=innerWidth*dpr;canvas.height=innerHeight*dpr;
+    gl.viewport(0,0,canvas.width,canvas.height);
   }
-  twBrowser.textContent=`[${getBrowser()} / ${navigator.platform||'WEB'}]`;
-  twRes.textContent=`[${window.screen.width}x${window.screen.height}]`;
-  setInterval(updateDate,1000);
-  updateDate();
-  document.addEventListener('click',()=>{clicks++;twClicks.textContent=`[CLICKS: ${clicks}]`;});
-  window.addEventListener('scroll',()=>{
-    const pct=Math.round((window.scrollY/(document.body.scrollHeight-window.innerHeight))*100)||0;
-    twScroll.textContent=`[DEPTH: ${pct}%]`;
-  },{passive:true});
+  resize();
+  window.addEventListener('resize',resize,{passive:true});
+
+  const t0=performance.now();
+  let raf;
+  function draw(){
+    const t=(performance.now()-t0)*0.001;
+    gl.useProgram(prog);
+    gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+    gl.uniform2f(uRes,canvas.width,canvas.height);
+    gl.uniform1f(uTime,t);
+    gl.uniform3fv(uColor,RED);
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+    raf=requestAnimationFrame(draw);
+  }
+  draw();
+
+  new MutationObserver(()=>{
+    const ps=document.getElementById('profile-screen');
+    if(!ps)return;
+    if(ps.style.display==='none'){cancelAnimationFrame(raf);}
+    else{cancelAnimationFrame(raf);draw();}
+  }).observe(document.getElementById('profile-screen'),{attributes:true,attributeFilter:['style']});
 })();
 </script>
-<!-- EASTER EGG: good luck finding this -->
-<div id="seedChest" onclick="window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1','_blank')" title="something valuable...">
-  <svg width="38" height="30" viewBox="0 0 38 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <!-- lid -->
-    <rect x="1" y="1" width="36" height="11" rx="2.5" fill="rgba(1,255,255,0.55)" stroke="rgba(1,255,255,0.7)" stroke-width="0.8"/>
-    <path d="M1 8 Q19 2 37 8" fill="none" stroke="rgba(1,255,255,0.5)" stroke-width="1"/>
-    <!-- hinge -->
-    <rect x="16" y="10" width="6" height="3" rx="1" fill="rgba(2,14,14,0.9)" stroke="rgba(1,255,255,0.3)" stroke-width="0.5"/>
-    <!-- body -->
-    <rect x="1" y="12" width="36" height="17" rx="2.5" fill="rgba(1,255,255,0.45)" stroke="rgba(1,255,255,0.7)" stroke-width="0.8"/>
-    <!-- bands -->
-    <rect x="1" y="16" width="36" height="2.5" fill="rgba(2,14,14,0.4)"/>
-    <!-- lock body -->
-    <rect x="14" y="20" width="10" height="6" rx="1.5" fill="rgba(2,14,14,0.85)" stroke="rgba(1,255,255,0.4)" stroke-width="0.6"/>
-    <!-- lock shackle -->
-    <path d="M16.5 20 Q16.5 16.5 19 16.5 Q21.5 16.5 21.5 20" fill="none" stroke="rgba(1,255,255,0.5)" stroke-width="1.2" stroke-linecap="round"/>
-    <!-- keyhole -->
-    <circle cx="19" cy="23" r="1.2" fill="rgba(1,255,255,0.25)"/>
-    <!-- glints -->
-    <line x1="4" y1="4" x2="7" y2="5.5" stroke="rgba(1,255,255,0.9)" stroke-width="1" stroke-linecap="round"/>
-    <line x1="30" y1="5" x2="33" y2="3.5" stroke="rgba(1,255,255,0.6)" stroke-width="0.8" stroke-linecap="round"/>
-  </svg>
-  <div class="chest-label">Seed Phrases</div>
-</div>
 </body>
 </html>
